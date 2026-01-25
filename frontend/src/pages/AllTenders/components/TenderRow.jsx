@@ -74,6 +74,7 @@ const TenderRow = ({
     editedRows,
     mainStageById,
     mainStatusById,
+    subitemStatusByKey,
     overdueDays,
   });
   const isExpanded = expandedPin === tender.id;

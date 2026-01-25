@@ -18,6 +18,16 @@ export const MAIN_STATUS_OPTIONS = {
   Default: ["Planning", "On Progress", "Clarification", "Evaluation"],
 };
 
+export const CHILD_STATUS_PRIORITY = [
+  "Failed",
+  "Done",
+  "On Progress",
+  "Not Started",
+];
+
+export const getPriorityStatus = (statuses = []) =>
+  CHILD_STATUS_PRIORITY.find((status) => statuses.includes(status)) ?? null;
+
 export const getMainStatusOptions = (stage) => {
   if (stage === "Registration") return MAIN_STATUS_OPTIONS.Registration;
   if (stage === "Contract") return MAIN_STATUS_OPTIONS.Contract;

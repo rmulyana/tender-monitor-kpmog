@@ -1201,6 +1201,12 @@ td.sticky2.tree-empty {
   border-color: transparent;
 }
 
+.main-status-select.status-failed {
+  background: var(--tenders-red);
+  color: var(--tenders-white);
+  border-color: transparent;
+}
+
 .subitem-pic-input {
   border: 1px solid var(--tenders-border);
   border-radius: var(--radius-pill);

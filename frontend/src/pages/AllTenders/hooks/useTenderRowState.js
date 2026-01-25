@@ -1,13 +1,17 @@
 import { useMemo } from "react";
 
 import { formatNumber } from "../../../utils/formatters.js";
-import { getMainStatusOptions } from "../../../utils/tenderUtils.js";
+import {
+  getMainStatusOptions,
+  getPriorityStatus,
+} from "../../../utils/tenderUtils.js";
 
 const useTenderRowState = ({
   tender,
   editedRows,
   mainStageById,
   mainStatusById,
+  subitemStatusByKey,
   overdueDays,
 }) => {
   return useMemo(() => {
@@ -27,6 +31,13 @@ const useTenderRowState = ({
     const mainStatus = statusOptions.includes(storedStatus)
       ? storedStatus
       : fallbackMainStatus;
+    const childStatuses = Object.keys(subitemStatusByKey || {})
+      .filter((key) => key.startsWith(`${tender.id}::`))
+      .map((key) => subitemStatusByKey[key])
+      .filter(Boolean);
+    const childPriorityStatus = getPriorityStatus(childStatuses);
+    const derivedMainStatus =
+      childPriorityStatus === "Failed" ? "Failed" : mainStatus;
     const timelineOverdueDays = overdueDays(displayTender.dueDate);
 
     return {
@@ -35,10 +46,17 @@ const useTenderRowState = ({
       editEstValue,
       mainStage,
       statusOptions,
-      mainStatus,
+      mainStatus: derivedMainStatus,
       timelineOverdueDays,
     };
-  }, [editedRows, mainStageById, mainStatusById, overdueDays, tender]);
+  }, [
+    editedRows,
+    mainStageById,
+    mainStatusById,
+    overdueDays,
+    subitemStatusByKey,
+    tender,
+  ]);
 };
 
 export default useTenderRowState;

@@ -169,7 +169,7 @@ export const tenders = [
     currency: "IDR",
     estValue: 67000000000,
     stage: "Pre-Qualification",
-    status: "On Progress",
+    status: "Failed",
     startDate: "2024-03-01",
     dueDate: "2024-04-01",
     overdueDays: 0,
