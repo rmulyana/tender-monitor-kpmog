@@ -348,12 +348,39 @@ const AllTenders = () => {
     overdueDays,
   });
 
-  const handleExport = () => {
+  const handleExportMain = () => {
     exportTendersCsv({
       tenders,
       editedRows,
       mainStageById,
       mainStatusById,
+      customStagesByTender,
+      subitemStatusByKey,
+      subitemPriorityByKey,
+      subitemSubmissionByKey,
+      subitemTimelineByKey,
+      subitemNotesByKey,
+      subitemPicByKey,
+      subitemProgressByKey,
+      mode: "main",
+    });
+  };
+
+  const handleExportAll = () => {
+    exportTendersCsv({
+      tenders,
+      editedRows,
+      mainStageById,
+      mainStatusById,
+      customStagesByTender,
+      subitemStatusByKey,
+      subitemPriorityByKey,
+      subitemSubmissionByKey,
+      subitemTimelineByKey,
+      subitemNotesByKey,
+      subitemPicByKey,
+      subitemProgressByKey,
+      mode: "all",
     });
   };
 
@@ -373,7 +400,8 @@ const AllTenders = () => {
         onMonthFilterChange={setMonthFilter}
         setSortKey={setSortKey}
         setSortDirection={setSortDirection}
-        onExport={handleExport}
+        onExportMain={handleExportMain}
+        onExportAll={handleExportAll}
       />
 
       <TendersTable

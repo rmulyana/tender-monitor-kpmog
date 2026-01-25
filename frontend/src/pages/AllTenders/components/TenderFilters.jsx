@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 import useTenderFilters from "../hooks/useTenderFilters.js";
 
 const TenderFilters = ({
@@ -12,8 +14,11 @@ const TenderFilters = ({
   onMonthFilterChange,
   setSortKey,
   setSortDirection,
-  onExport,
+  onExportMain,
+  onExportAll,
 }) => {
+  const [isExportOpen, setIsExportOpen] = useState(false);
+  const exportMenuRef = useRef(null);
   const { stageOptions, statusOptions, monthOptions, resetFilters } =
     useTenderFilters({
       allTenders,
@@ -24,6 +29,24 @@ const TenderFilters = ({
       setSortKey,
       setSortDirection,
     });
+
+  useEffect(() => {
+    if (!isExportOpen) return undefined;
+    const handleClick = (event) => {
+      if (!exportMenuRef.current?.contains(event.target)) {
+        setIsExportOpen(false);
+      }
+    };
+    const handleKey = (event) => {
+      if (event.key === "Escape") setIsExportOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isExportOpen]);
 
   return (
     <section className="tenders-toolbar">
@@ -93,9 +116,48 @@ const TenderFilters = ({
         >
           Reset
         </button>
-        <button className="button button-primary" type="button" onClick={onExport}>
-          Export
-        </button>
+        <div className="export-split" ref={exportMenuRef}>
+          <button
+            className="button button-primary export-main"
+            type="button"
+            onClick={onExportMain}
+          >
+            Export
+          </button>
+          <button
+            className="button button-primary export-toggle"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded={isExportOpen}
+            onClick={() => setIsExportOpen((prev) => !prev)}
+          >
+            <i className="fa-solid fa-chevron-down" aria-hidden="true" />
+          </button>
+          {isExportOpen ? (
+            <div className="export-menu" role="menu">
+              <button
+                className="export-item"
+                type="button"
+                onClick={() => {
+                  onExportMain();
+                  setIsExportOpen(false);
+                }}
+              >
+                Main Table
+              </button>
+              <button
+                className="export-item"
+                type="button"
+                onClick={() => {
+                  onExportAll();
+                  setIsExportOpen(false);
+                }}
+              >
+                All Table
+              </button>
+            </div>
+          ) : null}
+        </div>
       </div>
     </section>
   );
