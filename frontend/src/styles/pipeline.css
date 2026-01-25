@@ -1,0 +1,9 @@
+.pipeline-page {
+  display: grid;
+  gap: 24px;
+}
+
+.pipeline-note {
+  margin: 12px 0 0;
+  color: var(--text-muted);
+}

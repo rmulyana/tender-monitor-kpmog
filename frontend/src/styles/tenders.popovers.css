@@ -1,0 +1,259 @@
+/* Attachment popover */
+.attachment-popover {
+  position: fixed;
+  z-index: 90;
+  width: 280px;
+  background: var(--tenders-white);
+  border: 1px solid var(--tenders-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--tenders-shadow-popover);
+  padding: var(--space-5) var(--space-6) var(--space-6);
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+}
+
+.attachment-tabs {
+  display: flex;
+  gap: var(--space-8);
+  border-bottom: 1px solid var(--tenders-border);
+  margin-bottom: 12px;
+}
+
+.attachment-tab {
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--tenders-text-muted);
+  padding: var(--space-1) 0 var(--space-3);
+  cursor: pointer;
+}
+
+.attachment-tab.is-active {
+  color: var(--tenders-text);
+  font-weight: 600;
+  border-bottom: 2px solid var(--tenders-text);
+}
+
+.attachment-panel {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.attachment-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-5);
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  border: 1px solid var(--tenders-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.75rem;
+  color: var(--tenders-text);
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.attachment-item-name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 0;
+  max-width: 200px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.attachment-item-remove {
+  border: none;
+  background: transparent;
+  color: var(--tenders-red);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.attachment-item-remove svg {
+  width: 16px;
+  height: 16px;
+}
+
+.attachment-upload-btn {
+  width: 100%;
+  border: none;
+  background: var(--tenders-upload);
+  color: var(--tenders-white);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.attachment-upload-btn:hover {
+  background: var(--tenders-upload-hover);
+}
+
+.attachment-hidden-input {
+  display: none;
+}
+
+.attachment-link-input {
+  border: 1px solid var(--tenders-border);
+  border-radius: var(--radius-md);
+  height: 32px;
+  padding: 0 var(--space-4);
+  font-size: 0.8rem;
+  color: var(--tenders-text);
+  background: var(--tenders-white);
+}
+
+.attachment-link-btn {
+  border: 1px solid var(--tenders-border);
+  background: var(--tenders-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+  font-size: 0.75rem;
+  color: var(--tenders-text);
+  cursor: pointer;
+  justify-self: start;
+}
+
+.attach-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--tenders-text-subtle);
+  flex: 0 0 auto;
+}
+
+/* Row menu & dialogs */
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 140px;
+  background: var(--tenders-white);
+  border: 1px solid var(--tenders-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--tenders-shadow-menu);
+  padding: var(--space-2);
+  display: grid;
+  gap: var(--space-1);
+  z-index: 300;
+}
+
+.menu-dropdown-floating {
+  position: fixed;
+  transform: translateX(-100%);
+  right: auto;
+  z-index: 500;
+}
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+}
+
+.confirm-card {
+  width: fit-content;
+  max-width: 90vw;
+  background: var(--tenders-white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--tenders-shadow-dialog);
+  display: inline-grid;
+  gap: var(--space-3);
+  text-align: left;
+}
+
+.confirm-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--tenders-text);
+}
+
+.confirm-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--tenders-text-subtle);
+}
+
+.confirm-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--space-4);
+}
+
+.button-danger {
+  background: var(--tenders-red);
+  border-color: var(--tenders-red);
+  color: var(--tenders-white);
+}
+
+.button-danger:hover {
+  background: var(--tenders-red-strong);
+  border-color: var(--tenders-red-strong);
+}
+
+.menu-item {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--tenders-text-menu);
+  cursor: pointer;
+}
+
+.menu-item-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.menu-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+}
+
+.menu-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.menu-item:hover {
+  background: var(--tenders-bg-panel);
+}
+
+.menu-item.is-danger {
+  color: var(--tenders-red);
+}

@@ -1,0 +1,6 @@
+/* Tender styles entry */
+@import "./tenders.base.css";
+@import "./tenders.toolbar.css";
+@import "./tenders.table.css";
+@import "./tenders.popovers.css";
+@import "./tenders.timeline.css";
