@@ -599,6 +599,10 @@ td.sticky2.tree-empty {
 
 .progress-slider-track {
   position: relative;
+  height: 16px;
+  border-radius: var(--radius-pill);
+  background: var(--tenders-border);
+  overflow: hidden;
 }
 
 .progress-slider-input {
@@ -607,11 +611,35 @@ td.sticky2.tree-empty {
   width: 100%;
   height: 16px;
   border-radius: var(--radius-pill);
-  background: var(--tenders-border);
+  background: transparent;
   outline: none;
   cursor: pointer;
   position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+}
+
+.progress-slider-input::-webkit-slider-runnable-track {
+  background: transparent;
+  border: none;
+}
+
+.progress-slider-input::-moz-range-track,
+.progress-slider-input::-moz-range-progress {
+  background: transparent;
+  border: none;
+}
+
+.progress-slider-track::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--progress, 0%);
+  background: var(--progress-color, var(--tenders-border));
+  border-radius: inherit;
   z-index: 1;
+  pointer-events: none;
 }
 
 .progress-slider-input::-webkit-slider-thumb {
@@ -622,7 +650,7 @@ td.sticky2.tree-empty {
   border-radius: 50%;
   background: var(--tenders-white);
   border: 2px solid var(--tenders-text-subtle);
-  box-shadow: var(--tenders-shadow-thumb);
+  box-shadow: var(--tenders-text-subtle);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -633,7 +661,7 @@ td.sticky2.tree-empty {
   border-radius: 50%;
   background: var(--tenders-white);
   border: 2px solid var(--tenders-text-subtle);
-  box-shadow: var(--tenders-shadow-thumb);
+  box-shadow: var(--tenders-text-subtle);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -659,11 +687,6 @@ td.sticky2.tree-empty {
   justify-content: center;
   pointer-events: none;
   z-index: 2;
-  text-shadow:
-    -1px -1px 0 var(--tenders-white),
-    1px -1px 0 var(--tenders-white),
-    -1px 1px 0 var(--tenders-white),
-    1px 1px 0 var(--tenders-white);
 }
 
 .stage-cell {
