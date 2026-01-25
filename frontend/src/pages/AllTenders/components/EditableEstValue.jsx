@@ -20,8 +20,10 @@ const getCaretFromDigitIndex = (formatted, digitIndex) => {
 const formatDraftValue = (rawValue, currency) => {
   const digits = String(rawValue || "").replace(/\D/g, "");
   if (!digits) return "";
+  const normalized = digits.replace(/^0+(?=\d)/, "");
+  if (!normalized) return "";
   const separator = currency === "IDR" ? "." : ",";
-  return groupDigits(digits, separator);
+  return groupDigits(normalized, separator);
 };
 
 const EditableEstValue = ({

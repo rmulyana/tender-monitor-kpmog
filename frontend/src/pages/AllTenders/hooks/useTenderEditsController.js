@@ -22,6 +22,11 @@ const useTenderEditsController = ({
   normalizeDateInput,
   normalizeDateTimeInput,
 }) => {
+  const parseEstValue = (rawValue) => {
+    const digits = String(rawValue ?? "").replace(/\D/g, "");
+    return digits ? Number(digits) : Number.NaN;
+  };
+
   const maybeRemoveDraft = (id, overridesUpdate = {}, event) => {
     const tender = allTenders.find((item) => item.id === id);
     if (!tender?.isDraft) return;
@@ -70,7 +75,7 @@ const useTenderEditsController = ({
       const next = { ...prev };
 
       if (field === "estValue") {
-        const numeric = Number(trimmed.replace(/[^\d.-]/g, ""));
+        const numeric = parseEstValue(trimmed);
         next[id] = {
           ...existing,
           estValue: Number.isFinite(numeric) ? numeric : fallback,
@@ -89,7 +94,7 @@ const useTenderEditsController = ({
 
   const commitEstValue = (id, fallbackValue, fallbackCurrency) => {
     const trimmed = String(editDraft ?? "").trim();
-    const numeric = Number(trimmed.replace(/[^\d.-]/g, ""));
+    const numeric = parseEstValue(trimmed);
     const nextCurrency = editDraftCurrency || fallbackCurrency;
 
     setEditedRows((prev) => ({

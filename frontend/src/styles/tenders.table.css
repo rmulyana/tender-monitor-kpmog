@@ -926,6 +926,13 @@ td.sticky2.tree-empty {
   position: relative;
   min-height: 26px;
   width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.editable-est .editable-trigger {
+  display: inline-flex;
+  align-items: center;
 }
 
 .editable-combo {
