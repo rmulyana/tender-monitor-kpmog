@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import TendersTable from "./AllTenders/components/TendersTable.jsx";
 import TenderFilters from "./AllTenders/components/TenderFilters.jsx";
 import AttachmentMenu from "./AllTenders/components/AttachmentMenu.jsx";
@@ -30,6 +31,7 @@ import {
   normalizeDateTimeInput,
   overdueDays,
 } from "../utils/timeline.js";
+import { getMaxDetailIndexFromRows } from "../utils/subitemsMapper.js";
 import exportTendersCsv from "../utils/exportTendersCsv.js";
 import "../styles/tenders.css";
 
@@ -45,11 +47,15 @@ const AllTenders = () => {
     setStatusFilter,
     monthFilter,
     setMonthFilter,
+    archivedFilter,
+    setArchivedFilter,
     sortKey,
     setSortKey,
     sortDirection,
     setSortDirection,
+    isLoading,
     addTender,
+    updateTender,
     removeTender,
     editingPicKey,
     setEditingPicKey,
@@ -57,10 +63,10 @@ const AllTenders = () => {
     setPicDraft,
     editedRows,
     setEditedRows,
-    removedDetailStepsByStage,
-    setRemovedDetailStepsByStage,
     detailIdRef,
   } = useAllTendersState();
+
+  const [customStagesByTender, setCustomStagesByTender] = useState({});
 
   const {
     mainStageById,
@@ -70,7 +76,7 @@ const AllTenders = () => {
     handleMainStageChange,
     handleMainStatusChange,
     getMainStatusOptions,
-  } = useMainStageStatus();
+  } = useMainStageStatus({ updateTender });
 
   const {
     subitemStatusByKey,
@@ -99,7 +105,14 @@ const AllTenders = () => {
     handleSubitemProgressChange,
     addAttachmentForKey,
     removeAttachmentForKey,
-  } = useSubitemState();
+    removedDetailStepsByStage,
+    setRemovedDetailStepsByStage,
+  } = useSubitemState({
+    tenders: allTenders,
+    customStagesByTender,
+    updateTender,
+    isLoading,
+  });
 
   const {
     confirmAttachment,
@@ -135,8 +148,6 @@ const AllTenders = () => {
   const {
     expandedStages,
     setExpandedStages,
-    customStagesByTender,
-    setCustomStagesByTender,
     stagePickerForTender,
     stagePickerValue,
     setStagePickerValue,
@@ -161,6 +172,8 @@ const AllTenders = () => {
     setSubitemTimelineByKey,
     setSubitemNotesByKey,
     setRemovedDetailStepsByStage,
+    customStagesByTender,
+    setCustomStagesByTender,
   });
 
   const {
@@ -218,8 +231,13 @@ const AllTenders = () => {
     });
 
 
-  const { cleanupDraftTender, handleDeleteTender, handleDuplicateTender } =
-    useTenderRowActions({
+  const {
+    cleanupDraftTender,
+    handleDeleteTender,
+    handleArchiveTender,
+    handleRestoreTender,
+    handleDuplicateTender,
+  } = useTenderRowActions({
       allTenders,
       editedRows,
       mainStageById,
@@ -227,6 +245,7 @@ const AllTenders = () => {
       customStagesByTender,
       addTender,
       removeTender,
+      updateTender,
       setEditedRows,
       setMainStageById,
       setMainStatusById,
@@ -259,6 +278,13 @@ const AllTenders = () => {
     setEditedRows,
   });
 
+  useEffect(() => {
+    const maxIndex = getMaxDetailIndexFromRows(detailRowsByStage);
+    if (Number.isFinite(maxIndex) && maxIndex >= detailIdRef.current) {
+      detailIdRef.current = maxIndex + 1;
+    }
+  }, [detailRowsByStage, detailIdRef]);
+
   const {
     maybeRemoveDraft,
     commitEditCell,
@@ -276,6 +302,7 @@ const AllTenders = () => {
     editedRows,
     mainStageById,
     mainStatusById,
+    updateTender,
     cleanupDraftTender,
     editDraft,
     editDraftCurrency,
@@ -385,24 +412,30 @@ const AllTenders = () => {
   };
 
   const popoverAttachments = getPopoverAttachments(attachmentMenu);
+  const filterSourceTenders = useMemo(() => {
+    if (archivedFilter === "show") return allTenders;
+    return allTenders.filter((tender) => !tender.archived);
+  }, [allTenders, archivedFilter]);
 
   return (
     <div className="tenders-page">
       <TenderFilters
-        allTenders={allTenders}
+        allTenders={filterSourceTenders}
         search={search}
         onSearchChange={setSearch}
         stageFilter={stageFilter}
         onStageFilterChange={setStageFilter}
-        statusFilter={statusFilter}
-        onStatusFilterChange={setStatusFilter}
-        monthFilter={monthFilter}
-        onMonthFilterChange={setMonthFilter}
-        setSortKey={setSortKey}
-        setSortDirection={setSortDirection}
-        onExportMain={handleExportMain}
-        onExportAll={handleExportAll}
-      />
+      statusFilter={statusFilter}
+      onStatusFilterChange={setStatusFilter}
+      monthFilter={monthFilter}
+      onMonthFilterChange={setMonthFilter}
+      archivedFilter={archivedFilter}
+      onArchivedFilterChange={setArchivedFilter}
+      setSortKey={setSortKey}
+      setSortDirection={setSortDirection}
+      onExportMain={handleExportMain}
+      onExportAll={handleExportAll}
+    />
 
       <TendersTable
         tenders={tenders}
@@ -431,10 +464,12 @@ const AllTenders = () => {
         openStagePicker={openStagePicker}
         handleAddStage={handleAddStage}
         handleAddDetailRow={handleAddDetailRow}
+        onArchive={handleArchiveTender}
         onDeleteTender={handleDeleteTender}
         onDeleteDetailRow={handleDeleteDetailRow}
         onDeleteDetailStep={handleDeleteDetailStep}
         onDeleteStageRow={handleDeleteStageRow}
+        onRestore={handleRestoreTender}
         handleMainStageChange={handleMainStageChange}
         handleMainStatusChange={handleMainStatusChange}
         handleSubitemStatusChange={handleSubitemStatusChange}

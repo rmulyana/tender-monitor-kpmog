@@ -78,8 +78,12 @@ const TenderRow = ({
     overdueDays,
   });
   const isExpanded = expandedPin === tender.id;
+  const isArchived = Boolean(tender.archived);
 
-  const rowClassName = tenderRowClass({ isOverdue: timelineOverdueDays > 0 });
+  const rowClassName = tenderRowClass({
+    isOverdue: timelineOverdueDays > 0,
+    isArchived,
+  });
 
   return (
     <Fragment>

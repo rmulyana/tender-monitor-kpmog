@@ -1,7 +1,12 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { dashboardData } from "../data/dashboardData.js";
-import { tenders as seedTenders } from "../data/tenders";
+import {
+  createTender as createTenderApi,
+  deleteTender as deleteTenderApi,
+  fetchTenders,
+  updateTender as updateTenderApi,
+} from "../utils/tendersApi.js";
 
 const TenderContext = createContext(null);
 
@@ -11,21 +16,93 @@ export const TenderProvider = ({ children }) => {
   const yearOptions = Object.keys(dashboardData.years).sort();
   const defaultYear = yearOptions[yearOptions.length - 1];
 
-  const [tendersData, setTendersData] = useState(seedTenders);
+  const [tendersData, setTendersData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
   const [selectedYear, setSelectedYear] = useState(defaultYear);
   const [search, setSearch] = useState("");
   const [stageFilter, setStageFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
   const [monthFilter, setMonthFilter] = useState("All");
+  const [archivedFilter, setArchivedFilter] = useState("hide");
   const [sortKey, setSortKey] = useState("pin");
   const [sortDirection, setSortDirection] = useState("asc");
 
+  useEffect(() => {
+    let isMounted = true;
+    const load = async () => {
+      setIsLoading(true);
+      setLoadError(null);
+      try {
+        const data = await fetchTenders();
+        if (isMounted) {
+          setTendersData(Array.isArray(data) ? data : []);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setLoadError(error);
+          setTendersData([]);
+        }
+        console.error("Failed to load tenders", error);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const upsertTender = (items, tender) => {
+    const index = items.findIndex((item) => item.id === tender.id);
+    if (index === -1) {
+      return [...items, tender];
+    }
+    const next = [...items];
+    next[index] = { ...next[index], ...tender };
+    return next;
+  };
+
   const addTender = (tender) => {
-    setTendersData((prev) => [...prev, tender]);
+    setTendersData((prev) => upsertTender(prev, tender));
+    createTenderApi(tender)
+      .then((created) => {
+        if (created) {
+          setTendersData((prev) => upsertTender(prev, created));
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to create tender", error);
+      });
+  };
+
+  const updateTender = (id, updates) => {
+    if (!id) return;
+    setTendersData((prev) =>
+      prev.map((tender) =>
+        tender.id === id ? { ...tender, ...updates } : tender
+      )
+    );
+    updateTenderApi(id, updates)
+      .then((updated) => {
+        if (updated) {
+          setTendersData((prev) => upsertTender(prev, updated));
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to update tender", error);
+      });
   };
 
   const removeTender = (id) => {
     setTendersData((prev) => prev.filter((tender) => tender.id !== id));
+    deleteTenderApi(id).catch((error) => {
+      console.error("Failed to delete tender", error);
+    });
   };
 
   const filteredTenders = useMemo(() => {
@@ -46,6 +123,10 @@ export const TenderProvider = ({ children }) => {
 
     return tendersData
       .filter((tender) => {
+        if (archivedFilter !== "show" && tender.archived) {
+          return false;
+        }
+
         if (stageFilter !== "All" && tender.stage !== stageFilter) {
           return false;
         }
@@ -137,6 +218,7 @@ export const TenderProvider = ({ children }) => {
     stageFilter,
     statusFilter,
     monthFilter,
+    archivedFilter,
     sortKey,
     sortDirection,
   ]);
@@ -155,11 +237,16 @@ export const TenderProvider = ({ children }) => {
       setStatusFilter,
       monthFilter,
       setMonthFilter,
+      archivedFilter,
+      setArchivedFilter,
       sortKey,
       setSortKey,
       sortDirection,
       setSortDirection,
+      isLoading,
+      loadError,
       addTender,
+      updateTender,
       removeTender,
     }),
     [
@@ -170,9 +257,13 @@ export const TenderProvider = ({ children }) => {
       stageFilter,
       statusFilter,
       monthFilter,
+      archivedFilter,
       sortKey,
       sortDirection,
+      isLoading,
+      loadError,
       addTender,
+      updateTender,
       removeTender,
     ]
   );

@@ -14,18 +14,21 @@ const useAllTendersState = () => {
     setStatusFilter,
     monthFilter,
     setMonthFilter,
+    archivedFilter,
+    setArchivedFilter,
     sortKey,
     setSortKey,
     sortDirection,
     setSortDirection,
+    isLoading,
     addTender,
+    updateTender,
     removeTender,
   } = useTenders();
 
   const [editingPicKey, setEditingPicKey] = useState(null);
   const [picDraft, setPicDraft] = useState("");
   const [editedRows, setEditedRows] = useState({});
-  const [removedDetailStepsByStage, setRemovedDetailStepsByStage] = useState({});
   const detailIdRef = useRef(0);
 
   return {
@@ -39,11 +42,15 @@ const useAllTendersState = () => {
     setStatusFilter,
     monthFilter,
     setMonthFilter,
+    archivedFilter,
+    setArchivedFilter,
     sortKey,
     setSortKey,
     sortDirection,
     setSortDirection,
+    isLoading,
     addTender,
+    updateTender,
     removeTender,
     editingPicKey,
     setEditingPicKey,
@@ -51,8 +58,6 @@ const useAllTendersState = () => {
     setPicDraft,
     editedRows,
     setEditedRows,
-    removedDetailStepsByStage,
-    setRemovedDetailStepsByStage,
     detailIdRef,
   };
 };

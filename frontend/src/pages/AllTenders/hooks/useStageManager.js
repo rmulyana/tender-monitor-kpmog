@@ -14,9 +14,10 @@ const useStageManager = ({
   setSubitemTimelineByKey,
   setSubitemNotesByKey,
   setRemovedDetailStepsByStage,
+  customStagesByTender,
+  setCustomStagesByTender,
 }) => {
   const [expandedStages, setExpandedStages] = useState(() => new Set());
-  const [customStagesByTender, setCustomStagesByTender] = useState({});
   const [stagePickerForTender, setStagePickerForTender] = useState(null);
   const [stagePickerValue, setStagePickerValue] = useState("");
   const [customStageValue, setCustomStageValue] = useState("");

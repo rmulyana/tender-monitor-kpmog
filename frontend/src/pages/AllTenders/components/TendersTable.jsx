@@ -43,6 +43,8 @@ const TendersTable = ({
   setStagePickerValue,
   setCustomStageValue,
   onDuplicate,
+  onArchive,
+  onRestore,
   onDeleteTender,
   onDeleteDetailRow,
   onDeleteDetailStep,
@@ -145,6 +147,8 @@ const TendersTable = ({
           tenders={tenders}
           allTenders={allTenders}
           onDuplicate={onDuplicate}
+          onArchive={onArchive}
+          onRestore={onRestore}
           onRequestDelete={(id) => setConfirmDeleteId(id)}
           onClose={closeMenu}
         />

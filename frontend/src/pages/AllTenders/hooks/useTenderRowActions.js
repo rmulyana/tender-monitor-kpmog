@@ -58,6 +58,7 @@ const useTenderRowActions = ({
   customStagesByTender,
   addTender,
   removeTender,
+  updateTender,
   setEditedRows,
   setMainStageById,
   setMainStatusById,
@@ -133,6 +134,18 @@ const useTenderRowActions = ({
     cleanupDraftTender(id);
   };
 
+  const handleArchiveTender = (id) => {
+    if (updateTender) {
+      updateTender(id, { archived: true, isDraft: false });
+    }
+  };
+
+  const handleRestoreTender = (id) => {
+    if (updateTender) {
+      updateTender(id, { archived: false });
+    }
+  };
+
   const handleDuplicateTender = (tender) => {
     const overrides = editedRows[tender.id] ?? {};
     const merged = { ...tender, ...overrides };
@@ -155,6 +168,7 @@ const useTenderRowActions = ({
       stage: stageValue,
       status: statusValue,
       overdueDays: overdueDays(merged.dueDate),
+      archived: false,
       isDraft: false,
     };
 
@@ -184,6 +198,8 @@ const useTenderRowActions = ({
   return {
     cleanupDraftTender,
     handleDeleteTender,
+    handleArchiveTender,
+    handleRestoreTender,
     handleDuplicateTender,
   };
 };

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { getMainStatusOptions } from "../../../utils/tenderUtils.js";
 
-const useMainStageStatus = () => {
+const useMainStageStatus = ({ updateTender } = {}) => {
   const [mainStageById, setMainStageById] = useState({});
   const [mainStatusById, setMainStatusById] = useState({});
 
@@ -15,6 +15,9 @@ const useMainStageStatus = () => {
       ...prev,
       [id]: nextStatus,
     }));
+    if (updateTender) {
+      updateTender(id, { stage: value, status: nextStatus, isDraft: false });
+    }
   };
 
   const handleMainStatusChange = (id, value) => {
@@ -22,6 +25,9 @@ const useMainStageStatus = () => {
       ...prev,
       [id]: value,
     }));
+    if (updateTender) {
+      updateTender(id, { status: value, isDraft: false });
+    }
   };
 
   const api = useMemo(
@@ -34,7 +40,7 @@ const useMainStageStatus = () => {
       handleMainStatusChange,
       getMainStatusOptions,
     }),
-    [mainStageById, mainStatusById],
+    [mainStageById, mainStatusById, updateTender],
   );
 
   return api;

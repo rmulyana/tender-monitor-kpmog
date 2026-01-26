@@ -167,10 +167,57 @@ export const submissionClassName = (value) => {
   return "submission-none";
 };
 
+export const normalizeAttachment = (value) => {
+  if (!value) return null;
+  if (typeof value === "object") {
+    const label = String(value.label || value.name || "").trim();
+    const url = String(value.url || "").trim();
+    const kind = value.kind || (url ? "link" : "file");
+    if (!label && !url) return null;
+    return {
+      label: label || url,
+      url,
+      kind,
+    };
+  }
+  const trimmed = String(value).trim();
+  if (!trimmed) return null;
+  const isLink = /^https?:\/\//i.test(trimmed) || /^www\./i.test(trimmed);
+  const url = isLink
+    ? /^https?:\/\//i.test(trimmed)
+      ? trimmed
+      : `https://${trimmed}`
+    : "";
+  return {
+    label: trimmed,
+    url,
+    kind: isLink ? "link" : "file",
+  };
+};
+
 export const normalizeAttachmentList = (value) => {
   if (!value) return [];
-  if (Array.isArray(value)) return value.filter(Boolean);
-  return [value];
+  const list = Array.isArray(value) ? value : [value];
+  return list.map(normalizeAttachment).filter(Boolean);
+};
+
+export const getAttachmentLabel = (value) => {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  const label = String(value.label || "").trim();
+  if (label) return label;
+  return String(value.url || "").trim();
+};
+
+export const getAttachmentUrl = (value) => {
+  if (!value) return "";
+  if (typeof value === "object") {
+    return String(value.url || "").trim();
+  }
+  const trimmed = String(value).trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return "";
 };
 
 export const formatAttachmentLabel = (attachments) => {
@@ -179,7 +226,13 @@ export const formatAttachmentLabel = (attachments) => {
   return `${attachments.length} attachments`;
 };
 
-export const isAttachmentLink = (value) => /^https?:\/\//i.test(value);
+export const isAttachmentLink = (value) => {
+  if (!value) return false;
+  if (typeof value === "object") {
+    return Boolean(getAttachmentUrl(value));
+  }
+  return /^https?:\/\//i.test(value) || /^www\./i.test(value);
+};
 
 export const MONTH_LABELS = [
   "January",

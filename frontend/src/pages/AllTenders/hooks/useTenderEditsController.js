@@ -1,8 +1,11 @@
+import { overdueDays as computeOverdueDays } from "../../../utils/timeline.js";
+
 const useTenderEditsController = ({
   allTenders,
   editedRows,
   mainStageById,
   mainStatusById,
+  updateTender,
   cleanupDraftTender,
   editDraft,
   editDraftCurrency,
@@ -70,25 +73,32 @@ const useTenderEditsController = ({
 
   const commitEditCell = (id, field, fallback) => {
     const trimmed = String(editDraft ?? "").trim();
+    let nextValue = trimmed || fallback;
     setEditedRows((prev) => {
       const existing = prev[id] ?? {};
       const next = { ...prev };
 
       if (field === "estValue") {
         const numeric = parseEstValue(trimmed);
+        nextValue = Number.isFinite(numeric) ? numeric : fallback;
         next[id] = {
           ...existing,
-          estValue: Number.isFinite(numeric) ? numeric : fallback,
+          estValue: nextValue,
         };
       } else {
         next[id] = {
           ...existing,
-          [field]: trimmed || fallback,
+          [field]: nextValue,
         };
       }
 
       return next;
     });
+    if (updateTender) {
+      const payload =
+        field === "estValue" ? { estValue: nextValue } : { [field]: nextValue };
+      updateTender(id, { ...payload, isDraft: false });
+    }
     cancelEditCell();
   };
 
@@ -96,15 +106,23 @@ const useTenderEditsController = ({
     const trimmed = String(editDraft ?? "").trim();
     const numeric = parseEstValue(trimmed);
     const nextCurrency = editDraftCurrency || fallbackCurrency;
+    const nextValue = Number.isFinite(numeric) ? numeric : fallbackValue;
 
     setEditedRows((prev) => ({
       ...prev,
       [id]: {
         ...(prev[id] ?? {}),
-        estValue: Number.isFinite(numeric) ? numeric : fallbackValue,
+        estValue: nextValue,
         currency: nextCurrency,
       },
     }));
+    if (updateTender) {
+      updateTender(id, {
+        estValue: nextValue,
+        currency: nextCurrency,
+        isDraft: false,
+      });
+    }
     cancelEditCell();
   };
 
@@ -120,6 +138,15 @@ const useTenderEditsController = ({
         dueDate: dueValue,
       },
     }));
+    if (updateTender) {
+      const nextOverdueDays = computeOverdueDays(dueValue);
+      updateTender(id, {
+        startDate: startValue,
+        dueDate: dueValue,
+        overdueDays: nextOverdueDays,
+        isDraft: false,
+      });
+    }
     cancelEditCell();
   };
 

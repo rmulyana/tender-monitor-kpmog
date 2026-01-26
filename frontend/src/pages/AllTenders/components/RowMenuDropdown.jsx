@@ -5,15 +5,19 @@ const RowMenuDropdown = ({
   tenders,
   allTenders,
   onDuplicate,
+  onArchive,
+  onRestore,
   onRequestDelete,
   onClose,
 }) => {
   if (!openMenuId || !menuPosition) return null;
 
+  const menuTender =
+    tenders.find((item) => item.id === openMenuId) ||
+    allTenders.find((item) => item.id === openMenuId);
+  const isArchived = Boolean(menuTender?.archived);
+
   const handleDuplicate = () => {
-    const menuTender =
-      tenders.find((item) => item.id === openMenuId) ||
-      allTenders.find((item) => item.id === openMenuId);
     if (menuTender) {
       onDuplicate(menuTender);
       onClose();
@@ -32,36 +36,110 @@ const RowMenuDropdown = ({
         left: `${menuPosition.left}px`,
       }}
     >
-      <button
-        type="button"
-        className="menu-item menu-item-with-icon"
-        role="menuitem"
-        onClick={handleDuplicate}
-      >
-        <span className="menu-icon" aria-hidden="true">
-          <svg viewBox="0 0 20 20" fill="none">
-            <rect
-              x="6"
-              y="6"
-              width="10"
-              height="10"
-              rx="2"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <rect
-              x="3"
-              y="3"
-              width="10"
-              height="10"
-              rx="2"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </span>
-        <span>Duplicate</span>
-      </button>
+      {!isArchived ? (
+        <button
+          type="button"
+          className="menu-item menu-item-with-icon"
+          role="menuitem"
+          onClick={handleDuplicate}
+        >
+          <span className="menu-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none">
+              <rect
+                x="6"
+                y="6"
+                width="10"
+                height="10"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <rect
+                x="3"
+                y="3"
+                width="10"
+                height="10"
+                rx="2"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
+          </span>
+          <span>Duplicate</span>
+        </button>
+      ) : null}
+      {!isArchived ? (
+        <button
+          type="button"
+          className="menu-item menu-item-with-icon"
+          role="menuitem"
+          onClick={() => {
+            if (onArchive) onArchive(openMenuId);
+            onClose();
+          }}
+        >
+          <span className="menu-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 7h16"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+              <path
+                d="M7 7v10a2 2 0 002 2h6a2 2 0 002-2V7"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+              <path
+                d="M9 11h6"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
+          <span>Archive</span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="menu-item menu-item-with-icon"
+          role="menuitem"
+          onClick={() => {
+            if (onRestore) onRestore(openMenuId);
+            onClose();
+          }}
+        >
+          <span className="menu-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M7 8H4V5"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M4 8a8 8 0 111.6 4.7"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M12 7v5l3 2"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+          <span>Restore</span>
+        </button>
+      )}
       <button
         type="button"
         className="menu-item is-danger menu-item-with-icon"

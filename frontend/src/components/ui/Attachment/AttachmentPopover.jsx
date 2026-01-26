@@ -1,3 +1,5 @@
+import { getAttachmentLabel } from "../../../utils/tenderUtils.js";
+
 const AttachmentPopover = ({
   menu,
   attachments,
@@ -44,15 +46,17 @@ const AttachmentPopover = ({
       </div>
       {attachments.length > 0 && (
         <div className="attachment-list">
-          {attachments.map((attachment, index) => (
-            <div key={`${attachment}-${index}`} className="attachment-item">
+          {attachments.map((attachment, index) => {
+            const label = getAttachmentLabel(attachment) || "Attachment";
+            return (
+            <div key={`${label}-${index}`} className="attachment-item">
               <button
                 type="button"
                 className="attachment-item-name"
-                title={attachment}
+                title={label}
                 onClick={() => onOpenAttachment(attachment)}
               >
-                {attachment}
+                {label}
               </button>
               <button
                 type="button"
@@ -90,7 +94,8 @@ const AttachmentPopover = ({
                 </svg>
               </button>
             </div>
-          ))}
+          );
+          })}
         </div>
       )}
       {tab === "upload" ? (

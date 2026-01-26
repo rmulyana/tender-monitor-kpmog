@@ -194,6 +194,10 @@ const formatCurrencyCode = (value, currency) => {
 
 const Dashboard = () => {
   const { allTenders, selectedYear } = useTenders();
+  const activeTenders = useMemo(
+    () => allTenders.filter((tender) => !tender.archived),
+    [allTenders],
+  );
   const yearOptions = useMemo(() => Object.keys(dashboardData.years), []);
   const yearData =
     dashboardData.years[selectedYear] ||
@@ -358,7 +362,7 @@ const Dashboard = () => {
     const today = new Date();
     const dayMs = 24 * 60 * 60 * 1000;
 
-    return [...allTenders]
+    return [...activeTenders]
       .filter((tender) =>
         ["On Progress", "Done"].includes(tender.status)
       )
@@ -380,7 +384,7 @@ const Dashboard = () => {
           dueStatus,
         };
       });
-  }, [allTenders]);
+  }, [activeTenders]);
 
   return (
     <div className="dashboard-layout">

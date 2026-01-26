@@ -24,6 +24,7 @@ const useTenderFilters = ({
   setStageFilter,
   setStatusFilter,
   setMonthFilter,
+  setArchivedFilter,
   setSortKey,
   setSortDirection,
 }) => {
@@ -52,6 +53,9 @@ const useTenderFilters = ({
     setStageFilter("All");
     setStatusFilter("All");
     setMonthFilter("All");
+    if (setArchivedFilter) {
+      setArchivedFilter("hide");
+    }
     setSortKey("pin");
     setSortDirection("asc");
   };

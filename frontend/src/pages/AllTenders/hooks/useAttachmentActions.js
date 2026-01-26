@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import {
+  getAttachmentLabel,
+  getAttachmentUrl,
   isAttachmentLink,
   normalizeAttachmentList,
 } from "../../../utils/tenderUtils.js";
@@ -13,20 +15,29 @@ const useAttachmentActions = ({
 
   const openAttachmentInNewTab = (value) => {
     if (!value) return;
-    if (isAttachmentLink(value)) {
-      window.open(value, "_blank", "noopener");
+    const url = getAttachmentUrl(value);
+    if (url) {
+      window.open(url, "_blank", "noopener");
       return;
     }
-    if (String(value).toLowerCase().startsWith("www.")) {
-      window.open(`https://${value}`, "_blank", "noopener");
+    if (isAttachmentLink(value)) {
+      const normalized = getAttachmentUrl(value);
+      if (normalized) {
+        window.open(normalized, "_blank", "noopener");
+        return;
+      }
+    }
+    const label = getAttachmentLabel(value) || "Attachment";
+    if (String(label).toLowerCase().startsWith("www.")) {
+      window.open(`https://${label}`, "_blank", "noopener");
       return;
     }
     const popup = window.open("", "_blank", "noopener");
     if (!popup) return;
-    popup.document.title = value;
+    popup.document.title = label;
     popup.document.body.innerHTML = `
       <div style="font-family: Inter, sans-serif; padding: 24px;">
-        <h2 style="margin: 0 0 12px;">${value}</h2>
+        <h2 style="margin: 0 0 12px;">${label}</h2>
         <p style="color: #6b7280; margin: 0;">
           Preview will be available once the backend is connected.
         </p>

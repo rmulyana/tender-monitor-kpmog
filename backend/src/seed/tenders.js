@@ -1,6 +1,6 @@
-export const tenders = [
+module.exports = [
   {
-    id: "TND-001",
+    tenderId: "TND-001",
     pin: "K001",
     projectTitle: "EPCI FOR GEP AND CCS PIPELINE",
     client: "INPEX Masela, LTD.",
@@ -16,7 +16,7 @@ export const tenders = [
     remarks: "Awaiting clarifications",
   },
   {
-    id: "TND-002",
+    tenderId: "TND-002",
     pin: "K002",
     projectTitle: "Coastal Road Rehabilitation",
     client: "Ministry of Public Works",
@@ -32,7 +32,7 @@ export const tenders = [
     remarks: "Need updated BOQ",
   },
   {
-    id: "TND-003",
+    tenderId: "TND-003",
     pin: "K003",
     projectTitle: "Data Center Fit-Out Phase 2",
     client: "Telecom Indonesia",
@@ -48,7 +48,7 @@ export const tenders = [
     remarks: "Clarification meeting scheduled",
   },
   {
-    id: "TND-004",
+    tenderId: "TND-004",
     pin: "K004",
     projectTitle: "Smart City CCTV Expansion",
     client: "City Government",
@@ -64,7 +64,7 @@ export const tenders = [
     remarks: "Submitted on time",
   },
   {
-    id: "TND-005",
+    tenderId: "TND-005",
     pin: "K005",
     projectTitle: "Airport Baggage Handling Upgrade",
     client: "Angkasa Pura",
@@ -80,7 +80,7 @@ export const tenders = [
     remarks: "Commercial terms under review",
   },
   {
-    id: "TND-006",
+    tenderId: "TND-006",
     pin: "K006",
     projectTitle: "University Lab Equipment Supply",
     client: "State University",
@@ -96,7 +96,7 @@ export const tenders = [
     remarks: "LOA received",
   },
   {
-    id: "TND-007",
+    tenderId: "TND-007",
     pin: "K007",
     projectTitle: "Water Treatment Plant EPC",
     client: "Regional Water Utility",
@@ -112,7 +112,7 @@ export const tenders = [
     remarks: "Waiting for internal approvals",
   },
   {
-    id: "TND-008",
+    tenderId: "TND-008",
     pin: "K008",
     projectTitle: "Rail Signaling Modernization",
     client: "Railway Authority",
@@ -128,7 +128,7 @@ export const tenders = [
     remarks: "Technical Q and A open",
   },
   {
-    id: "TND-009",
+    tenderId: "TND-009",
     pin: "K009",
     projectTitle: "Solar Farm Balance of Plant",
     client: "Renewable Energy Corp",
@@ -144,7 +144,7 @@ export const tenders = [
     remarks: "Awaiting bid opening",
   },
   {
-    id: "TND-010",
+    tenderId: "TND-010",
     pin: "K010",
     projectTitle: "Hospital Information System",
     client: "Private Hospital Group",
@@ -160,7 +160,7 @@ export const tenders = [
     remarks: "Lost on price",
   },
   {
-    id: "TND-011",
+    tenderId: "TND-011",
     pin: "K011",
     projectTitle: "Fiber Backbone Expansion",
     client: "National Telco",
@@ -176,7 +176,7 @@ export const tenders = [
     remarks: "Document collection in progress",
   },
   {
-    id: "TND-012",
+    tenderId: "TND-012",
     pin: "K012",
     projectTitle: "Port Crane Maintenance",
     client: "Port Authority",

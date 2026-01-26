@@ -12,6 +12,8 @@ const TenderFilters = ({
   onStatusFilterChange,
   monthFilter,
   onMonthFilterChange,
+  archivedFilter,
+  onArchivedFilterChange,
   setSortKey,
   setSortDirection,
   onExportMain,
@@ -26,6 +28,7 @@ const TenderFilters = ({
       setStageFilter: onStageFilterChange,
       setStatusFilter: onStatusFilterChange,
       setMonthFilter: onMonthFilterChange,
+      setArchivedFilter: onArchivedFilterChange,
       setSortKey,
       setSortDirection,
     });
@@ -104,6 +107,17 @@ const TenderFilters = ({
                 {month.label}
               </option>
             ))}
+          </select>
+        </div>
+        <div className="filter-group">
+          <label htmlFor="archivedFilter">Archived</label>
+          <select
+            id="archivedFilter"
+            value={archivedFilter}
+            onChange={(event) => onArchivedFilterChange(event.target.value)}
+          >
+            <option value="hide">Hide</option>
+            <option value="show">Show</option>
           </select>
         </div>
       </div>
