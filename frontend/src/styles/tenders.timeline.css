@@ -1,7 +1,7 @@
 /* Timeline popover */
 .timeline-popover {
   position: fixed;
-  z-index: 95;
+  z-index: 260;
   width: 320px;
   background: var(--tenders-white);
   border: 1px solid var(--tenders-border);
