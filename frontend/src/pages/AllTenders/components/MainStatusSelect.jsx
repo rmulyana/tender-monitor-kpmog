@@ -1,4 +1,10 @@
-const MainStatusSelect = ({ value, statusOptions, onChange, onBlur }) => {
+const MainStatusSelect = ({
+  value,
+  statusOptions,
+  onChange,
+  onBlur,
+  isLocked = false,
+}) => {
   const toneIndex = Math.max(0, statusOptions.indexOf(value));
   const isFailed = value === "Failed";
   const statusClass = isFailed
@@ -7,10 +13,13 @@ const MainStatusSelect = ({ value, statusOptions, onChange, onBlur }) => {
 
   return (
     <select
-      className={`main-status-select ${statusClass}`}
+      className={`main-status-select ${statusClass}${
+        isLocked ? " is-locked" : ""
+      }`}
       value={value}
       onChange={onChange}
       onBlur={onBlur}
+      disabled={isLocked}
     >
       {isFailed && !statusOptions.includes("Failed") ? (
         <option value="Failed" hidden>

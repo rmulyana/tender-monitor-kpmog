@@ -5,7 +5,6 @@ const useTenderListActions = ({
   addTender,
   beginEditCell,
   getMainStatusOptions,
-  nextIdForTenders,
   nextPinForTenders,
   sortKey,
   setSortKey,
@@ -15,8 +14,8 @@ const useTenderListActions = ({
   const handleAddTender = () => {
     const stage = "Registration";
     const status = getMainStatusOptions(stage)[0] || "Initiation";
-    const nextId = nextIdForTenders(allTenders);
     const nextPin = nextPinForTenders(allTenders);
+    const nextId = nextPin;
 
     addTender({
       id: nextId,

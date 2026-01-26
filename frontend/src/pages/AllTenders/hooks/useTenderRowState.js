@@ -4,6 +4,8 @@ import { formatNumber } from "../../../utils/formatters.js";
 import {
   getMainStatusOptions,
   getPriorityStatus,
+  normalizeStages,
+  STAGES,
 } from "../../../utils/tenderUtils.js";
 
 const useTenderRowState = ({
@@ -22,7 +24,18 @@ const useTenderRowState = ({
       displayTender.currency,
     )}`;
     const editEstValue = String(displayTender.estValue ?? "");
-    const mainStage = mainStageById[tender.id] ?? tender.stage;
+    const stageList =
+      Array.isArray(tender.stages) && tender.stages.length
+        ? normalizeStages(tender.stages)
+        : STAGES;
+    let stageFromSubitems = "";
+    stageList.forEach((stage) => {
+      const status = subitemStatusByKey?.[`${tender.id}::${stage.name}`];
+      if (!status || status === "Not Started") return;
+      stageFromSubitems = stage.name;
+    });
+    const mainStage =
+      stageFromSubitems || (mainStageById[tender.id] ?? tender.stage);
     const statusOptions = getMainStatusOptions(mainStage);
     const fallbackMainStatus = statusOptions.includes(tender.status)
       ? tender.status
@@ -36,8 +49,8 @@ const useTenderRowState = ({
       .map((key) => subitemStatusByKey[key])
       .filter(Boolean);
     const childPriorityStatus = getPriorityStatus(childStatuses);
-    const derivedMainStatus =
-      childPriorityStatus === "Failed" ? "Failed" : mainStatus;
+    const isFailedOverride = childPriorityStatus === "Failed";
+    const derivedMainStatus = isFailedOverride ? "Failed" : mainStatus;
     const timelineOverdueDays = overdueDays(displayTender.dueDate);
 
     return {
@@ -47,6 +60,7 @@ const useTenderRowState = ({
       mainStage,
       statusOptions,
       mainStatus: derivedMainStatus,
+      isFailedOverride,
       timelineOverdueDays,
     };
   }, [

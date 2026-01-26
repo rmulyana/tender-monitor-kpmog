@@ -107,7 +107,7 @@
 }
 
 .tender-row.is-archived td {
-  opacity: 0.65;
+  opacity: 1;
 }
 
 .tender-row.overdue td {
@@ -1136,6 +1136,12 @@ td.sticky2.tree-empty {
   background-image: none;
 }
 
+.main-stage-select.is-locked,
+.main-stage-select:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 .main-stage-select option {
   color: var(--tenders-text);
   background: var(--tenders-white);
@@ -1209,6 +1215,19 @@ td.sticky2.tree-empty {
   background: var(--tenders-red);
   color: var(--tenders-white);
   border-color: transparent;
+  border-radius: var(--radius-lg);
+  padding: 0 var(--space-4);
+}
+
+.main-status-select.is-locked,
+.main-status-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.main-status-select.is-locked.status-failed,
+.main-status-select:disabled.status-failed {
+  opacity: 1;
 }
 
 .subitem-pic-input {

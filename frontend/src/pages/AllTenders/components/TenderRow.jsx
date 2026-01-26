@@ -15,7 +15,6 @@ const TenderRow = ({
   customStagesByTender,
   stagePickerForTender,
   stagePickerValue,
-  customStageValue,
   openMenuId,
   mainStageById,
   mainStatusById,
@@ -44,7 +43,6 @@ const TenderRow = ({
   overdueDays,
   setStagePickerForTender,
   setStagePickerValue,
-  setCustomStageValue,
   onToggleMenu,
 }) => {
   const {
@@ -68,6 +66,7 @@ const TenderRow = ({
     mainStage,
     statusOptions,
     mainStatus,
+    isFailedOverride,
     timelineOverdueDays,
   } = useTenderRowState({
     tender,
@@ -188,6 +187,7 @@ const TenderRow = ({
               handleMainStageChange(tender.id, event.target.value)
             }
             onBlur={(event) => maybeRemoveDraft(tender.id, {}, event)}
+            isLocked={isFailedOverride}
           />
         </td>
         <td className="w-status">
@@ -198,6 +198,7 @@ const TenderRow = ({
               handleMainStatusChange(tender.id, event.target.value)
             }
             onBlur={(event) => maybeRemoveDraft(tender.id, {}, event)}
+            isLocked={isFailedOverride}
           />
         </td>
         <td className="w-timeline">
@@ -226,9 +227,7 @@ const TenderRow = ({
         toggleStage={toggleStage}
         stagePickerForTender={stagePickerForTender}
         stagePickerValue={stagePickerValue}
-        customStageValue={customStageValue}
         setStagePickerValue={setStagePickerValue}
-        setCustomStageValue={setCustomStageValue}
         setStagePickerForTender={setStagePickerForTender}
         customStagesByTender={customStagesByTender}
         openStagePicker={openStagePicker}

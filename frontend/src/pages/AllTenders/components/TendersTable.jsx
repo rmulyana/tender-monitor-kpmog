@@ -15,7 +15,6 @@ const TendersTable = ({
   customStagesByTender,
   stagePickerForTender,
   stagePickerValue,
-  customStageValue,
   mainStageById,
   mainStatusById,
   subitemStatusByKey,
@@ -41,7 +40,6 @@ const TendersTable = ({
   overdueDays,
   setStagePickerForTender,
   setStagePickerValue,
-  setCustomStageValue,
   onDuplicate,
   onArchive,
   onRestore,
@@ -85,7 +83,6 @@ const TendersTable = ({
                 customStagesByTender={customStagesByTender}
                 stagePickerForTender={stagePickerForTender}
                 stagePickerValue={stagePickerValue}
-                customStageValue={customStageValue}
                 openMenuId={openMenuId}
                 mainStageById={mainStageById}
                 mainStatusById={mainStatusById}
@@ -133,7 +130,6 @@ const TendersTable = ({
                 overdueDays={overdueDays}
                 setStagePickerForTender={setStagePickerForTender}
                 setStagePickerValue={setStagePickerValue}
-                setCustomStageValue={setCustomStageValue}
                 onToggleMenu={toggleMenu}
               />
             ))}

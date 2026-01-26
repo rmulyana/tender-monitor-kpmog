@@ -12,14 +12,6 @@ const nextPinForTenders = (tenders) => {
   return `K${String(max + 1).padStart(width, "0")}`;
 };
 
-const nextIdForTenders = (tenders) => {
-  const max = tenders.reduce((current, tender) => {
-    const numeric = parseNumericSuffix(tender.id);
-    return Number.isFinite(numeric) ? Math.max(current, numeric) : current;
-  }, 0);
-  return `TND-${String(max + 1).padStart(3, "0")}`;
-};
-
 const picCell = (name) => {
   const trimmed = String(name || "").trim();
   if (!trimmed) return null;
@@ -37,4 +29,4 @@ const progressColor = (percent) => {
   return "#f59e0b";
 };
 
-export { nextIdForTenders, nextPinForTenders, picCell, progressColor };
+export { nextPinForTenders, picCell, progressColor };

@@ -72,8 +72,13 @@ const SubitemsSchema = new mongoose.Schema(
 
 const TenderSchema = new mongoose.Schema(
   {
-    tenderId: { type: String, trim: true, index: true },
-    pin: { type: String, trim: true, default: "" },
+    pin: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+      index: true,
+    },
     projectTitle: { type: String, trim: true, default: "" },
     client: { type: String, trim: true, default: "" },
     consortium: { type: String, trim: true, default: "" },
@@ -82,6 +87,12 @@ const TenderSchema = new mongoose.Schema(
     estValue: { type: Number, default: 0, min: 0 },
     stage: { type: String, trim: true, default: "Registration" },
     status: { type: String, trim: true, default: "Initiation" },
+    statusBeforeFailure: { type: String, trim: true, default: "" },
+    outcomeStatus: { type: String, trim: true, default: "" },
+    isFailed: { type: Boolean, default: false },
+    statusChangedAt: { type: Date, default: null },
+    failedAt: { type: Date, default: null },
+    contractAt: { type: Date, default: null },
     startDate: { type: Date, default: null },
     dueDate: { type: Date, default: null },
     overdueDays: { type: Number, default: 0 },
@@ -99,7 +110,7 @@ TenderSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
-    ret.id = ret.tenderId || ret._id.toString();
+    ret.id = ret.pin || ret._id.toString();
     delete ret._id;
     return ret;
   },
@@ -109,7 +120,7 @@ TenderSchema.set("toObject", {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
-    ret.id = ret.tenderId || ret._id.toString();
+    ret.id = ret.pin || ret._id.toString();
     delete ret._id;
     return ret;
   },

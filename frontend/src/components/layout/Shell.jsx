@@ -1,22 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import icon from "../../assets/icon.png";
 import logo from "../../assets/logo.png";
-import { dashboardData } from "../../data/dashboardData.js";
 import { useTenders } from "../../context/TenderContext.jsx";
 import "../../styles/shell.css";
 
 const Shell = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const { selectedYear, setSelectedYear } = useTenders();
-  const yearOptions = useMemo(
-    () => Object.keys(dashboardData.years).sort(),
-    []
-  );
+  const { selectedYear, setSelectedYear, yearOptions } = useTenders();
   const safeYear = yearOptions.includes(selectedYear)
     ? selectedYear
-    : yearOptions[yearOptions.length - 1];
+    : yearOptions[yearOptions.length - 1] || selectedYear;
 
   useEffect(() => {
     if (safeYear !== selectedYear) {

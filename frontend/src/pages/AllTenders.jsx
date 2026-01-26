@@ -20,7 +20,6 @@ import useDetailRowActions from "./AllTenders/hooks/useDetailRowActions.jsx";
 import useMainStageStatus from "./AllTenders/hooks/useMainStageStatus.jsx";
 import useTenderExpansionState from "./AllTenders/hooks/useTenderExpansionState.jsx";
 import {
-  nextIdForTenders,
   nextPinForTenders,
   picCell,
   progressColor,
@@ -31,6 +30,7 @@ import {
   normalizeDateTimeInput,
   overdueDays,
 } from "../utils/timeline.js";
+import { matchesYearFilter } from "../utils/tenderUtils.js";
 import { getMaxDetailIndexFromRows } from "../utils/subitemsMapper.js";
 import exportTendersCsv from "../utils/exportTendersCsv.js";
 import "../styles/tenders.css";
@@ -39,6 +39,7 @@ const AllTenders = () => {
   const {
     tenders,
     allTenders,
+    selectedYear,
     search,
     setSearch,
     stageFilter,
@@ -67,16 +68,6 @@ const AllTenders = () => {
   } = useAllTendersState();
 
   const [customStagesByTender, setCustomStagesByTender] = useState({});
-
-  const {
-    mainStageById,
-    setMainStageById,
-    mainStatusById,
-    setMainStatusById,
-    handleMainStageChange,
-    handleMainStatusChange,
-    getMainStatusOptions,
-  } = useMainStageStatus({ updateTender });
 
   const {
     subitemStatusByKey,
@@ -115,6 +106,16 @@ const AllTenders = () => {
   });
 
   const {
+    mainStageById,
+    setMainStageById,
+    mainStatusById,
+    setMainStatusById,
+    handleMainStageChange,
+    handleMainStatusChange,
+    getMainStatusOptions,
+  } = useMainStageStatus({ updateTender, subitemStatusByKey });
+
+  const {
     confirmAttachment,
     setConfirmAttachment,
     openAttachmentInNewTab,
@@ -151,8 +152,6 @@ const AllTenders = () => {
     stagePickerForTender,
     stagePickerValue,
     setStagePickerValue,
-    customStageValue,
-    setCustomStageValue,
     setStagePickerForTender,
     toggleStage,
     handleAddStage,
@@ -194,7 +193,6 @@ const AllTenders = () => {
     setExpandedStages,
     setStagePickerForTender,
     setStagePickerValue,
-    setCustomStageValue,
     closeAttachmentMenu,
   });
 
@@ -203,7 +201,6 @@ const AllTenders = () => {
     addTender,
     beginEditCell,
     getMainStatusOptions,
-    nextIdForTenders,
     nextPinForTenders,
     sortKey,
     setSortKey,
@@ -264,7 +261,6 @@ const AllTenders = () => {
       setSubitemTimelineByKey,
       setSubitemNotesByKey,
       setRemovedDetailStepsByStage,
-      nextIdForTenders,
       nextPinForTenders,
       overdueDays,
     });
@@ -413,9 +409,13 @@ const AllTenders = () => {
 
   const popoverAttachments = getPopoverAttachments(attachmentMenu);
   const filterSourceTenders = useMemo(() => {
-    if (archivedFilter === "show") return allTenders;
-    return allTenders.filter((tender) => !tender.archived);
-  }, [allTenders, archivedFilter]);
+    return allTenders.filter((tender) => {
+      if (archivedFilter !== "show" && tender.archived) {
+        return false;
+      }
+      return matchesYearFilter(tender, selectedYear);
+    });
+  }, [allTenders, archivedFilter, selectedYear]);
 
   return (
     <div className="tenders-page">
@@ -446,7 +446,6 @@ const AllTenders = () => {
         customStagesByTender={customStagesByTender}
         stagePickerForTender={stagePickerForTender}
         stagePickerValue={stagePickerValue}
-        customStageValue={customStageValue}
         mainStageById={mainStageById}
         mainStatusById={mainStatusById}
         subitemStatusByKey={subitemStatusByKey}
@@ -478,7 +477,6 @@ const AllTenders = () => {
         overdueDays={overdueDays}
         setStagePickerForTender={setStagePickerForTender}
         setStagePickerValue={setStagePickerValue}
-        setCustomStageValue={setCustomStageValue}
         onDuplicate={handleDuplicateTender}
         handleAddTender={handleAddTender}
       />

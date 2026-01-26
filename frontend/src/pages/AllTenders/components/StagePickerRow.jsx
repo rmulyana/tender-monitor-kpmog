@@ -1,16 +1,11 @@
-import { CUSTOM_STAGE_VALUE } from "../../../utils/tenderUtils.js";
 import DetailRow from "./DetailRow.jsx";
 
 const StagePickerRow = ({
   tenderId,
   isStagePickerOpen,
   stagePickerValue,
-  customStageValue,
   availableStages,
   onStagePickerChange,
-  onCustomStageChange,
-  onCustomStageKeyDown,
-  onAddCustomStage,
   onCancelStagePicker,
   onOpenStagePicker,
 }) => {
@@ -38,34 +33,16 @@ const StagePickerRow = ({
                     {stageName}
                   </option>
                 ))}
-                <option value={CUSTOM_STAGE_VALUE}>Custom Stage</option>
               </select>
-              {stagePickerValue === CUSTOM_STAGE_VALUE && (
-                <div className="add-stage-actions">
-                  <input
-                    className="add-stage-input"
-                    type="text"
-                    value={customStageValue}
-                    onChange={onCustomStageChange}
-                    onKeyDown={onCustomStageKeyDown}
-                    placeholder="Choose Stage"
-                  />
-                  <button
-                    type="button"
-                    className="add-stage-confirm"
-                    onClick={onAddCustomStage}
-                  >
-                    Add
-                  </button>
-                  <button
-                    type="button"
-                    className="add-stage-cancel"
-                    onClick={onCancelStagePicker}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              )}
+              <div className="add-stage-actions">
+                <button
+                  type="button"
+                  className="add-stage-cancel"
+                  onClick={onCancelStagePicker}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           ) : (
             <button

@@ -24,6 +24,8 @@ const TenderFilters = ({
   const { stageOptions, statusOptions, monthOptions, resetFilters } =
     useTenderFilters({
       allTenders,
+      stageFilter,
+      statusFilter,
       setSearch: onSearchChange,
       setStageFilter: onStageFilterChange,
       setStatusFilter: onStatusFilterChange,

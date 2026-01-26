@@ -77,7 +77,6 @@ const useTenderRowActions = ({
   setSubitemTimelineByKey,
   setSubitemNotesByKey,
   setRemovedDetailStepsByStage,
-  nextIdForTenders,
   nextPinForTenders,
   overdueDays,
 }) => {
@@ -158,8 +157,8 @@ const useTenderRowActions = ({
         : null;
     const sourceStages = customStages ?? providedStages;
     const stagesClone = sourceStages ? cloneStages(sourceStages) : null;
-    const nextId = nextIdForTenders(allTenders);
     const nextPin = nextPinForTenders(allTenders);
+    const nextId = nextPin;
 
     const nextTender = {
       ...merged,

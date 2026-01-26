@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
-import { stageOrder, statusOrder } from "../../../utils/tenderUtils.js";
+import { getMainStatusOptions, stageOrder } from "../../../utils/tenderUtils.js";
 
 const MONTH_OPTIONS = [
   { label: "All", value: "All" },
@@ -20,6 +20,8 @@ const MONTH_OPTIONS = [
 
 const useTenderFilters = ({
   allTenders,
+  stageFilter,
+  statusFilter,
   setSearch,
   setStageFilter,
   setStatusFilter,
@@ -39,14 +41,53 @@ const useTenderFilters = ({
   }, [allTenders]);
 
   const statusOptions = useMemo(() => {
-    const statuses = new Set(allTenders.map((tender) => tender.status));
-    const ordered = statusOrder.filter((status) => statuses.has(status));
-    const extras = [...statuses]
-      .filter((status) => !statusOrder.includes(status))
-      .sort();
+    const normalizedStage = stageFilter || "All";
+    let baseOptions = [];
+    if (normalizedStage === "All") {
+      baseOptions = [
+        "Initiation",
+        "Planning",
+        "On Progress",
+        "Clarification",
+        "Evaluation",
+        "Award",
+        "Standstill",
+        "Letter of Award",
+        "Signed",
+      ];
+    } else {
+      baseOptions = getMainStatusOptions(normalizedStage);
+    }
 
-    return ["All", ...ordered, ...extras];
-  }, [allTenders]);
+    const filteredTenders =
+      normalizedStage === "All"
+        ? allTenders
+        : allTenders.filter((tender) => tender.stage === normalizedStage);
+
+    const extras = new Set(
+      filteredTenders
+        .map((tender) => tender.status)
+        .filter(Boolean)
+        .filter((status) => !baseOptions.includes(status) && status !== "Failed"),
+    );
+
+    const orderedExtras = [...extras].sort((a, b) =>
+      String(a).localeCompare(String(b), undefined, { sensitivity: "base" }),
+    );
+
+    const ordered = ["All", ...baseOptions, ...orderedExtras].filter(
+      (status) => status !== "Failed",
+    );
+    ordered.push("Failed");
+
+    return ordered;
+  }, [allTenders, stageFilter]);
+
+  useEffect(() => {
+    if (statusFilter && !statusOptions.includes(statusFilter)) {
+      setStatusFilter("All");
+    }
+  }, [statusFilter, statusOptions, setStatusFilter]);
 
   const resetFilters = () => {
     setSearch("");

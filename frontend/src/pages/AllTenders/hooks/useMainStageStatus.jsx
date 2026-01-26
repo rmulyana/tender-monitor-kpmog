@@ -1,12 +1,21 @@
 import { useMemo, useState } from "react";
 import { getMainStatusOptions } from "../../../utils/tenderUtils.js";
 
-const useMainStageStatus = ({ updateTender } = {}) => {
+const hasFailedChildStatus = (id, subitemStatusByKey = {}) =>
+  Object.entries(subitemStatusByKey).some(
+    ([key, value]) => key.startsWith(`${id}::`) && value === "Failed",
+  );
+
+const useMainStageStatus = ({
+  updateTender,
+  subitemStatusByKey,
+} = {}) => {
   const [mainStageById, setMainStageById] = useState({});
   const [mainStatusById, setMainStatusById] = useState({});
 
   const handleMainStageChange = (id, value) => {
     const nextStatus = getMainStatusOptions(value)[0] || "";
+    const hasFailedChild = hasFailedChildStatus(id, subitemStatusByKey);
     setMainStageById((prev) => ({
       ...prev,
       [id]: value,
@@ -16,7 +25,21 @@ const useMainStageStatus = ({ updateTender } = {}) => {
       [id]: nextStatus,
     }));
     if (updateTender) {
-      updateTender(id, { stage: value, status: nextStatus, isDraft: false });
+      if (hasFailedChild) {
+        updateTender(id, {
+          stage: value,
+          status: "Failed",
+          statusBeforeFailure: nextStatus,
+          isDraft: false,
+        });
+      } else {
+        updateTender(id, {
+          stage: value,
+          status: nextStatus,
+          statusBeforeFailure: "",
+          isDraft: false,
+        });
+      }
     }
   };
 
@@ -26,7 +49,7 @@ const useMainStageStatus = ({ updateTender } = {}) => {
       [id]: value,
     }));
     if (updateTender) {
-      updateTender(id, { status: value, isDraft: false });
+      updateTender(id, { status: value, statusBeforeFailure: "", isDraft: false });
     }
   };
 
@@ -40,7 +63,7 @@ const useMainStageStatus = ({ updateTender } = {}) => {
       handleMainStatusChange,
       getMainStatusOptions,
     }),
-    [mainStageById, mainStatusById, updateTender],
+    [mainStageById, mainStatusById, updateTender, subitemStatusByKey],
   );
 
   return api;

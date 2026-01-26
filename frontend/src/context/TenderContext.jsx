@@ -1,25 +1,27 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { dashboardData } from "../data/dashboardData.js";
 import {
   createTender as createTenderApi,
   deleteTender as deleteTenderApi,
   fetchTenders,
   updateTender as updateTenderApi,
 } from "../utils/tendersApi.js";
+import {
+  getYearOptionsFromTenders,
+  matchesYearFilter,
+} from "../utils/tenderUtils.js";
 
 const TenderContext = createContext(null);
 
 const normalize = (value) => value.trim().toLowerCase();
 
 export const TenderProvider = ({ children }) => {
-  const yearOptions = Object.keys(dashboardData.years).sort();
-  const defaultYear = yearOptions[yearOptions.length - 1];
+  const currentYear = String(new Date().getFullYear());
 
   const [tendersData, setTendersData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(defaultYear);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [search, setSearch] = useState("");
   const [stageFilter, setStageFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -56,6 +58,21 @@ export const TenderProvider = ({ children }) => {
       isMounted = false;
     };
   }, []);
+
+  const yearOptions = useMemo(
+    () => getYearOptionsFromTenders(tendersData, true),
+    [tendersData],
+  );
+
+  useEffect(() => {
+    if (!yearOptions.length) return;
+    const safeYear = yearOptions.includes(selectedYear)
+      ? selectedYear
+      : yearOptions[yearOptions.length - 1];
+    if (safeYear !== selectedYear) {
+      setSelectedYear(safeYear);
+    }
+  }, [yearOptions, selectedYear]);
 
   const upsertTender = (items, tender) => {
     const index = items.findIndex((item) => item.id === tender.id);
@@ -124,6 +141,10 @@ export const TenderProvider = ({ children }) => {
     return tendersData
       .filter((tender) => {
         if (archivedFilter !== "show" && tender.archived) {
+          return false;
+        }
+
+        if (!matchesYearFilter(tender, selectedYear)) {
           return false;
         }
 
@@ -219,6 +240,7 @@ export const TenderProvider = ({ children }) => {
     statusFilter,
     monthFilter,
     archivedFilter,
+    selectedYear,
     sortKey,
     sortDirection,
   ]);
@@ -227,6 +249,7 @@ export const TenderProvider = ({ children }) => {
     () => ({
       allTenders: tendersData,
       tenders: filteredTenders,
+      yearOptions,
       selectedYear,
       setSelectedYear,
       search,
@@ -253,6 +276,7 @@ export const TenderProvider = ({ children }) => {
       tendersData,
       filteredTenders,
       selectedYear,
+      yearOptions,
       search,
       stageFilter,
       statusFilter,

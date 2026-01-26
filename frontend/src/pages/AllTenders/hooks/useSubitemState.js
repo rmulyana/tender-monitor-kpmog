@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-import { normalizeAttachmentList } from "../../../utils/tenderUtils.js";
+import {
+  getMainStatusOptions,
+  normalizeAttachmentList,
+} from "../../../utils/tenderUtils.js";
 import {
   buildSubitemStateFromTenders,
   buildSubitemsPayload,
@@ -8,6 +11,21 @@ import {
 } from "../../../utils/subitemsMapper.js";
 
 const getTenderIdFromKey = (key) => String(key || "").split("::")[0];
+
+const getStageDefaultStatus = (stage) => getMainStatusOptions(stage)[0] || "";
+
+const getStoredStatusBeforeFailure = (tender) =>
+  String(tender?.statusBeforeFailure || "").trim();
+
+const collectFailedTenderIds = (statusMap) => {
+  const failedIds = new Set();
+  Object.entries(statusMap || {}).forEach(([key, value]) => {
+    if (value !== "Failed") return;
+    const tenderId = getTenderIdFromKey(key);
+    if (tenderId) failedIds.add(tenderId);
+  });
+  return failedIds;
+};
 
 const collectChangedTenderIds = (prev, next, ids) => {
   const prevKeys = Object.keys(prev || {});
@@ -32,6 +50,17 @@ const collectStageChanges = (prev, next, ids) => {
       ids.add(key);
     }
   });
+};
+
+const getStageFromSubitemStatus = (tender, stages, statusMap) => {
+  let candidate = "";
+  stages.forEach((stage) => {
+    const key = `${tender.id}::${stage.name}`;
+    const status = statusMap[key];
+    if (!status || status === "Not Started") return;
+    candidate = stage.name;
+  });
+  return candidate;
 };
 
 const useSubitemState = ({
@@ -174,6 +203,7 @@ const useSubitemState = ({
       stageChangedIds,
     );
     stageChangedIds.forEach((id) => changedTenderIds.add(id));
+    const failedTenderIds = collectFailedTenderIds(subitemStatusByKey);
 
     const pendingToClear = [];
     pendingRef.current.forEach((tenderId) => {
@@ -208,8 +238,47 @@ const useSubitemState = ({
         const stages = resolveStagesForTender(tender, customStagesByTender);
         const subitems = buildSubitemsPayload({ tender, stages, maps });
         const payload = { subitems, isDraft: false };
+        const stageFromSubitems = getStageFromSubitemStatus(
+          tender,
+          stages,
+          subitemStatusByKey,
+        );
+        if (stageFromSubitems && stageFromSubitems !== tender.stage) {
+          payload.stage = stageFromSubitems;
+        }
         if (stageChangedIds.has(tenderId)) {
           payload.stages = stages;
+        }
+        const hasFailedChild = failedTenderIds.has(tenderId);
+        const statusBeforeFailure = getStoredStatusBeforeFailure(tender);
+        const resolvedStage = payload.stage || tender.stage;
+        const defaultStatus = getStageDefaultStatus(resolvedStage);
+        const statusOptions = getMainStatusOptions(resolvedStage);
+        const statusIsValid = statusOptions.includes(tender.status);
+        if (!hasFailedChild && tender.status !== "Failed" && !statusIsValid) {
+          if (defaultStatus && defaultStatus !== tender.status) {
+            payload.status = defaultStatus;
+            payload.statusBeforeFailure = "";
+          }
+        }
+        if (hasFailedChild) {
+          if (tender.status !== "Failed") {
+            const previousStatus =
+              tender.status && tender.status !== "Failed"
+                ? tender.status
+                : defaultStatus;
+            payload.status = "Failed";
+            payload.statusBeforeFailure = previousStatus;
+          } else if (!statusBeforeFailure) {
+            const fallbackStatus = defaultStatus;
+            if (fallbackStatus && fallbackStatus !== "Failed") {
+              payload.statusBeforeFailure = fallbackStatus;
+            }
+          }
+        } else if (tender.status === "Failed") {
+          const restoreStatus = statusBeforeFailure || defaultStatus;
+          payload.status = restoreStatus;
+          payload.statusBeforeFailure = "";
         }
         updateTender(tenderId, payload);
       });

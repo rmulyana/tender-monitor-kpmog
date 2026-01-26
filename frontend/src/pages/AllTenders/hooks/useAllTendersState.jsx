@@ -6,6 +6,7 @@ const useAllTendersState = () => {
   const {
     tenders,
     allTenders,
+    selectedYear,
     search,
     setSearch,
     stageFilter,
@@ -34,6 +35,7 @@ const useAllTendersState = () => {
   return {
     tenders,
     allTenders,
+    selectedYear,
     search,
     setSearch,
     stageFilter,

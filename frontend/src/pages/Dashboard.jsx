@@ -17,12 +17,15 @@ import {
 
 import StagePill from "../components/tenders/StagePill.jsx";
 import { useTenders } from "../context/TenderContext.jsx";
-import { dashboardData } from "../data/dashboardData.js";
+import { formatCurrencyCompact, formatDate } from "../utils/formatters.js";
 import {
-  formatCurrency,
-  formatCurrencyCompact,
-  formatDate,
-} from "../utils/formatters.js";
+  STAGES,
+  buildStageDates,
+  computeStageEndDate,
+  isTenderClosed,
+  matchesYearFilter,
+  normalizeDate,
+} from "../utils/tenderUtils.js";
 import "../styles/dashboard.css";
 
 const summaryConfig = [
@@ -57,7 +60,7 @@ const summaryConfig = [
       "Award Announcement",
       "Standstill Period",
       "Letter of Award (LoA)",
-      "Contract",
+      "Contract Signed",
     ],
     valueLabel: "Contract Value",
   },
@@ -68,6 +71,38 @@ const summaryConfig = [
     valueLabel: "Estimated Loss",
   },
 ];
+
+const MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const SUMMARY_STATUS_ALIASES = {
+  "Under Evaluation": ["Under Evaluation", "Evaluation"],
+  "Award Announcement": ["Award", "Award Announcement"],
+  "Standstill Period": ["Standstill", "Standstill Period"],
+  "Letter of Award (LoA)": ["Letter of Award", "Letter of Award (LoA)"],
+  "Contract Signed": ["Signed", "Contract"],
+};
+
+const STAGE_FLOW_KEY_MAP = {
+  Registration: "Registration",
+  "Pre-Qualification": "PQ",
+  Proposal: "Proposal",
+  Negotiation: "Negotiation",
+  Contract: "Contract",
+  Failed: "Failed",
+};
 
 const chartColors = {
   Registration: "#3b82f6",
@@ -192,17 +227,208 @@ const formatCurrencyCode = (value, currency) => {
     .trim();
 };
 
+const getStatusMatches = (label) => SUMMARY_STATUS_ALIASES[label] || [label];
+
+const getMonthIndex = (dateValue) => {
+  if (!dateValue) return null;
+  const date = normalizeDate(dateValue);
+  if (!date) return null;
+  return date.getMonth();
+};
+
+const resolveTimelineYear = (value) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : new Date().getFullYear();
+};
+
+const buildStageTimelineForTender = (tender) => {
+  const stageTimelineByName = {};
+  const stageData = Array.isArray(tender?.subitems?.stages)
+    ? tender.subitems.stages
+    : [];
+  const stageDataByName = new Map(
+    stageData
+      .filter((stage) => stage && stage.name)
+      .map((stage) => [stage.name, stage]),
+  );
+  const hasExplicitTimeline = stageData.some(
+    (stage) => stage?.timeline?.startDate || stage?.timeline?.dueDate,
+  );
+
+  const fallbackStage =
+    tender.stage && STAGES.some((stage) => stage.name === tender.stage)
+      ? tender.stage
+      : "Registration";
+
+  if (!hasExplicitTimeline) {
+    const baseStart =
+      normalizeDate(tender.startDate) || normalizeDate(tender.createdAt);
+    const baseEnd = normalizeDate(tender.dueDate);
+    const failedAt = normalizeDate(tender.failedAt);
+    const contractAt = normalizeDate(tender.contractAt);
+    let fallbackStart = baseStart;
+    if (fallbackStage === "Contract") {
+      fallbackStart = contractAt || baseEnd || baseStart;
+    } else if (fallbackStage === "Failed") {
+      fallbackStart = failedAt || baseEnd || baseStart;
+    }
+    stageTimelineByName[fallbackStage] = {
+      start: fallbackStart,
+      end: baseEnd,
+    };
+    return stageTimelineByName;
+  }
+
+  const stageDates = buildStageDates(tender, STAGES);
+
+  STAGES.forEach((stage, index) => {
+    const data = stageDataByName.get(stage.name);
+    const timeline = data?.timeline || {};
+    if (!timeline.startDate && !timeline.dueDate) return;
+    const start =
+      normalizeDate(timeline.startDate) ||
+      normalizeDate(timeline.dueDate) ||
+      normalizeDate(stageDates[stage.name]);
+    const end =
+      normalizeDate(timeline.dueDate) ||
+      normalizeDate(computeStageEndDate(stageDates, index, STAGES));
+    if (start || end) {
+      stageTimelineByName[stage.name] = { start, end };
+    }
+  });
+
+  return stageTimelineByName;
+};
+
+const resolveStageAtDate = (tender, stageTimeline, atDate) => {
+  const fallbackStatusDate =
+    normalizeDate(tender.statusChangedAt) ||
+    normalizeDate(tender.updatedAt) ||
+    normalizeDate(tender.createdAt);
+
+  const failedFlag = tender.isFailed || tender.status === "Failed";
+  const failedAt =
+    normalizeDate(tender.failedAt) || (failedFlag ? fallbackStatusDate : null);
+  if (failedAt && failedAt <= atDate) return "Failed";
+
+  const contractAt =
+    normalizeDate(tender.contractAt) ||
+    stageTimeline?.Contract?.start ||
+    ((tender.stage === "Contract" || tender.status === "Signed") &&
+    fallbackStatusDate
+      ? fallbackStatusDate
+      : null);
+  if (contractAt && contractAt <= atDate) return "Contract";
+
+  let lastStage = null;
+  STAGES.forEach((stage) => {
+    const start = stageTimeline?.[stage.name]?.start;
+    if (start && start <= atDate) {
+      lastStage = stage.name;
+    }
+  });
+
+  if (lastStage) return lastStage;
+
+  const fallbackStart =
+    normalizeDate(tender.startDate) || normalizeDate(tender.createdAt);
+  if (fallbackStart && fallbackStart <= atDate) {
+    return tender.stage || "Registration";
+  }
+
+  return null;
+};
+
+const sumEstValue = (items) =>
+  items.reduce((sum, tender) => {
+    const value = Number(tender.estValue);
+    return Number.isFinite(value) ? sum + value : sum;
+  }, 0);
+
+const buildMonthlySnapshot = (tenders, year) => {
+  const snapshot = {
+    Registration: Array(12).fill(0),
+    PQ: Array(12).fill(0),
+    Proposal: Array(12).fill(0),
+    Negotiation: Array(12).fill(0),
+    Contract: Array(12).fill(0),
+    Failed: Array(12).fill(0),
+  };
+  const timelineYear = resolveTimelineYear(year);
+  const monthEnds = Array.from({ length: 12 }, (_, index) => {
+    const date = new Date(timelineYear, index + 1, 0);
+    date.setHours(23, 59, 59, 999);
+    return date;
+  });
+
+  tenders.forEach((tender) => {
+    const stageTimeline = buildStageTimelineForTender(tender);
+    monthEnds.forEach((monthEnd, index) => {
+      const stage = resolveStageAtDate(tender, stageTimeline, monthEnd);
+      if (!stage) return;
+      const key = STAGE_FLOW_KEY_MAP[stage];
+      if (!key) return;
+      snapshot[key][index] += 1;
+    });
+  });
+
+  return snapshot;
+};
+
+const resolveContractDate = (tender) => {
+  const explicit = normalizeDate(tender.contractAt);
+  if (explicit) return explicit;
+  const statusDate = normalizeDate(tender.statusChangedAt);
+  if (statusDate) return statusDate;
+  const dueDate = normalizeDate(tender.dueDate);
+  if (dueDate) return dueDate;
+  const stages = Array.isArray(tender?.subitems?.stages)
+    ? tender.subitems.stages
+    : [];
+  const contractStage = stages.find((stage) => stage?.name === "Contract");
+  const contractDue = normalizeDate(contractStage?.timeline?.dueDate);
+  return contractDue || null;
+};
+
+const buildContractSeries = (tenders) => {
+  const monthly = Array(12).fill(0);
+  tenders.forEach((tender) => {
+    const outcome = String(tender.outcomeStatus || "").toLowerCase();
+    const isWon = outcome === "won" || tender.status === "Signed";
+    if (!isWon) return;
+    const contractDate = resolveContractDate(tender);
+    const monthIndex = getMonthIndex(contractDate);
+    if (monthIndex === null) return;
+    const value = Number(tender.estValue);
+    if (Number.isFinite(value)) {
+      monthly[monthIndex] += value / 1_000_000_000;
+    }
+  });
+
+  const accumulated = [];
+  let running = 0;
+  monthly.forEach((value, index) => {
+    running += value;
+    accumulated[index] = running;
+  });
+
+  return {
+    monthly,
+    accumulated,
+    target: Array(12).fill(0),
+  };
+};
+
 const Dashboard = () => {
   const { allTenders, selectedYear } = useTenders();
-  const activeTenders = useMemo(
-    () => allTenders.filter((tender) => !tender.archived),
-    [allTenders],
+  const yearTenders = useMemo(
+    () =>
+      allTenders.filter(
+        (tender) => !tender.archived && matchesYearFilter(tender, selectedYear),
+      ),
+    [allTenders, selectedYear],
   );
-  const yearOptions = useMemo(() => Object.keys(dashboardData.years), []);
-  const yearData =
-    dashboardData.years[selectedYear] ||
-    dashboardData.years[yearOptions[yearOptions.length - 1]];
-  const labels = yearData?.labels || [];
+  const labels = MONTH_LABELS;
   const currentMonthIndex = new Date().getMonth();
   const defaultMonth =
     labels[currentMonthIndex] || labels[labels.length - 1] || "Dec";
@@ -214,20 +440,54 @@ const Dashboard = () => {
   }, [defaultMonth, selectedYear]);
 
   const monthIndex = Math.max(labels.indexOf(selectedMonth), 0);
-  const snapshot = yearData?.monthlySnapshot || {};
-  const contractValue = yearData?.contractValue || {};
-  const unitLabel = contractValue.unitLabel || "B";
+  const timelineYear = useMemo(
+    () => resolveTimelineYear(selectedYear),
+    [selectedYear],
+  );
+  const snapshot = useMemo(
+    () => buildMonthlySnapshot(yearTenders, timelineYear),
+    [yearTenders, timelineYear],
+  );
+  const contractSeries = useMemo(
+    () => buildContractSeries(yearTenders),
+    [yearTenders],
+  );
+  const unitLabel = "B";
 
   const summaryColumns = useMemo(() => {
     return summaryConfig.map((config) => {
-      const summary = yearData?.summary?.[config.key] || {
-        rows: [0, 0, 0, 0],
-        value: 0,
-      };
-      const rows = config.rows.map((label, index) => ({
-        label,
-        value: summary.rows?.[index] ?? 0,
-      }));
+      let rows = [];
+      let totalValue = 0;
+
+      if (config.key === "Failed") {
+        const failedTenders = yearTenders.filter(
+          (tender) => tender.isFailed || tender.status === "Failed",
+        );
+        rows = config.rows.map((label) => ({
+          label,
+          value: failedTenders.filter((tender) => tender.stage === label)
+            .length,
+        }));
+        totalValue = sumEstValue(failedTenders);
+      } else {
+        const stageTenders = yearTenders.filter(
+          (tender) => tender.stage === config.key,
+        );
+        const activeStageTenders = stageTenders.filter(
+          (tender) => !(tender.isFailed || tender.status === "Failed"),
+        );
+        rows = config.rows.map((label) => {
+          const matches = getStatusMatches(label);
+          return {
+            label,
+            value: activeStageTenders.filter((tender) =>
+              matches.includes(tender.status),
+            ).length,
+          };
+        });
+        totalValue = sumEstValue(activeStageTenders);
+      }
+
       const maxValue = Math.max(...rows.map((row) => row.value), 1);
 
       return {
@@ -236,10 +496,10 @@ const Dashboard = () => {
           ...row,
           percent: (row.value / maxValue) * 100,
         })),
-        totalValue: summary.value ?? 0,
+        totalValue,
       };
     });
-  }, [yearData]);
+  }, [yearTenders]);
 
   const processData = useMemo(
     () => [
@@ -274,12 +534,12 @@ const Dashboard = () => {
         color: chartColors.Failed,
       },
     ],
-    [monthIndex, snapshot]
+    [monthIndex, snapshot],
   );
 
   const processTotal = useMemo(
     () => processData.reduce((sum, item) => sum + item.value, 0),
-    [processData]
+    [processData],
   );
 
   const monthlyStageFlow = useMemo(() => {
@@ -333,58 +593,48 @@ const Dashboard = () => {
         color: chartColors.Failed,
       },
     ],
-    []
+    [],
   );
 
   const contractValueData = useMemo(() => {
-    const accumulated = normalizeSeries(contractValue.accumulated);
-    const target = normalizeSeries(contractValue.target);
+    const monthly = normalizeSeries(contractSeries.monthly);
+    const accumulated = normalizeSeries(contractSeries.accumulated);
+    const target = normalizeSeries(contractSeries.target);
 
     return labels.map((label, index) => ({
       month: label,
-      monthly: accumulated[index],
+      monthly: monthly[index],
       accumulated: accumulated[index],
       target: target[index],
       unitLabel,
     }));
-  }, [contractValue.accumulated, contractValue.target, labels, unitLabel]);
+  }, [contractSeries, labels, unitLabel]);
 
   const recentTenders = useMemo(() => {
-    const stageList = [
-      "Registration",
-      "Pre-Qualification",
-      "Proposal",
-      "Negotiation",
-      "Contract",
-    ];
-    const pinList = ["K001", "K002", "K003"];
-    const dueOffsets = [3, 9, 18];
     const today = new Date();
     const dayMs = 24 * 60 * 60 * 1000;
 
-    return [...activeTenders]
-      .filter((tender) =>
-        ["On Progress", "Done"].includes(tender.status)
-      )
+    return [...yearTenders]
+      .filter((tender) => !isTenderClosed(tender))
+      .filter((tender) => !Number.isNaN(new Date(tender.dueDate).getTime()))
       .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
       .slice(0, 3)
-      .map((tender, index) => {
-        const dueDate = new Date(today);
-        dueDate.setDate(dueDate.getDate() + dueOffsets[index % dueOffsets.length]);
-        const dueInDays = Math.ceil((dueDate - today) / dayMs);
+      .map((tender) => {
+        const dueDate = new Date(tender.dueDate);
+        const diffMs = dueDate - today;
+        const dueInDays = Number.isFinite(diffMs)
+          ? Math.ceil(diffMs / dayMs)
+          : 0;
         const dueStatus =
           dueInDays < 7 ? "urgent" : dueInDays < 14 ? "warn" : "ok";
 
         return {
           ...tender,
-          pin: pinList[index] || tender.pin,
-          stage: stageList[index % stageList.length],
-          currency: index === 0 ? "USD" : "IDR",
           dueDate,
           dueStatus,
         };
       });
-  }, [activeTenders]);
+  }, [yearTenders]);
 
   return (
     <div className="dashboard-layout">
@@ -524,7 +774,7 @@ const Dashboard = () => {
                   labelFormatter={(label, payload) => {
                     const total = (payload || []).reduce(
                       (sum, entry) => sum + (Number(entry.value) || 0),
-                      0
+                      0,
                     );
                     return `${label} : ${total} Tenders`;
                   }}
@@ -605,7 +855,7 @@ const Dashboard = () => {
                 labelFormatter={(label) => `Month: ${label}`}
                 content={(props) => {
                   const filtered = (props.payload || []).filter(
-                    (entry) => entry.dataKey !== "monthly"
+                    (entry) => entry.dataKey !== "monthly",
                   );
                   return <CustomTooltip {...props} payload={filtered} />;
                 }}
@@ -693,7 +943,9 @@ const Dashboard = () => {
                     <span className="pin-cell">{tender.pin}</span>
                   </td>
                   <td>{tender.client}</td>
-                  <td>{formatCurrencyCode(tender.estValue, tender.currency)}</td>
+                  <td>
+                    {formatCurrencyCode(tender.estValue, tender.currency)}
+                  </td>
                   <td>{formatDate(tender.dueDate)}</td>
                   <td>
                     <StagePill stage={tender.stage} />

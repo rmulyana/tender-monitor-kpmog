@@ -153,6 +153,9 @@
   background: transparent;
   cursor: pointer;
   outline: none;
+  text-align: right;
+  text-align-last: right;
+  padding-right: 6px;
 }
 
 .avatar-circle {

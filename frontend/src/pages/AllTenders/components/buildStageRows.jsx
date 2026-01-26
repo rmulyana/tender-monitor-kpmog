@@ -1,6 +1,5 @@
 import {
   ADD_ITEM_STAGES,
-  CUSTOM_STAGE_VALUE,
   STAGE_NAMES,
   STANDARD_STAGE_SET,
   STAGE_STEPS,
@@ -22,9 +21,7 @@ const buildStageRows = ({
   toggleStage,
   stagePickerForTender,
   stagePickerValue,
-  customStageValue,
   setStagePickerValue,
-  setCustomStageValue,
   setStagePickerForTender,
   customStagesByTender,
   openStagePicker,
@@ -169,25 +166,14 @@ const buildStageRows = ({
       tenderId={tender.id}
       isStagePickerOpen={isStagePickerOpen}
       stagePickerValue={stagePickerValue}
-      customStageValue={customStageValue}
       availableStages={availableStages}
       onStagePickerChange={(event) => {
         const value = event.target.value;
         setStagePickerValue(value);
-        if (value && value !== CUSTOM_STAGE_VALUE) {
+        if (value) {
           handleAddStage(tender.id, value, stagesForTender);
         }
       }}
-      onCustomStageChange={(event) => setCustomStageValue(event.target.value)}
-      onCustomStageKeyDown={(event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          handleAddStage(tender.id, customStageValue, stagesForTender);
-        }
-      }}
-      onAddCustomStage={() =>
-        handleAddStage(tender.id, customStageValue, stagesForTender)
-      }
       onCancelStagePicker={() => setStagePickerForTender(null)}
       onOpenStagePicker={() => openStagePicker(tender.id)}
     />,

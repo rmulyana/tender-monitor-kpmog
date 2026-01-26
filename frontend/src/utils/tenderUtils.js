@@ -25,6 +25,17 @@ export const CHILD_STATUS_PRIORITY = [
   "Not Started",
 ];
 
+export const ALL_YEARS_OPTION = "All Years";
+export const CLOSED_MAIN_STATUSES = new Set(["Signed"]);
+
+export const isTenderClosed = (tender) => {
+  if (!tender) return false;
+  if (tender.isFailed) return true;
+  const outcome = String(tender.outcomeStatus || "").toLowerCase();
+  if (outcome === "won" || outcome === "lost") return true;
+  return tender.status === "Signed";
+};
+
 export const getPriorityStatus = (statuses = []) =>
   CHILD_STATUS_PRIORITY.find((status) => statuses.includes(status)) ?? null;
 
@@ -102,6 +113,40 @@ export const normalizeDate = (value) => {
   if (!value) return null;
   const date = value instanceof Date ? value : new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
+};
+
+export const getTenderDueYear = (tender, fallbackYear = null) => {
+  const date = normalizeDate(tender?.dueDate);
+  if (date) return date.getFullYear();
+  if (fallbackYear === null || fallbackYear === undefined) return null;
+  return fallbackYear;
+};
+
+export const getYearOptionsFromTenders = (tenders = [], includeAll = true) => {
+  const years = new Set();
+  tenders.forEach((tender) => {
+    const year = getTenderDueYear(tender, null);
+    if (year) years.add(year);
+  });
+  if (!years.size) {
+    years.add(new Date().getFullYear());
+  }
+  const sorted = [...years]
+    .filter((year) => Number.isFinite(year))
+    .sort((a, b) => a - b)
+    .map((year) => String(year));
+  return includeAll ? [ALL_YEARS_OPTION, ...sorted] : sorted;
+};
+
+export const matchesYearFilter = (tender, selectedYear) => {
+  if (!selectedYear || selectedYear === ALL_YEARS_OPTION) return true;
+  const selected = Number(selectedYear);
+  if (!Number.isFinite(selected)) return true;
+  const dueYear = getTenderDueYear(tender, new Date().getFullYear());
+  if (!Number.isFinite(dueYear)) return false;
+  const isClosed = isTenderClosed(tender);
+  if (isClosed) return dueYear === selected;
+  return dueYear <= selected;
 };
 
 export const buildStageDates = (tender, stages = STAGES) => {

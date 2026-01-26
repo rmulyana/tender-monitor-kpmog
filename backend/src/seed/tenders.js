@@ -1,6 +1,5 @@
 module.exports = [
   {
-    tenderId: "TND-001",
     pin: "K001",
     projectTitle: "EPCI FOR GEP AND CCS PIPELINE",
     client: "INPEX Masela, LTD.",
@@ -16,7 +15,6 @@ module.exports = [
     remarks: "Awaiting clarifications",
   },
   {
-    tenderId: "TND-002",
     pin: "K002",
     projectTitle: "Coastal Road Rehabilitation",
     client: "Ministry of Public Works",
@@ -32,7 +30,6 @@ module.exports = [
     remarks: "Need updated BOQ",
   },
   {
-    tenderId: "TND-003",
     pin: "K003",
     projectTitle: "Data Center Fit-Out Phase 2",
     client: "Telecom Indonesia",
@@ -48,7 +45,6 @@ module.exports = [
     remarks: "Clarification meeting scheduled",
   },
   {
-    tenderId: "TND-004",
     pin: "K004",
     projectTitle: "Smart City CCTV Expansion",
     client: "City Government",
@@ -64,7 +60,6 @@ module.exports = [
     remarks: "Submitted on time",
   },
   {
-    tenderId: "TND-005",
     pin: "K005",
     projectTitle: "Airport Baggage Handling Upgrade",
     client: "Angkasa Pura",
@@ -80,7 +75,6 @@ module.exports = [
     remarks: "Commercial terms under review",
   },
   {
-    tenderId: "TND-006",
     pin: "K006",
     projectTitle: "University Lab Equipment Supply",
     client: "State University",
@@ -96,7 +90,6 @@ module.exports = [
     remarks: "LOA received",
   },
   {
-    tenderId: "TND-007",
     pin: "K007",
     projectTitle: "Water Treatment Plant EPC",
     client: "Regional Water Utility",
@@ -112,7 +105,6 @@ module.exports = [
     remarks: "Waiting for internal approvals",
   },
   {
-    tenderId: "TND-008",
     pin: "K008",
     projectTitle: "Rail Signaling Modernization",
     client: "Railway Authority",
@@ -128,7 +120,6 @@ module.exports = [
     remarks: "Technical Q and A open",
   },
   {
-    tenderId: "TND-009",
     pin: "K009",
     projectTitle: "Solar Farm Balance of Plant",
     client: "Renewable Energy Corp",
@@ -144,7 +135,6 @@ module.exports = [
     remarks: "Awaiting bid opening",
   },
   {
-    tenderId: "TND-010",
     pin: "K010",
     projectTitle: "Hospital Information System",
     client: "Private Hospital Group",
@@ -160,7 +150,6 @@ module.exports = [
     remarks: "Lost on price",
   },
   {
-    tenderId: "TND-011",
     pin: "K011",
     projectTitle: "Fiber Backbone Expansion",
     client: "National Telco",
@@ -176,7 +165,6 @@ module.exports = [
     remarks: "Document collection in progress",
   },
   {
-    tenderId: "TND-012",
     pin: "K012",
     projectTitle: "Port Crane Maintenance",
     client: "Port Authority",

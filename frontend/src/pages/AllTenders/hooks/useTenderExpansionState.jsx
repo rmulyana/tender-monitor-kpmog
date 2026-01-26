@@ -4,7 +4,6 @@ const useTenderExpansionState = ({
   setExpandedStages,
   setStagePickerForTender,
   setStagePickerValue,
-  setCustomStageValue,
   closeAttachmentMenu,
 }) => {
   const [expandedPin, setExpandedPin] = useState(null);
@@ -14,7 +13,6 @@ const useTenderExpansionState = ({
     setExpandedStages(new Set());
     setStagePickerForTender(null);
     setStagePickerValue("");
-    setCustomStageValue("");
     closeAttachmentMenu();
   };
 
