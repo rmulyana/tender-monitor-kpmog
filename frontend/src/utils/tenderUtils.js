@@ -152,20 +152,30 @@ export const matchesYearFilter = (tender, selectedYear) => {
   const currentYear = new Date().getFullYear();
   const dueDate = normalizeDate(tender?.dueDate);
   const startDate = normalizeDate(tender?.startDate);
-  const dueYear = dueDate ? dueDate.getFullYear() : null;
-  const startYear = startDate ? startDate.getFullYear() : currentYear;
+  const sanitizeYear = (year) =>
+    Number.isFinite(year) && year >= 1900 ? year : null;
+  const dueYear = sanitizeYear(dueDate ? dueDate.getFullYear() : null);
+  const startYear = sanitizeYear(startDate ? startDate.getFullYear() : null);
   const isClosed = isTenderClosed(tender);
   if (isClosed) {
-    const closedYear = Number.isFinite(dueYear) ? dueYear : currentYear;
+    const closedYear =
+      (Number.isFinite(dueYear) && dueYear) ||
+      (Number.isFinite(startYear) && startYear) ||
+      currentYear;
     return closedYear === selected;
+  }
+  if (!Number.isFinite(dueYear) && !Number.isFinite(startYear)) {
+    return selected >= currentYear;
   }
   if (!Number.isFinite(dueYear)) {
     // Open tender without a due date carries forward from its start year.
     return selected >= startYear;
   }
-  const minYear = Math.min(startYear, dueYear);
-  const maxYear = Math.max(startYear, dueYear);
-  return selected >= minYear && selected <= maxYear;
+  if (!Number.isFinite(startYear)) {
+    return selected <= dueYear;
+  }
+  // When both dates exist, respect the start year as the lower bound.
+  return selected >= startYear && selected <= dueYear;
 };
 
 export const buildStageDates = (tender, stages = STAGES) => {
