@@ -17,9 +17,16 @@ const useRowMenuState = () => {
       return;
     }
     const rect = event.currentTarget.getBoundingClientRect();
+    const menuWidth = 200;
+    const left = Math.max(
+      12,
+      Math.min(rect.left, window.innerWidth - menuWidth - 12),
+    );
     setMenuPosition({
       top: rect.bottom + 8,
-      left: rect.right,
+      left,
+      anchorTop: rect.top,
+      anchorLeft: rect.left,
     });
     setOpenMenuId(tenderId);
   };
@@ -47,6 +54,33 @@ const useRowMenuState = () => {
       document.removeEventListener("keydown", handleKey);
     };
   }, [openMenuId]);
+
+  useEffect(() => {
+    if (!menuPosition) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      const popover = menuRef.current;
+      if (!popover) return;
+      const rect = popover.getBoundingClientRect();
+      let nextTop = menuPosition.top;
+      let nextLeft = menuPosition.left;
+      const bottom = rect.top + rect.height;
+      const right = rect.left + rect.width;
+
+      if (bottom > window.innerHeight - 12) {
+        nextTop = Math.max(12, menuPosition.anchorTop - rect.height - 8);
+      }
+      if (right > window.innerWidth - 12) {
+        nextLeft = Math.max(12, window.innerWidth - rect.width - 12);
+      }
+
+      if (nextTop !== menuPosition.top || nextLeft !== menuPosition.left) {
+        setMenuPosition((prev) =>
+          prev ? { ...prev, top: nextTop, left: nextLeft } : prev,
+        );
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [menuPosition]);
 
   return {
     openMenuId,

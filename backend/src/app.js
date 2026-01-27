@@ -4,6 +4,8 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const tenderRoutes = require("./routes/tenders");
+const configurationRoutes = require("./routes/configuration.routes");
+const ratesRoutes = require("./routes/rates.routes");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
@@ -22,6 +24,8 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/tenders", tenderRoutes);
+app.use("/api/configuration", configurationRoutes);
+app.use("/api/rates", ratesRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

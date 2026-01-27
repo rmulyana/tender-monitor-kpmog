@@ -14,10 +14,19 @@ import {
   Cell,
   LabelList,
 } from "recharts";
-
+import CurrencyControls from "./Dashboard/CurrencyControls.jsx";
 import StagePill from "../components/tenders/StagePill.jsx";
 import { useTenders } from "../context/TenderContext.jsx";
-import { formatCurrencyCompact, formatDate } from "../utils/formatters.js";
+import {
+  formatCurrencyCompact,
+  formatDate,
+  formatNumber,
+} from "../utils/formatters.js";
+import {
+  fetchTargetByYear,
+  fetchUsdToIdrRate,
+  setTargetByYear,
+} from "../utils/tendersApi.js";
 import {
   STAGES,
   buildStageDates,
@@ -86,6 +95,23 @@ const MONTH_LABELS = [
   "Nov",
   "Dec",
 ];
+
+const FULL_MONTH_LABELS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const USD_TO_IDR_RATE = 16000;
 
 const SUMMARY_STATUS_ALIASES = {
   "Under Evaluation": ["Under Evaluation", "Evaluation"],
@@ -189,6 +215,11 @@ const CustomTooltip = ({
 const normalizeSeries = (series) =>
   Array.from({ length: 12 }, (_, index) => Number(series?.[index] || 0));
 
+const normalizeTargetSeries = (series) => {
+  if (!Array.isArray(series) || series.length === 0) return [];
+  return Array.from({ length: 12 }, (_, index) => Number(series?.[index] || 0));
+};
+
 const donutConfig = {
   outerRadius: 135,
   innerRadius: 100,
@@ -196,7 +227,7 @@ const donutConfig = {
 };
 const contractLegendItems = [
   { id: "accumulated", label: "Accumulated Value", color: "#2563eb" },
-  { id: "target", label: "Target Value", color: "#f59e0b" },
+  { id: "target", label: "Target Value", color: "#cc0000" },
 ];
 const donutCenterStyle = {
   left: donutConfig.outerRadius + donutConfig.padding,
@@ -209,10 +240,50 @@ const formatChartValue = (value, unitLabel) => {
   const formatted = Number.isInteger(number)
     ? number.toFixed(0)
     : number.toFixed(1);
-  return unitLabel ? `${formatted} ${unitLabel}` : formatted;
+
+  if (!unitLabel) {
+    return formatted;
+  }
+  const parts = unitLabel.split(" ");
+  if (parts.length > 1) {
+    const [currency, unit] = parts;
+    return `${currency} ${formatted} ${unit}`;
+  }
+  return `${formatted} ${unitLabel}`;
 };
 
 const formatCurrencyCode = (value, currency) => {
+  if (!Number.isFinite(value)) {
+    return `${currency} 0`;
+  }
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+    currencyDisplay: "code",
+    maximumFractionDigits: 0,
+  })
+    .format(value)
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
+const convertValue = (value, fromCurrency, toCurrency, rate) => {
+  if (!Number.isFinite(value) || !fromCurrency || !toCurrency || !rate) {
+    return value;
+  }
+  if (fromCurrency === toCurrency) {
+    return value;
+  }
+  if (fromCurrency === "USD" && toCurrency === "IDR") {
+    return value * rate;
+  }
+  if (fromCurrency === "IDR" && toCurrency === "USD") {
+    return value / rate;
+  }
+  return value; // Should not happen with current currencies
+};
+
+const formatFullCurrency = (value, currency) => {
   if (!Number.isFinite(value)) {
     return `${currency} 0`;
   }
@@ -339,10 +410,11 @@ const resolveStageAtDate = (tender, stageTimeline, atDate) => {
   return null;
 };
 
-const sumEstValue = (items) =>
+const sumEstValue = (items, toCurrency, rate) =>
   items.reduce((sum, tender) => {
     const value = Number(tender.estValue);
-    return Number.isFinite(value) ? sum + value : sum;
+    if (!Number.isFinite(value)) return sum;
+    return sum + convertValue(value, tender.currency, toCurrency, rate);
   }, 0);
 
 const buildMonthlySnapshot = (tenders, year) => {
@@ -390,7 +462,21 @@ const resolveContractDate = (tender) => {
   return contractDue || null;
 };
 
-const buildContractSeries = (tenders) => {
+const convertTargetSeriesToDisplay = (series, displayCurrency, rate) => {
+  const divisor = displayCurrency === "IDR" ? 1_000_000_000 : 1_000_000;
+  const normalized = normalizeTargetSeries(series);
+  return normalized.map((value) => {
+    const converted = convertValue(value, "IDR", displayCurrency, rate);
+    return converted / divisor;
+  });
+};
+
+const buildContractSeries = (
+  tenders,
+  displayCurrency,
+  rate,
+  targetMonthlySeries,
+) => {
   const monthly = Array(12).fill(0);
   tenders.forEach((tender) => {
     const outcome = String(tender.outcomeStatus || "").toLowerCase();
@@ -401,7 +487,14 @@ const buildContractSeries = (tenders) => {
     if (monthIndex === null) return;
     const value = Number(tender.estValue);
     if (Number.isFinite(value)) {
-      monthly[monthIndex] += value / 1_000_000_000;
+      const convertedValue = convertValue(
+        value,
+        tender.currency,
+        displayCurrency,
+        rate,
+      );
+      const divisor = displayCurrency === "IDR" ? 1_000_000_000 : 1_000_000;
+      monthly[monthIndex] += convertedValue / divisor;
     }
   });
 
@@ -412,15 +505,37 @@ const buildContractSeries = (tenders) => {
     accumulated[index] = running;
   });
 
+  const fallbackTargetIDR = [
+    0, 0, 0, 50, 50, 50, 100, 100, 100, 150, 150, 200,
+  ].map((value) => value * 1_000_000_000);
+  const baseTargetSeries = targetMonthlySeries?.length
+    ? targetMonthlySeries
+    : fallbackTargetIDR;
+  const target = convertTargetSeriesToDisplay(
+    baseTargetSeries,
+    displayCurrency,
+    rate,
+  );
+
   return {
     monthly,
     accumulated,
-    target: Array(12).fill(0),
+    target,
   };
 };
 
 const Dashboard = () => {
   const { allTenders, selectedYear } = useTenders();
+  const [displayCurrency, setDisplayCurrency] = useState("IDR");
+  const [usdToIdrRate, setUsdToIdrRate] = useState(USD_TO_IDR_RATE);
+  const [isRateLoading, setIsRateLoading] = useState(false);
+  const [rateToast, setRateToast] = useState("");
+  const [targetConfig, setTargetConfig] = useState(null);
+  const [isTargetLoading, setIsTargetLoading] = useState(false);
+  const [isTargetSaving, setIsTargetSaving] = useState(false);
+  const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
+  const [targetInputRaw, setTargetInputRaw] = useState("");
+
   const yearTenders = useMemo(
     () =>
       allTenders.filter(
@@ -444,15 +559,74 @@ const Dashboard = () => {
     () => resolveTimelineYear(selectedYear),
     [selectedYear],
   );
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadTarget = async () => {
+      setIsTargetLoading(true);
+      try {
+        const data = await fetchTargetByYear(timelineYear);
+        if (!cancelled) {
+          setTargetConfig(data);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setTargetConfig(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsTargetLoading(false);
+        }
+      }
+    };
+    loadTarget();
+    return () => {
+      cancelled = true;
+    };
+  }, [timelineYear]);
+
+  const targetMonthlySeries = useMemo(
+    () => normalizeTargetSeries(targetConfig?.monthlyTargets),
+    [targetConfig],
+  );
+
   const snapshot = useMemo(
     () => buildMonthlySnapshot(yearTenders, timelineYear),
     [yearTenders, timelineYear],
   );
   const contractSeries = useMemo(
-    () => buildContractSeries(yearTenders),
-    [yearTenders],
+    () =>
+      buildContractSeries(
+        yearTenders,
+        displayCurrency,
+        usdToIdrRate,
+        targetMonthlySeries,
+      ),
+    [yearTenders, displayCurrency, usdToIdrRate, targetMonthlySeries],
   );
-  const unitLabel = "B";
+
+  const handleTargetEdit = async () => {
+    const currentValue = Number(targetConfig?.contractTarget) || 0;
+    setTargetInputRaw(currentValue ? String(Math.trunc(currentValue)) : "");
+    setIsTargetModalOpen(true);
+  };
+
+  const handleTargetSave = async (event) => {
+    event.preventDefault();
+    const numeric = Number(String(targetInputRaw).replace(/[^0-9]/g, ""));
+    if (!Number.isFinite(numeric) || numeric < 0) return;
+
+    setIsTargetSaving(true);
+    try {
+      const saved = await setTargetByYear(timelineYear, numeric);
+      setTargetConfig(saved);
+      setIsTargetModalOpen(false);
+    } catch (error) {
+      // Intentionally ignore UI noise; user can retry.
+    } finally {
+      setIsTargetSaving(false);
+    }
+  };
 
   const summaryColumns = useMemo(() => {
     return summaryConfig.map((config) => {
@@ -464,11 +638,11 @@ const Dashboard = () => {
           (tender) => tender.isFailed || tender.status === "Failed",
         );
         rows = config.rows.map((label) => ({
-          label,
+          label: `Lost at ${label}`,
           value: failedTenders.filter((tender) => tender.stage === label)
             .length,
         }));
-        totalValue = sumEstValue(failedTenders);
+        totalValue = sumEstValue(failedTenders, displayCurrency, usdToIdrRate);
       } else {
         const stageTenders = yearTenders.filter(
           (tender) => tender.stage === config.key,
@@ -485,7 +659,11 @@ const Dashboard = () => {
             ).length,
           };
         });
-        totalValue = sumEstValue(activeStageTenders);
+        totalValue = sumEstValue(
+          activeStageTenders,
+          displayCurrency,
+          usdToIdrRate,
+        );
       }
 
       const maxValue = Math.max(...rows.map((row) => row.value), 1);
@@ -499,7 +677,34 @@ const Dashboard = () => {
         totalValue,
       };
     });
-  }, [yearTenders]);
+  }, [yearTenders, displayCurrency, usdToIdrRate]);
+
+  const handleCurrencyChange = (event) => {
+    setDisplayCurrency(event.target.value);
+  };
+
+  useEffect(() => {
+    if (!rateToast) return undefined;
+    const timeoutId = setTimeout(() => setRateToast(""), 2000);
+    return () => clearTimeout(timeoutId);
+  }, [rateToast]);
+
+  const handleUpdateRate = () => {
+    setIsRateLoading(true);
+    fetchUsdToIdrRate()
+      .then((data) => {
+        const nextRate = Number(data?.rate);
+        if (Number.isFinite(nextRate) && nextRate > 0) {
+          setUsdToIdrRate(nextRate);
+          setRateToast(
+            `Rate: ${formatNumber(Math.round(nextRate), "IDR")} (updated)`,
+          );
+        }
+      })
+      .finally(() => {
+        setIsRateLoading(false);
+      });
+  };
 
   const processData = useMemo(
     () => [
@@ -554,6 +759,11 @@ const Dashboard = () => {
     }));
   }, [labels, snapshot]);
 
+  const monthlyStageFlowVisible = useMemo(() => {
+    const endIndex = Math.max(labels.indexOf(selectedMonth), 0);
+    return monthlyStageFlow.slice(0, endIndex + 1);
+  }, [labels, monthlyStageFlow, selectedMonth]);
+
   const stageLegend = useMemo(
     () => [
       {
@@ -597,49 +807,90 @@ const Dashboard = () => {
   );
 
   const contractValueData = useMemo(() => {
-    const monthly = normalizeSeries(contractSeries.monthly);
-    const accumulated = normalizeSeries(contractSeries.accumulated);
-    const target = normalizeSeries(contractSeries.target);
+    const { monthly, accumulated, target } = contractSeries;
+    const unitAbbreviation = displayCurrency === "IDR" ? "B" : "M";
+    const newUnitLabel = `${displayCurrency} ${unitAbbreviation}`;
 
     return labels.map((label, index) => ({
       month: label,
       monthly: monthly[index],
       accumulated: accumulated[index],
       target: target[index],
-      unitLabel,
+      unitLabel: newUnitLabel,
     }));
-  }, [contractSeries, labels, unitLabel]);
+  }, [contractSeries, labels, displayCurrency]);
+
+  const contractValueVisible = useMemo(() => {
+    const endIndex = Math.max(labels.indexOf(selectedMonth), 0);
+    return contractValueData.slice(0, endIndex + 1);
+  }, [contractValueData, labels, selectedMonth]);
+
+  const activeTargetLabel = useMemo(() => {
+    const value = Number(targetConfig?.contractTarget);
+    if (!Number.isFinite(value) || value <= 0) return "No target set";
+    return `Target: IDR ${formatNumber(value, "IDR")}`;
+  }, [targetConfig]);
 
   const recentTenders = useMemo(() => {
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const dayMs = 24 * 60 * 60 * 1000;
 
     return [...yearTenders]
       .filter((tender) => !isTenderClosed(tender))
       .filter((tender) => !Number.isNaN(new Date(tender.dueDate).getTime()))
-      .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-      .slice(0, 3)
       .map((tender) => {
         const dueDate = new Date(tender.dueDate);
-        const diffMs = dueDate - today;
+        dueDate.setHours(0, 0, 0, 0);
+        const diffMs = dueDate.getTime() - today.getTime();
         const dueInDays = Number.isFinite(diffMs)
           ? Math.ceil(diffMs / dayMs)
           : 0;
-        const dueStatus =
-          dueInDays < 7 ? "urgent" : dueInDays < 14 ? "warn" : "ok";
 
         return {
           ...tender,
           dueDate,
+          dueInDays,
+        };
+      })
+      .filter((tender) => tender.dueInDays >= 0)
+      .sort((a, b) => a.dueDate - b.dueDate)
+      .slice(0, 3)
+      .map((tender) => {
+        const dueStatus =
+          tender.dueInDays < 7
+            ? "urgent"
+            : tender.dueInDays <= 14
+              ? "warn"
+              : "ok";
+        const dueInLabel =
+          tender.dueInDays <= 0 ? "Due today" : `${tender.dueInDays}d left`;
+
+        return {
+          ...tender,
           dueStatus,
+          dueInLabel,
         };
       });
   }, [yearTenders]);
 
   return (
     <div className="dashboard-layout">
+      {rateToast ? (
+        <div className="rate-toast" role="status">
+          {rateToast}
+        </div>
+      ) : null}
       <section className="panel summary-panel">
-        <h2 className="panel-title">Tender Active Summary</h2>
+        <div className="panel-title-group">
+          <h2 className="panel-title">Tender Active Summary</h2>
+          <CurrencyControls
+            displayCurrency={displayCurrency}
+            onCurrencyChange={handleCurrencyChange}
+            onUpdateRate={handleUpdateRate}
+            isRateLoading={isRateLoading}
+          />
+        </div>
         <div className="summary-scroll">
           <div className="summary-grid">
             {summaryColumns.map((column) => (
@@ -672,6 +923,10 @@ const Dashboard = () => {
                 <div className="summary-footer">
                   <p>{column.valueLabel}</p>
                   <span
+                    title={formatFullCurrency(
+                      column.totalValue,
+                      displayCurrency,
+                    )}
                     className="summary-value"
                     style={{
                       color: summaryPillColors[column.key]?.text,
@@ -679,7 +934,7 @@ const Dashboard = () => {
                       borderColor: summaryPillColors[column.key]?.border,
                     }}
                   >
-                    {formatCurrencyCompact(column.totalValue, "IDR")}
+                    {formatCurrencyCompact(column.totalValue, displayCurrency)}
                   </span>
                 </div>
               </div>
@@ -730,7 +985,10 @@ const Dashboard = () => {
                       <Cell key={entry.name} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip content={(props) => <CustomTooltip {...props} />} />
+                  <Tooltip
+                    content={(props) => <CustomTooltip {...props} />}
+                    wrapperStyle={{ zIndex: 1000 }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
               <div
@@ -759,11 +1017,23 @@ const Dashboard = () => {
         <article className="panel chart-panel">
           <header className="panel-header">
             <h2 className="panel-title">Monthly Stage Flow</h2>
+            <select
+              className="panel-select"
+              aria-label="Select month for monthly stage flow"
+              value={selectedMonth}
+              onChange={(event) => setSelectedMonth(event.target.value)}
+            >
+              {labels.map((label) => (
+                <option key={label} value={label}>
+                  {label}
+                </option>
+              ))}
+            </select>
           </header>
           <div className="chart-body stacked-body">
             <ResponsiveContainer width="100%" height={240}>
               <BarChart
-                data={monthlyStageFlow}
+                data={monthlyStageFlowVisible}
                 margin={{ top: 4, right: 12, left: -10, bottom: 8 }}
               >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -834,35 +1104,85 @@ const Dashboard = () => {
 
       <section className="panel chart-panel">
         <header className="panel-header">
-          <h2 className="panel-title">
-            Contract Value {selectedYear} (Actual vs Target)
-          </h2>
+          <div className="panel-title-block">
+            <h2 className="panel-title">
+              Contract Value {selectedYear} (Actual vs Target)
+            </h2>
+            <div className="panel-meta">{activeTargetLabel}</div>
+          </div>
+          <div className="panel-header-actions">
+            <select
+              className="panel-select"
+              aria-label="Select month for contract value"
+              value={selectedMonth}
+              onChange={(event) => setSelectedMonth(event.target.value)}
+            >
+              {labels.map((label) => (
+                <option key={label} value={label}>
+                  {label}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className="panel-select target-button"
+              onClick={handleTargetEdit}
+              disabled={isTargetLoading || isTargetSaving}
+            >
+              {isTargetSaving ? "Saving..." : "Add / Edit Target"}
+            </button>
+          </div>
         </header>
         <div className="chart-body tall">
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart
-              data={contractValueData}
+              data={contractValueVisible}
               margin={{ top: 12, right: 16, left: 0, bottom: 12 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="month" />
               <YAxis
-                tickFormatter={(value) => formatChartValue(value, unitLabel)}
+                tickFormatter={(value) => formatChartValue(value)}
                 width={50}
               />
               <Tooltip
-                formatter={(value) => formatChartValue(value, unitLabel)}
-                labelFormatter={(label) => `Month: ${label}`}
-                content={(props) => {
-                  const filtered = (props.payload || []).filter(
-                    (entry) => entry.dataKey !== "monthly",
+                content={({ active, payload, label }) => {
+                  if (!active || !payload || payload.length === 0) return null;
+
+                  const monthIndex = MONTH_LABELS.indexOf(label);
+                  const fullMonthName = FULL_MONTH_LABELS[monthIndex] || label;
+                  const divisor =
+                    displayCurrency === "IDR" ? 1_000_000_000 : 1_000_000;
+
+                  const filteredPayload = payload.filter(
+                    (entry) => entry.name !== "Contract Value",
                   );
-                  return <CustomTooltip {...props} payload={filtered} />;
+
+                  if (filteredPayload.length === 0) return null;
+
+                  return (
+                    <div style={tooltipSurfaceStyle}>
+                      <div style={tooltipLabelStyle}>{fullMonthName}</div>
+                      <div style={tooltipListStyle}>
+                        {filteredPayload.map((entry, index) => {
+                          const fullValue = entry.value * divisor;
+                          return (
+                            <div
+                              key={`${entry.dataKey || entry.name}-${index}`}
+                              style={{ color: entry.color, fontWeight: 600 }}
+                            >
+                              {formatFullCurrency(fullValue, displayCurrency)}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
                 }}
               />
               <Bar
-                dataKey="monthly"
-                name="Monthly Contract"
+                dataKey="accumulated"
+                name="Contract Value"
                 fill="#10b981"
                 radius={[6, 6, 0, 0]}
               />
@@ -879,15 +1199,18 @@ const Dashboard = () => {
                   dataKey="accumulated"
                   position="top"
                   offset={4}
-                  formatter={(value) => formatChartValue(value, unitLabel)}
+                  formatter={(value) =>
+                    formatChartValue(value, contractValueData[0]?.unitLabel)
+                  }
                   fill="#2563eb"
+                  style={{ fontSize: "12px", fontWeight: 600 }}
                 />
               </Line>
               <Line
                 type="monotone"
                 dataKey="target"
                 name="Target Value"
-                stroke="#f59e0b"
+                stroke="#cc0000"
                 strokeWidth={2}
                 strokeDasharray="4 4"
                 dot={{ r: 3 }}
@@ -895,10 +1218,13 @@ const Dashboard = () => {
               >
                 <LabelList
                   dataKey="target"
-                  position="bottom"
-                  offset={-2}
-                  formatter={(value) => formatChartValue(value, unitLabel)}
-                  fill="#f59e0b"
+                  position="top"
+                  offset={6}
+                  formatter={(value) =>
+                    formatChartValue(value, contractValueData[0]?.unitLabel)
+                  }
+                  fill="#cc0000"
+                  style={{ fontSize: "12px", fontWeight: 600 }}
                 />
               </Line>
             </ComposedChart>
@@ -917,6 +1243,63 @@ const Dashboard = () => {
         </div>
       </section>
 
+      {isTargetModalOpen ? (
+        <div
+          className="target-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Set Annual Contract Target"
+          onClick={() => !isTargetSaving && setIsTargetModalOpen(false)}
+        >
+          <div
+            className="target-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="target-modal-header">
+              <h3 className="target-modal-title">Annual Contract Target</h3>
+              <p className="target-modal-subtitle">{timelineYear}</p>
+            </div>
+            <form className="target-modal-form" onSubmit={handleTargetSave}>
+              <input
+                id="annual-target"
+                className="target-modal-input"
+                inputMode="numeric"
+                placeholder="set annual target"
+                value={
+                  targetInputRaw
+                    ? formatNumber(Number(targetInputRaw), "IDR")
+                    : ""
+                }
+                onChange={(event) =>
+                  setTargetInputRaw(
+                    String(event.target.value || "").replace(/[^0-9]/g, ""),
+                  )
+                }
+                disabled={isTargetSaving}
+                autoFocus
+              />
+              <div className="target-modal-actions">
+                <button
+                  type="button"
+                  className="panel-select target-modal-cancel"
+                  onClick={() => setIsTargetModalOpen(false)}
+                  disabled={isTargetSaving}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="panel-select target-modal-save"
+                  disabled={isTargetSaving}
+                >
+                  {isTargetSaving ? "Saving..." : "Save Target"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
+
       <section className="panel">
         <header className="panel-header">
           <h2 className="panel-title">Recent Active Tenders</h2>
@@ -933,25 +1316,42 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {recentTenders.map((tender) => (
-                <tr
-                  key={tender.id}
-                  className={`recent-row recent-row-${tender.dueStatus}`}
-                >
-                  <td>
-                    <div className="title-cell">{tender.projectTitle}</div>
-                    <span className="pin-cell">{tender.pin}</span>
-                  </td>
-                  <td>{tender.client}</td>
-                  <td>
-                    {formatCurrencyCode(tender.estValue, tender.currency)}
-                  </td>
-                  <td>{formatDate(tender.dueDate)}</td>
-                  <td>
-                    <StagePill stage={tender.stage} />
-                  </td>
+              {recentTenders.length === 0 ? (
+                <tr className="recent-row-empty">
+                  <td colSpan={5}>No recent active tender</td>
                 </tr>
-              ))}
+              ) : (
+                recentTenders.map((tender) => (
+                  <tr
+                    key={tender.id}
+                    className={`recent-row recent-row-${tender.dueStatus}`}
+                  >
+                    <td>
+                      <div className="title-cell">{tender.projectTitle}</div>
+                      <span className="pin-cell">{tender.pin}</span>
+                    </td>
+                    <td>{tender.client}</td>
+                    <td>
+                      {formatCurrencyCode(
+                        convertValue(
+                          tender.estValue,
+                          tender.currency,
+                          displayCurrency,
+                          usdToIdrRate,
+                        ),
+                        displayCurrency,
+                      )}
+                    </td>
+                    <td>
+                      <div>{formatDate(tender.dueDate)}</div>
+                      <div className="recent-duein">{tender.dueInLabel}</div>
+                    </td>
+                    <td className="recent-stage-cell">
+                      <StagePill stage={tender.stage} />
+                    </td>
+                  </tr>
+                ))
+            )}
             </tbody>
           </table>
         </div>

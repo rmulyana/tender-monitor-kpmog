@@ -122,6 +122,13 @@ export const getTenderDueYear = (tender, fallbackYear = null) => {
   return fallbackYear;
 };
 
+export const getTenderStartYear = (tender, fallbackYear = null) => {
+  const date = normalizeDate(tender?.startDate);
+  if (date) return date.getFullYear();
+  if (fallbackYear === null || fallbackYear === undefined) return null;
+  return fallbackYear;
+};
+
 export const getYearOptionsFromTenders = (tenders = [], includeAll = true) => {
   const years = new Set();
   tenders.forEach((tender) => {
@@ -142,11 +149,23 @@ export const matchesYearFilter = (tender, selectedYear) => {
   if (!selectedYear || selectedYear === ALL_YEARS_OPTION) return true;
   const selected = Number(selectedYear);
   if (!Number.isFinite(selected)) return true;
-  const dueYear = getTenderDueYear(tender, new Date().getFullYear());
-  if (!Number.isFinite(dueYear)) return false;
+  const currentYear = new Date().getFullYear();
+  const dueDate = normalizeDate(tender?.dueDate);
+  const startDate = normalizeDate(tender?.startDate);
+  const dueYear = dueDate ? dueDate.getFullYear() : null;
+  const startYear = startDate ? startDate.getFullYear() : currentYear;
   const isClosed = isTenderClosed(tender);
-  if (isClosed) return dueYear === selected;
-  return dueYear <= selected;
+  if (isClosed) {
+    const closedYear = Number.isFinite(dueYear) ? dueYear : currentYear;
+    return closedYear === selected;
+  }
+  if (!Number.isFinite(dueYear)) {
+    // Open tender without a due date carries forward from its start year.
+    return selected >= startYear;
+  }
+  const minYear = Math.min(startYear, dueYear);
+  const maxYear = Math.max(startYear, dueYear);
+  return selected >= minYear && selected <= maxYear;
 };
 
 export const buildStageDates = (tender, stages = STAGES) => {

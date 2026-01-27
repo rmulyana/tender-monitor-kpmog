@@ -63,6 +63,33 @@ const getStageFromSubitemStatus = (tender, stages, statusMap) => {
   return candidate;
 };
 
+const pickTimelineBoundsFromStages = (tenderId, stages, timelineMap) => {
+  const startValues = [];
+  const dueValues = [];
+  stages.forEach((stage) => {
+    const key = `${tenderId}::${stage.name}`;
+    const timeline = timelineMap[key];
+    if (timeline?.startDate) startValues.push(timeline.startDate);
+    if (timeline?.dueDate) dueValues.push(timeline.dueDate);
+  });
+
+  const parse = (value) => new Date(value).getTime();
+  const validStarts = startValues
+    .map((value) => ({ value, ts: parse(value) }))
+    .filter((item) => Number.isFinite(item.ts));
+  const validDues = dueValues
+    .map((value) => ({ value, ts: parse(value) }))
+    .filter((item) => Number.isFinite(item.ts));
+
+  const earliestStart = validStarts.sort((a, b) => a.ts - b.ts)[0]?.value;
+  const latestDue = validDues.sort((a, b) => b.ts - a.ts)[0]?.value;
+
+  return {
+    earliestStart: earliestStart || "",
+    latestDue: latestDue || "",
+  };
+};
+
 const useSubitemState = ({
   tenders = [],
   customStagesByTender = {},
@@ -248,6 +275,17 @@ const useSubitemState = ({
         }
         if (stageChangedIds.has(tenderId)) {
           payload.stages = stages;
+        }
+        const { earliestStart, latestDue } = pickTimelineBoundsFromStages(
+          tenderId,
+          stages,
+          subitemTimelineByKey,
+        );
+        if (earliestStart && earliestStart !== tender.startDate) {
+          payload.startDate = earliestStart;
+        }
+        if (latestDue && latestDue !== tender.dueDate) {
+          payload.dueDate = latestDue;
         }
         const hasFailedChild = failedTenderIds.has(tenderId);
         const statusBeforeFailure = getStoredStatusBeforeFailure(tender);

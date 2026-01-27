@@ -51,3 +51,27 @@ export const deleteTender = async (id) => {
   });
   return handleResponse(response);
 };
+
+export const fetchTargetByYear = async (year) => {
+  const response = await fetch(
+    buildUrl(`/api/configuration/targets/${encodeURIComponent(year)}`),
+  );
+  return handleResponse(response);
+};
+
+export const setTargetByYear = async (year, contractTarget) => {
+  const response = await fetch(
+    buildUrl(`/api/configuration/targets/${encodeURIComponent(year)}`),
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contractTarget }),
+    },
+  );
+  return handleResponse(response);
+};
+
+export const fetchUsdToIdrRate = async () => {
+  const response = await fetch(buildUrl("/api/rates/usd-idr"));
+  return handleResponse(response);
+};

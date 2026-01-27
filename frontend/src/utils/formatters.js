@@ -35,18 +35,13 @@ const compactUnits = [
   { value: 1e3, symbol: "K" },
 ];
 
-const currencySymbols = {
-  IDR: "Rp",
-  USD: "$",
-};
-
 export const formatCurrencyCompact = (value, currency = "IDR") => {
   if (!Number.isFinite(value)) {
-    return `${currencySymbols[currency] || ""} 0`;
+    return `${currency} 0`;
   }
 
   if (value <= 0) {
-    return `${currencySymbols[currency] || currency} -`;
+    return `${currency} -`;
   }
 
   const unit = compactUnits.find((item) => value >= item.value);
@@ -54,5 +49,5 @@ export const formatCurrencyCompact = (value, currency = "IDR") => {
     ? `${(value / unit.value).toFixed(1)} ${unit.symbol}`
     : value.toFixed(0);
 
-  return `${currencySymbols[currency] || currency} ${formatted}`.trim();
+  return `${currency} ${formatted}`.trim();
 };

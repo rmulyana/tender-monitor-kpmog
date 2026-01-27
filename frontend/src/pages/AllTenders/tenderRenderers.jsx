@@ -57,13 +57,20 @@ const createTenderRenderers = ({
     usePillPlaceholder = false,
   ) => {
     const isEditing = editingCell?.id === id && editingCell?.field === field;
+    const handleDraftChange = (nextDraft) => {
+      if (field === "projectTitle") {
+        setEditDraft(String(nextDraft || "").toUpperCase());
+        return;
+      }
+      setEditDraft(nextDraft);
+    };
 
     return (
       <EditableCell
         value={value}
         isEditing={isEditing}
         editDraft={editDraft}
-        onDraftChange={setEditDraft}
+        onDraftChange={handleDraftChange}
         onBeginEdit={() => beginEditCell(id, field, editValue)}
         onCommit={(event) => {
           const trimmed = String(editDraft ?? "").trim();

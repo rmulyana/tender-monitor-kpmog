@@ -128,8 +128,13 @@ const buildSubitemPayload = (key, maps, base = {}) => {
       dueDate: timeline.dueDate || null,
     };
   }
-  const notes = maps.subitemNotesByKey[key];
-  if (notes) payload.notes = notes;
+  const hasNotes = Object.prototype.hasOwnProperty.call(
+    maps.subitemNotesByKey,
+    key,
+  );
+  if (hasNotes) {
+    payload.notes = maps.subitemNotesByKey[key] || "";
+  }
   return payload;
 };
 

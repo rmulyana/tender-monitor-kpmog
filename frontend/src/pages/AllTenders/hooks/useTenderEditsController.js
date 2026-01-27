@@ -73,7 +73,11 @@ const useTenderEditsController = ({
 
   const commitEditCell = (id, field, fallback) => {
     const trimmed = String(editDraft ?? "").trim();
-    let nextValue = trimmed || fallback;
+    const allowEmptyFields = new Set(["consortium", "remarks"]);
+    let nextValue = allowEmptyFields.has(field) ? trimmed : trimmed || fallback;
+    if (field === "projectTitle") {
+      nextValue = String(nextValue || "").toUpperCase();
+    }
     setEditedRows((prev) => {
       const existing = prev[id] ?? {};
       const next = { ...prev };
@@ -162,16 +166,11 @@ const useTenderEditsController = ({
 
   const commitSubitemNotes = (key, fallback) => {
     const trimmed = String(editDraft ?? "").trim();
-    const nextValue = trimmed || fallback || "";
-    setSubitemNotesByKey((prev) => {
-      const next = { ...prev };
-      if (nextValue) {
-        next[key] = nextValue;
-      } else {
-        delete next[key];
-      }
-      return next;
-    });
+    const nextValue = trimmed || "";
+    setSubitemNotesByKey((prev) => ({
+      ...prev,
+      [key]: nextValue,
+    }));
     cancelEditCell();
   };
 
