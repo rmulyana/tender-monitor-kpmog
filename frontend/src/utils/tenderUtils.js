@@ -164,18 +164,12 @@ export const matchesYearFilter = (tender, selectedYear) => {
       currentYear;
     return closedYear === selected;
   }
-  if (!Number.isFinite(dueYear) && !Number.isFinite(startYear)) {
-    return selected >= currentYear;
-  }
-  if (!Number.isFinite(dueYear)) {
-    // Open tender without a due date carries forward from its start year.
-    return selected >= startYear;
-  }
-  if (!Number.isFinite(startYear)) {
-    return selected <= dueYear;
-  }
-  // When both dates exist, respect the start year as the lower bound.
-  return selected >= startYear && selected <= dueYear;
+  const anchorYear =
+    (Number.isFinite(startYear) && startYear) ||
+    (Number.isFinite(dueYear) && dueYear) ||
+    currentYear;
+  // Open tenders carry forward from their anchor year.
+  return selected >= anchorYear;
 };
 
 export const buildStageDates = (tender, stages = STAGES) => {
