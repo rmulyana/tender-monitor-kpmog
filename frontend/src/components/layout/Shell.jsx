@@ -45,23 +45,19 @@ const Shell = ({ children }) => {
           <NavLink
             to="/"
             end
-            className={({ isActive }) =>
-              `nav-item${isActive ? " active" : ""}`
-            }
+            className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}
           >
             <i className="fa-solid fa-gauge-high" aria-hidden="true" />
             <span className="sidebar-label">Dashboard</span>
           </NavLink>
           <NavLink
             to="/tenders"
-            className={({ isActive }) =>
-              `nav-item${isActive ? " active" : ""}`
-            }
+            className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}
           >
             <i className="fa-solid fa-list-check" aria-hidden="true" />
             <span className="sidebar-label">Tender Lists</span>
           </NavLink>
-          <NavLink
+          {/*<NavLink
             to="/pipeline"
             className={({ isActive }) =>
               `nav-item${isActive ? " active" : ""}`
@@ -69,7 +65,7 @@ const Shell = ({ children }) => {
           >
             <i className="fa-solid fa-filter" aria-hidden="true" />
             <span className="sidebar-label">Pipeline</span>
-          </NavLink>
+          </NavLink>*/}
         </nav>
       </aside>
 
