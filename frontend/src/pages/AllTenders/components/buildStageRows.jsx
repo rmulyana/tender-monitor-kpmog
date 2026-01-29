@@ -96,7 +96,7 @@ const buildStageRows = ({
     stageRows.push(
       <DetailRow
         key={`${tender.id}-stage-${stage.name}`}
-        className="row-stage block"
+        className="border-b border-slate-200 bg-white"
       >
         <StageRow
           stageKey={key}

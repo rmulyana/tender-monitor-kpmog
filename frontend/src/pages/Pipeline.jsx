@@ -1,4 +1,3 @@
-import "../styles/dashboard.css";
 import "../styles/pipeline.css";
 
 const Pipeline = () => (

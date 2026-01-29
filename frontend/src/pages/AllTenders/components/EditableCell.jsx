@@ -15,7 +15,7 @@ const EditableCell = ({
   if (isEditing) {
     return (
       <input
-        className="editable-input"
+        className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
         type="text"
         value={editDraft}
         autoFocus
@@ -39,23 +39,17 @@ const EditableCell = ({
     );
   }
 
+  const placeholderClass = usePillPlaceholder
+    ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-xs text-slate-400"
+    : "text-slate-400";
+
   return (
     <button
       type="button"
-      className={`editable-trigger ${className}`.trim()}
+      className={`w-full text-left text-sm text-slate-700 transition hover:text-slate-900 ${className}`.trim()}
       onClick={onBeginEdit}
     >
-      {isEmpty ? (
-        <span
-          className={`editable-placeholder${
-            usePillPlaceholder ? " pill-placeholder" : ""
-          }`}
-        >
-          {placeholder}
-        </span>
-      ) : (
-        value
-      )}
+      {isEmpty ? <span className={placeholderClass}>{placeholder}</span> : value}
     </button>
   );
 };

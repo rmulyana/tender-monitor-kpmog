@@ -6,7 +6,6 @@ import StageFlowChart from "./Dashboard/components/StageFlowChart.jsx";
 import ContractValueChart from "./Dashboard/components/ContractValueChart.jsx";
 import useDashboardData from "./Dashboard/hooks/useDashboardData.js";
 import { formatCurrencyCompact } from "../utils/formatters.js";
-import "../styles/dashboard.css";
 
 import {
   MONTH_LABELS,
@@ -65,15 +64,20 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-layout">
+    <div className="grid gap-6">
       {rateToast ? (
-        <div className="rate-toast" role="status">
+        <div
+          className="fixed right-6 top-4 z-[1400] rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-50 shadow-[0_12px_30px_rgba(15,23,42,0.35)]"
+          role="status"
+        >
           {rateToast}
         </div>
       ) : null}
-      <section className="panel summary-panel">
-        <div className="panel-title-group">
-          <h2 className="panel-title">Tender Active Summary</h2>
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+        <div className="flex items-center justify-between gap-4 border-b border-indigo-100 pb-2">
+          <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+            Tender Active Summary
+          </h2>
           <CurrencyControls
             displayCurrency={displayCurrency}
             onCurrencyChange={handleCurrencyChange}
@@ -81,43 +85,54 @@ const Dashboard = () => {
             isRateLoading={isRateLoading}
           />
         </div>
-        <div className="summary-scroll">
-          <div className="summary-grid">
+        <div className="mt-4 overflow-x-auto">
+          <div className="grid min-w-[1000px] grid-cols-6 border-t border-slate-200">
             {summaryColumns.map((column) => (
-              <div key={column.key} className="summary-column">
-                <h3>{column.title}</h3>
-                <div className="summary-rows">
+              <div
+                key={column.key}
+                className="flex min-h-[260px] flex-col border-r border-slate-200 px-3 last:border-r-0"
+              >
+                <h3 className="mb-3 mt-3 border-b border-indigo-100 pb-1.5 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+                  {column.title}
+                </h3>
+                <div className="grid gap-2.5">
                   {column.rows.map((row, index) => {
                     const palette = rowPalette[index] || rowPalette[0];
                     return (
-                      <div key={row.label} className="summary-row">
+                      <div
+                        key={row.label}
+                        className="grid grid-cols-[1fr_auto] gap-1 text-[0.65rem] text-slate-500"
+                      >
                         <span>{row.label}</span>
                         <span
-                          className="row-value"
+                          className="font-bold"
                           style={{ color: palette.text }}
                         >
                           {row.value}
                         </span>
-                        <div className="row-bar">
+                        <div className="col-span-full h-1.5 overflow-hidden rounded-full bg-slate-100/70">
                           <span
                             style={{
                               width: `${row.percent}%`,
                               background: palette.bar,
                             }}
+                            className="block h-full rounded-full"
                           />
                         </div>
                       </div>
                     );
                   })}
                 </div>
-                <div className="summary-footer">
-                  <p>{column.valueLabel}</p>
+                <div className="mt-auto border-t border-slate-200 pt-2 text-center">
+                  <p className="mb-1 text-[0.55rem] uppercase tracking-[0.14em] text-slate-400">
+                    {column.valueLabel}
+                  </p>
                   <span
                     title={formatFullCurrency(
                       column.totalValue,
                       displayCurrency,
                     )}
-                    className="summary-value"
+                    className="inline-block rounded-md border border-transparent px-2.5 py-1 text-[0.7rem] font-bold"
                     style={{
                       color: summaryPillColors[column.key]?.text,
                       background: summaryPillColors[column.key]?.bg,
@@ -133,7 +148,7 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section className="dashboard-grid">
+      <section className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-4">
         <ProcessChart
           labels={labels}
           selectedMonth={selectedMonth}

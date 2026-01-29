@@ -62,27 +62,44 @@ const SubitemBlock = ({
 
   return (
     <Fragment>
-      <tr className="gap-row">
+      <tr className="h-3">
         <td colSpan={11} />
       </tr>
-      <tr id={`subitems-${tender.id}`} className="subhead-row block-start">
-        <td className="w-pin sticky tree-empty" />
-        <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
+      <tr id={`subitems-${tender.id}`} className="bg-slate-50">
+        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50 px-3 py-2" />
+        <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50 px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
           Subitem
         </td>
-        <td className="w-client tree-box">Status</td>
-        <td className="w-cons tree-box">PIC</td>
-        <td className="w-stage tree-box">Submission</td>
-        <td className="w-status tree-box">Attachment</td>
-        <td className="w-date tree-box">Progress</td>
-        <td className="w-priority tree-box">Priority</td>
-        <td className="w-timeline tree-box">Timeline</td>
-        <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2}>
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Status
+        </td>
+        <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          PIC
+        </td>
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Submission
+        </td>
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Attachment
+        </td>
+        <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Progress
+        </td>
+        <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Priority
+        </td>
+        <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Timeline
+        </td>
+        <td
+          className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+          colSpan={2}
+        >
           Notes
         </td>
       </tr>
       {stageRows}
-      <tr className="sep-row">
+      <tr className="h-3">
         <td colSpan={11} />
       </tr>
     </Fragment>

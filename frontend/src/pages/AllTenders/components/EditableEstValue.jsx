@@ -62,17 +62,19 @@ const EditableEstValue = ({
   }, [editDraft]);
 
   if (!isEditing) {
+    const placeholderClass = usePillPlaceholder
+      ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-xs text-slate-400"
+      : "text-slate-400";
+
     return (
-      <div className="editable-est">
-        <button type="button" className="editable-trigger" onClick={onBeginEdit}>
+      <div>
+        <button
+          type="button"
+          className="w-full text-left text-sm text-slate-700 transition hover:text-slate-900"
+          onClick={onBeginEdit}
+        >
           {isEmptyValue ? (
-            <span
-              className={`editable-placeholder${
-                usePillPlaceholder ? " pill-placeholder" : ""
-              }`}
-            >
-              {placeholder}
-            </span>
+            <span className={placeholderClass}>{placeholder}</span>
           ) : (
             displayValue
           )}
@@ -82,9 +84,9 @@ const EditableEstValue = ({
   }
 
   return (
-    <div className="editable-est">
+    <div>
       <div
-        className="editable-combo editable-combo-float"
+        className="flex items-center gap-2"
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) {
             onCommit(event);
@@ -92,7 +94,7 @@ const EditableEstValue = ({
         }}
       >
         <select
-          className="editable-select"
+          className="h-8 rounded-full border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600"
           value={activeCurrency}
           onChange={(event) => {
             const nextCurrency = event.target.value;
@@ -106,7 +108,7 @@ const EditableEstValue = ({
           <option value="USD">USD</option>
         </select>
         <input
-          className="editable-input editable-value-input"
+          className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
           type="text"
           value={editDraft}
           autoFocus

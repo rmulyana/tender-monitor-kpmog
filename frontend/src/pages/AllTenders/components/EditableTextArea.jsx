@@ -14,7 +14,7 @@ const EditableTextArea = ({
   if (isEditing) {
     return (
       <textarea
-        className="editable-textarea"
+        className="min-h-[38px] w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
         value={editDraft}
         autoFocus
         rows={2}
@@ -38,19 +38,17 @@ const EditableTextArea = ({
     );
   }
 
+  const placeholderClass = usePillPlaceholder
+    ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-xs text-slate-400"
+    : "text-slate-400";
+
   return (
-    <button type="button" className="editable-trigger" onClick={onBeginEdit}>
-      {isEmpty ? (
-        <span
-          className={`editable-placeholder${
-            usePillPlaceholder ? " pill-placeholder" : ""
-          }`}
-        >
-          {placeholder}
-        </span>
-      ) : (
-        value
-      )}
+    <button
+      type="button"
+      className="w-full text-left text-sm text-slate-700 transition hover:text-slate-900"
+      onClick={onBeginEdit}
+    >
+      {isEmpty ? <span className={placeholderClass}>{placeholder}</span> : value}
     </button>
   );
 };

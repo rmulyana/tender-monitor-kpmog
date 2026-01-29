@@ -29,7 +29,7 @@ const RowMenuDropdown = ({
   return (
     <div
       ref={menuRef}
-      className="menu-dropdown menu-dropdown-floating"
+      className="absolute z-50 w-44 rounded-xl border border-slate-200 bg-white p-1 text-sm shadow-lg"
       role="menu"
       style={{
         top: `${menuPosition.top}px`,
@@ -39,11 +39,11 @@ const RowMenuDropdown = ({
       {!isArchived ? (
         <button
           type="button"
-          className="menu-item menu-item-with-icon"
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100"
           role="menuitem"
           onClick={handleDuplicate}
         >
-          <span className="menu-icon" aria-hidden="true">
+          <span className="h-4 w-4 text-slate-400" aria-hidden="true">
             <svg viewBox="0 0 20 20" fill="none">
               <rect
                 x="6"
@@ -71,14 +71,14 @@ const RowMenuDropdown = ({
       {!isArchived ? (
         <button
           type="button"
-          className="menu-item menu-item-with-icon"
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100"
           role="menuitem"
           onClick={() => {
             if (onArchive) onArchive(openMenuId);
             onClose();
           }}
         >
-          <span className="menu-icon" aria-hidden="true">
+          <span className="h-4 w-4 text-slate-400" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
               <path
                 d="M4 7h16"
@@ -105,14 +105,14 @@ const RowMenuDropdown = ({
       ) : (
         <button
           type="button"
-          className="menu-item menu-item-with-icon"
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100"
           role="menuitem"
           onClick={() => {
             if (onRestore) onRestore(openMenuId);
             onClose();
           }}
         >
-          <span className="menu-icon" aria-hidden="true">
+          <span className="h-4 w-4 text-slate-400" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
               <path
                 d="M7 8H4V5"
@@ -142,14 +142,14 @@ const RowMenuDropdown = ({
       )}
       <button
         type="button"
-        className="menu-item is-danger menu-item-with-icon"
+        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-rose-600 hover:bg-rose-50"
         role="menuitem"
         onClick={() => {
           onRequestDelete(openMenuId);
           onClose();
         }}
       >
-        <span className="menu-icon" aria-hidden="true">
+        <span className="h-4 w-4 text-rose-400" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
             <path
               d="M4 7h16"

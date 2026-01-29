@@ -53,17 +53,17 @@ const DetailTable = ({
         return (
           <DetailRow
             key={`${tenderId}-step-${stageName}-${stepName}`}
-            className="row-step block"
+            className="border-b border-slate-200 bg-slate-50/40"
           >
-            <td className="w-pin sticky tree-empty" />
-            <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
-              <div className="indent-2 detail-inline">
-                <span className="arrow">↳</span>
+            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
+            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
+              <div className="flex items-center gap-2 pl-6 text-sm text-slate-600">
+                <span className="text-slate-400">↳</span>
                 <span>{stepName}</span>
                 {onRequestStepDelete ? (
                   <button
                     type="button"
-                    className="row-delete"
+                    className="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-slate-600"
                     aria-label={`Delete ${stepName}`}
                     onClick={() => onRequestStepDelete(stageKey, stepName)}
                   >
@@ -97,15 +97,17 @@ const DetailTable = ({
                 ) : null}
               </div>
             </td>
-            <td className="w-client tree-box">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
               <SubitemStatusSelect
                 value={stepStatus}
                 options={DETAIL_STATUS_OPTIONS}
                 onChange={(value) => handleSubitemStatusChange(stepKey, value)}
               />
             </td>
-            <td className="w-cons tree-box">{renderPicField(stepKey)}</td>
-            <td className="w-stage tree-box">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
+              {renderPicField(stepKey)}
+            </td>
+            <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
               {renderEditableDetailSubmission(
                 stepKey,
                 subitemSubmissionByKey[stepKey] ?? meta.submission ?? "",
@@ -113,13 +115,13 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-status tree-box">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
               {renderAttachmentCell(stepKey, meta.attachment)}
             </td>
-            <td className="w-date tree-box">
+            <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2">
               {renderProgressSlider(stepKey, 0)}
             </td>
-            <td className="w-priority tree-box">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
               <SubitemPrioritySelect
                 value={subitemPriorityByKey[stepKey] ?? ""}
                 onChange={(value) =>
@@ -127,7 +129,7 @@ const DetailTable = ({
                 }
               />
             </td>
-            <td className="w-timeline tree-box">
+            <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2">
               {renderEditableSubitemTimelineCell(
                 stepKey,
                 subitemTimelineByKey[stepKey]?.startDate,
@@ -135,7 +137,7 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2}>
+            <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2}>
               {renderEditableSubitemNotes(
                 stepKey,
                 subitemNotesByKey[stepKey] ?? "",
@@ -153,11 +155,11 @@ const DetailTable = ({
           ? storedDetailStatus
           : "Not Started";
         return (
-          <DetailRow key={`${detailKey}-${index}`} className="row-step block">
-            <td className="w-pin sticky tree-empty" />
-            <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
-              <div className="indent-2 detail-inline">
-                <span className="arrow">↳</span>
+          <DetailRow key={`${detailKey}-${index}`} className="border-b border-slate-200 bg-slate-50/40">
+            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
+            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
+              <div className="flex items-center gap-2 pl-6 text-sm text-slate-600">
+                <span className="text-slate-400">↳</span>
                 {renderEditableDetailName(
                   detailKey,
                   detailNameByKey[detailKey] ?? "",
@@ -166,7 +168,7 @@ const DetailTable = ({
                 {onRequestDetailDelete ? (
                   <button
                     type="button"
-                    className="row-delete"
+                    className="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-slate-600"
                     aria-label="Delete detail item"
                     onClick={() => onRequestDetailDelete(stageKey, detailKey)}
                   >
@@ -200,15 +202,17 @@ const DetailTable = ({
                 ) : null}
               </div>
             </td>
-            <td className="w-client tree-box">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
               <SubitemStatusSelect
                 value={detailStatus}
                 options={DETAIL_STATUS_OPTIONS}
                 onChange={(value) => handleSubitemStatusChange(detailKey, value)}
               />
             </td>
-            <td className="w-cons tree-box">{renderPicField(detailKey)}</td>
-            <td className="w-stage tree-box">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
+              {renderPicField(detailKey)}
+            </td>
+            <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
               {renderEditableDetailSubmission(
                 detailKey,
                 subitemSubmissionByKey[detailKey] ?? "",
@@ -216,13 +220,13 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-status tree-box">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
               {renderAttachmentCell(detailKey, "")}
             </td>
-            <td className="w-date tree-box">
+            <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2">
               {renderProgressSlider(detailKey, 0)}
             </td>
-            <td className="w-priority tree-box">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
               <SubitemPrioritySelect
                 value={subitemPriorityByKey[detailKey] ?? ""}
                 onChange={(value) =>
@@ -230,7 +234,7 @@ const DetailTable = ({
                 }
               />
             </td>
-            <td className="w-timeline tree-box">
+            <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2">
               {renderEditableSubitemTimelineCell(
                 detailKey,
                 subitemTimelineByKey[detailKey]?.startDate,
@@ -238,7 +242,7 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2}>
+            <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2}>
               {renderEditableSubitemNotes(
                 detailKey,
                 subitemNotesByKey[detailKey] ?? "",
@@ -253,29 +257,31 @@ const DetailTable = ({
       {showAddItem && (
         <DetailRow
           key={`${tenderId}-add-${stageName}`}
-          className="row-step block"
+          className="border-b border-slate-200 bg-slate-50/40"
         >
-          <td className="w-pin sticky tree-empty" />
-          <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
-            <div className="indent-2">
+          <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
+          <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
+            <div className="flex items-center gap-2 pl-6">
               <button
                 type="button"
-                className="add-item"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
                 onClick={onAddDetailRow}
               >
-                <span className="add-circle">+</span>
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500">
+                  +
+                </span>
                 <span>Add item</span>
               </button>
             </div>
           </td>
-          <td className="w-client tree-box" />
-          <td className="w-cons tree-box" />
-          <td className="w-stage tree-box" />
-          <td className="w-status tree-box" />
-          <td className="w-date tree-box" />
-          <td className="w-priority tree-box" />
-          <td className="w-timeline tree-box" />
-          <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2} />
+          <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
+          <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
+          <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
+          <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
+          <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2" />
+          <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
+          <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2" />
+          <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2} />
         </DetailRow>
       )}
     </Fragment>

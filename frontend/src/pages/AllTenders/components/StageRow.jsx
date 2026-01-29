@@ -25,19 +25,19 @@ const StageRow = ({
 }) => {
   return (
     <>
-      <td className="w-pin sticky tree-empty" />
-      <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
-        <div className="indent-1 stage-cell">
+      <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
+      <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2">
+        <div className="flex items-center gap-2 pl-3">
           {canExpand ? (
             <button
-              className={`exp-btn${isStageOpen ? " is-open" : ""}`}
+              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
               type="button"
               aria-label={`Toggle ${stageName}`}
               aria-expanded={isStageOpen}
               onClick={onToggleStage}
             >
               <svg
-                className="chev"
+                className="h-2.5 w-2.5"
                 viewBox="0 0 20 20"
                 fill="none"
                 aria-hidden="true"
@@ -52,13 +52,15 @@ const StageRow = ({
               </svg>
             </button>
           ) : (
-            <span className="exp-spacer" />
+            <span className="h-5 w-5" />
           )}
-          <span>{stageName}</span>
+          <span className="text-sm font-semibold text-slate-700">
+            {stageName}
+          </span>
           {onRequestStageDelete ? (
             <button
               type="button"
-              className="row-delete"
+              className="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-slate-600"
               aria-label={`Delete ${stageName}`}
               onClick={onRequestStageDelete}
             >
@@ -92,26 +94,32 @@ const StageRow = ({
           ) : null}
         </div>
       </td>
-      <td className="w-client tree-box">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
         <SubitemStatusSelect
           value={stageStatus}
           options={stageStatusOptions}
           onChange={(value) => handleSubitemStatusChange(stageKey, value)}
         />
       </td>
-      <td className="w-cons tree-box">{renderPicField(stageKey)}</td>
-      <td className="w-stage tree-box">{renderSubmissionSelect(stageKey)}</td>
-      <td className="w-status tree-box">
+      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
+        {renderPicField(stageKey)}
+      </td>
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
+        {renderSubmissionSelect(stageKey)}
+      </td>
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
         {renderAttachmentCell(stageKey, "")}
       </td>
-      <td className="w-date tree-box">{renderProgressSlider(stageKey, 0)}</td>
-      <td className="w-priority tree-box">
+      <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2">
+        {renderProgressSlider(stageKey, 0)}
+      </td>
+      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
         <SubitemPrioritySelect
           value={stagePriority}
           onChange={(value) => handleSubitemPriorityChange(stageKey, value)}
         />
       </td>
-      <td className="w-timeline tree-box">
+      <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2">
         {renderEditableSubitemTimelineCell(
           stageKey,
           timelineStart,
@@ -119,7 +127,7 @@ const StageRow = ({
           true,
         )}
       </td>
-      <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2}>
+      <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2}>
         {renderEditableSubitemNotes(stageKey, stageNotes, "Add notes", true)}
       </td>
     </>

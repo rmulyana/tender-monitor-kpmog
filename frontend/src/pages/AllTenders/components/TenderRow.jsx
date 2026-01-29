@@ -78,6 +78,7 @@ const TenderRow = ({
   });
   const isExpanded = expandedPin === tender.id;
   const isArchived = Boolean(tender.archived);
+  const stickyBgClass = timelineOverdueDays > 0 ? "bg-amber-50/50" : "bg-white";
 
   const rowClassName = tenderRowClass({
     isOverdue: timelineOverdueDays > 0,
@@ -87,11 +88,15 @@ const TenderRow = ({
   return (
     <Fragment>
       <tr className={rowClassName} data-row-id={tender.id}>
-        <td className="w-pin sticky">
-          <div className="pin-cell">
-            <span className="pin-text">{tender.pin}</span>
+        <td
+          className={`sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] px-3 py-3 align-top group-hover:bg-slate-50 ${stickyBgClass}`}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-slate-800">
+              {tender.pin}
+            </span>
             <button
-              className={`exp-btn exp-btn-main${isExpanded ? " is-open" : ""}`}
+              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition hover:bg-slate-50 hover:text-slate-600 ${isExpanded ? "rotate-180" : ""}`}
               type="button"
               aria-label="Toggle details"
               aria-expanded={isExpanded}
@@ -99,7 +104,7 @@ const TenderRow = ({
               onClick={() => togglePin(tender.id)}
             >
               <svg
-                className="chev chev-main"
+                className="h-2.5 w-2.5"
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden="true"
@@ -115,8 +120,10 @@ const TenderRow = ({
             </button>
           </div>
         </td>
-        <td className="w-title sticky2 divider-shadow wraptext">
-          <div className="title-cell">
+        <td
+          className={`sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] px-3 py-3 align-top group-hover:bg-slate-50 ${stickyBgClass}`}
+        >
+          <div className="flex items-start gap-2">
             {renderEditableCell(
               tender.id,
               "projectTitle",
@@ -133,7 +140,7 @@ const TenderRow = ({
             />
           </div>
         </td>
-        <td className="w-client wraptext">
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top">
           {renderEditableCell(
             tender.id,
             "client",
@@ -145,7 +152,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-cons wraptext">
+        <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-3 align-top">
           {renderEditableCell(
             tender.id,
             "consortium",
@@ -157,7 +164,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-loc wraptext">
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top">
           {renderEditableCell(
             tender.id,
             "location",
@@ -169,7 +176,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="nowrap">
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top whitespace-nowrap">
           {renderEditableEstValueCell(
             tender.id,
             displayEstValue,
@@ -180,7 +187,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-stage">
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top">
           <MainStageSelect
             value={mainStage}
             onChange={(event) =>
@@ -190,7 +197,7 @@ const TenderRow = ({
             isLocked={isFailedOverride}
           />
         </td>
-        <td className="w-status">
+        <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top">
           <MainStatusSelect
             value={mainStatus}
             statusOptions={statusOptions}
@@ -201,7 +208,7 @@ const TenderRow = ({
             isLocked={isFailedOverride}
           />
         </td>
-        <td className="w-timeline">
+        <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-3 align-top">
           {renderEditableTimelineCell(
             tender.id,
             displayTender.startDate,
@@ -210,7 +217,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-remarks wraptext">
+        <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-3 align-top">
           {renderEditableTextArea(
             tender.id,
             "remarks",

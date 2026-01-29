@@ -11,7 +11,7 @@ const PicField = ({
   if (isEditing) {
     return (
       <input
-        className="subitem-pic-input"
+        className="h-8 w-full rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
         type="text"
         value={inputValue}
         placeholder="Search PIC"
@@ -33,7 +33,11 @@ const PicField = ({
   }
 
   return (
-    <button type="button" className="pic-display" onClick={onBeginEdit}>
+    <button
+      type="button"
+      className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-800"
+      onClick={onBeginEdit}
+    >
       {renderDisplay(value)}
     </button>
   );

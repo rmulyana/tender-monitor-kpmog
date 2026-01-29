@@ -33,7 +33,6 @@ import {
 import { matchesYearFilter } from "../utils/tenderUtils.js";
 import { getMaxDetailIndexFromRows } from "../utils/subitemsMapper.js";
 import exportTendersCsv from "../utils/exportTendersCsv.js";
-import "../styles/tenders.css";
 
 const AllTenders = () => {
   const {
@@ -418,7 +417,7 @@ const AllTenders = () => {
   }, [allTenders, archivedFilter, selectedYear]);
 
   return (
-    <div className="tenders-page">
+    <div className="grid gap-6">
       <TenderFilters
         allTenders={filterSourceTenders}
         search={search}
@@ -514,7 +513,9 @@ const AllTenders = () => {
         onCancelAttachment={() => setConfirmAttachment(null)}
       />
 
-      <TenderCards tenders={tenders} />
+      <div className="mt-6 block lg:hidden">
+        <TenderCards tenders={tenders} />
+      </div>
     </div>
   );
 };

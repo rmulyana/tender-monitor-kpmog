@@ -17,11 +17,13 @@ const StageFlowChart = ({
   stageLegend,
   CustomTooltip,
 }) => (
-  <article className="panel chart-panel">
-    <header className="panel-header">
-      <h2 className="panel-title">Monthly Stage Flow</h2>
+  <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">
+      <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+        Monthly Stage Flow
+      </h2>
       <select
-        className="panel-select"
+        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600"
         aria-label="Select month for monthly stage flow"
         value={selectedMonth}
         onChange={(event) => onMonthChange(event.target.value)}
@@ -33,7 +35,7 @@ const StageFlowChart = ({
         ))}
       </select>
     </header>
-    <div className="chart-body stacked-body">
+    <div className="mt-3">
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data} margin={{ top: 4, right: 12, left: -10, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -72,10 +74,16 @@ const StageFlowChart = ({
           <Bar dataKey="Failed" stackId="a" fill={chartColors.Failed} name="Failed" />
         </BarChart>
       </ResponsiveContainer>
-      <div className="stacked-legend" aria-hidden="true">
+      <div
+        className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.72rem] font-medium text-slate-500"
+        aria-hidden="true"
+      >
         {stageLegend.map((item) => (
-          <div key={item.id} className="stacked-legend-item">
-            <span className="legend-dot" style={{ background: item.color }} />
+          <div key={item.id} className="flex items-center gap-2">
+            <span
+              className="h-3.5 w-3.5 rounded-full"
+              style={{ background: item.color }}
+            />
             {item.value}
           </div>
         ))}
@@ -85,4 +93,3 @@ const StageFlowChart = ({
 );
 
 export default StageFlowChart;
-

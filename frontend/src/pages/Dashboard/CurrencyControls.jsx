@@ -7,9 +7,9 @@ const CurrencyControls = ({
   onUpdateRate,
   isRateLoading,
 }) => (
-  <div className="currency-controls">
+  <div className="flex items-center gap-2">
     <select
-      className="panel-select currency-select"
+      className="min-w-[70px] rounded-full border border-slate-200 bg-white px-2 py-1 text-[0.7rem] font-semibold text-slate-600"
       aria-label="Select currency"
       value={displayCurrency}
       onChange={onCurrencyChange}
@@ -19,14 +19,14 @@ const CurrencyControls = ({
     </select>
     <button
       type="button"
-      className="icon-button"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-60"
       aria-label="Update exchange rate"
       onClick={onUpdateRate}
       disabled={isRateLoading}
     >
       <RefreshCw
         size={16}
-        className={isRateLoading ? "animate-spin-slow" : ""}
+        className={isRateLoading ? "animate-spin" : ""}
       />
     </button>
   </div>

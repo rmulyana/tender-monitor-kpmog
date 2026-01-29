@@ -11,11 +11,14 @@ const AttachmentPill = ({ attachments, onClick }) => {
   return (
     <button
       type="button"
-      className={`attachment-pill-button${isEmpty ? " is-empty" : ""}`}
+      className={[
+        "attachment-pill-button inline-flex h-7 max-w-[200px] items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-xs text-slate-600",
+        isEmpty ? "text-slate-400" : "text-slate-700",
+      ].join(" ")}
       onClick={(event) => onClick(event, normalized)}
     >
       <svg
-        className="attach-icon"
+        className="h-4 w-4"
         viewBox="0 0 20 20"
         fill="none"
         aria-hidden="true"
@@ -28,7 +31,7 @@ const AttachmentPill = ({ attachments, onClick }) => {
           strokeLinejoin="round"
         />
       </svg>
-      <span className="attachment-pill-text">{label}</span>
+      <span className="truncate">{label}</span>
     </button>
   );
 };

@@ -1,5 +1,3 @@
-import "../../../styles/tenders.css";
-
 import { formatDate } from "../../../utils/formatters.js";
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -51,24 +49,20 @@ const TenderTimeline = ({ startDate, dueDate, overdueDays }) => {
   const dueTime = formatTime(dueDate);
 
   return (
-    <div className="timeline">
-      <div className="timeline-meta">
+    <div className="grid gap-2">
+      <div className="flex items-center justify-between text-[0.7rem] font-medium text-slate-400">
         <span>{formatDate(startDate)}</span>
         <span>{formatDate(dueDate)}</span>
       </div>
-      <div className="timeline-bar">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
         <span
-          className={`timeline-progress${isOverdue ? " overdue" : ""}`}
+          className={`block h-full rounded-full ${isOverdue ? "bg-red-500" : "bg-blue-500"}`}
           style={{ width: `${progress}%` }}
         />
       </div>
-      <div className="timeline-footer">
-        <span className={`timeline-label${isOverdue ? " overdue" : ""}`}>
-          {label}
-        </span>
-        <span className={`timeline-time${isOverdue ? " overdue" : ""}`}>
-          {dueTime}
-        </span>
+      <div className="flex items-center justify-between text-[0.7rem] font-medium text-slate-500">
+        <span className={isOverdue ? "text-red-500" : ""}>{label}</span>
+        <span className={isOverdue ? "text-red-500" : ""}>{dueTime}</span>
       </div>
     </div>
   );

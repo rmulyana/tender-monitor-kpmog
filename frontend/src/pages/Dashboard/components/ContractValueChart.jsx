@@ -31,17 +31,19 @@ const ContractValueChart = ({
   tooltipListStyle,
   contractLegendItems,
 }) => (
-  <section className="panel chart-panel">
-    <header className="panel-header">
-      <div className="panel-title-block">
-        <h2 className="panel-title">
+  <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-4 border-b border-indigo-100 pb-2.5">
+      <div className="grid gap-1">
+        <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
           Contract Value {selectedYear} (Actual vs Target)
         </h2>
-        <div className="panel-meta">{activeTargetLabel}</div>
+        <div className="text-[0.7rem] font-semibold text-slate-500">
+          {activeTargetLabel}
+        </div>
       </div>
-      <div className="panel-header-actions">
+      <div className="flex flex-wrap items-center gap-2">
         <select
-          className="panel-select"
+          className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600"
           aria-label="Select month for contract value"
           value={selectedMonth}
           onChange={(event) => onMonthChange(event.target.value)}
@@ -54,7 +56,7 @@ const ContractValueChart = ({
         </select>
         <button
           type="button"
-          className="panel-select target-button"
+          className="min-w-[130px] rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
           onClick={onTargetEdit}
           disabled={isTargetLoading || isTargetSaving}
         >
@@ -62,7 +64,7 @@ const ContractValueChart = ({
         </button>
       </div>
     </header>
-    <div className="chart-body tall">
+    <div className="mt-2">
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data} margin={{ top: 12, right: 16, left: 0, bottom: 12 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -146,10 +148,16 @@ const ContractValueChart = ({
           </Line>
         </ComposedChart>
       </ResponsiveContainer>
-      <div className="contract-legend" aria-hidden="true">
+      <div
+        className="mt-2 flex items-center justify-center gap-5 text-[0.72rem] font-medium text-slate-500"
+        aria-hidden="true"
+      >
         {contractLegendItems.map((item) => (
-          <div key={item.id} className="contract-legend-item">
-            <span className="legend-dot" style={{ background: item.color }} />
+          <div key={item.id} className="flex items-center gap-2">
+            <span
+              className="h-3.5 w-3.5 rounded-full"
+              style={{ background: item.color }}
+            />
             {item.label}
           </div>
         ))}
@@ -159,4 +167,3 @@ const ContractValueChart = ({
 );
 
 export default ContractValueChart;
-
