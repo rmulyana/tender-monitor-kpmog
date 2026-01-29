@@ -3,6 +3,9 @@ import { formatDate } from "../../../utils/formatters.js";
 
 const RecentTendersTable = ({
   items,
+  title = "Recent Active Tenders",
+  emptyLabel = "No recent active tender",
+  useDueStatus = true,
   displayCurrency,
   usdToIdrRate,
   convertValue,
@@ -10,7 +13,7 @@ const RecentTendersTable = ({
 }) => (
   <section className="panel">
     <header className="panel-header">
-      <h2 className="panel-title">Recent Active Tenders</h2>
+      <h2 className="panel-title">{title}</h2>
     </header>
     <div className="table-wrap">
       <table className="recent-table">
@@ -26,13 +29,13 @@ const RecentTendersTable = ({
         <tbody>
           {items.length === 0 ? (
             <tr className="recent-row-empty">
-              <td colSpan={5}>No recent active tender</td>
+              <td colSpan={5}>{emptyLabel}</td>
             </tr>
           ) : (
             items.map((tender) => (
               <tr
                 key={tender.id}
-                className={`recent-row recent-row-${tender.dueStatus}`}
+                className={`recent-row${useDueStatus ? ` recent-row-${tender.dueStatus}` : ""}`}
               >
                 <td>
                   <div className="title-cell">{tender.projectTitle}</div>
@@ -40,15 +43,21 @@ const RecentTendersTable = ({
                 </td>
                 <td>{tender.client}</td>
                 <td>
-                  {formatCurrencyCode(
-                    convertValue(
-                      tender.estValue,
-                      tender.currency,
+                  {(() => {
+                    const normalizedValue = Number(tender.estValue || 0);
+                    if (!Number.isFinite(normalizedValue) || normalizedValue <= 0) {
+                      return "N/A";
+                    }
+                    return formatCurrencyCode(
+                      convertValue(
+                        tender.estValue,
+                        tender.currency,
+                        displayCurrency,
+                        usdToIdrRate,
+                      ),
                       displayCurrency,
-                      usdToIdrRate,
-                    ),
-                    displayCurrency,
-                  )}
+                    );
+                  })()}
                 </td>
                 <td>
                   <div>{formatDate(tender.dueDate)}</div>
@@ -67,4 +76,3 @@ const RecentTendersTable = ({
 );
 
 export default RecentTendersTable;
-

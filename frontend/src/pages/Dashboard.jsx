@@ -46,6 +46,7 @@ const Dashboard = () => {
     contractValueVisible,
     activeTargetLabel,
     recentTenders,
+    outstandingTenders,
     timelineYear,
     selectedMonth,
     setSelectedMonth,
@@ -188,6 +189,20 @@ const Dashboard = () => {
 
       <RecentTendersTable
         items={recentTenders}
+        title="Recent Active Tenders"
+        emptyLabel="No recent active tender"
+        useDueStatus
+        displayCurrency={displayCurrency}
+        usdToIdrRate={usdToIdrRate}
+        convertValue={convertValue}
+        formatCurrencyCode={formatCurrencyCode}
+      />
+
+      <RecentTendersTable
+        items={outstandingTenders}
+        title="Outstanding Tenders"
+        emptyLabel="No outstanding tender"
+        useDueStatus={false}
         displayCurrency={displayCurrency}
         usdToIdrRate={usdToIdrRate}
         convertValue={convertValue}

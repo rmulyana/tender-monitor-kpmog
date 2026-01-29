@@ -338,6 +338,37 @@ const useDashboardData = () => {
       });
   }, [yearTenders]);
 
+  const outstandingTenders = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dayMs = 24 * 60 * 60 * 1000;
+
+    return [...yearTenders]
+      .filter((tender) => !isTenderClosed(tender))
+      .filter((tender) => !Number.isNaN(new Date(tender.dueDate).getTime()))
+      .map((tender) => {
+        const dueDate = new Date(tender.dueDate);
+        dueDate.setHours(0, 0, 0, 0);
+        const diffMs = dueDate.getTime() - today.getTime();
+        const dueInDays = Number.isFinite(diffMs)
+          ? Math.ceil(diffMs / dayMs)
+          : 0;
+
+        return {
+          ...tender,
+          dueDate,
+          dueInDays,
+        };
+      })
+      .filter((tender) => tender.dueInDays < 0)
+      .sort((a, b) => a.dueDate - b.dueDate)
+      .map((tender) => ({
+        ...tender,
+        dueStatus: "urgent",
+        dueInLabel: `Overdue ${Math.abs(tender.dueInDays)}d`,
+      }));
+  }, [yearTenders]);
+
   const handleTargetEdit = () => {
     const currentValue = Number(targetConfig?.contractTarget) || 0;
     setTargetInputRaw(currentValue ? String(Math.trunc(currentValue)) : "");
@@ -377,6 +408,7 @@ const useDashboardData = () => {
     contractValueVisible,
     activeTargetLabel,
     recentTenders,
+    outstandingTenders,
     timelineYear,
     selectedMonth,
     setSelectedMonth,

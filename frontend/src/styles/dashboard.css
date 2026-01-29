@@ -510,10 +510,18 @@
 .recent-stage-cell .stage-pill {
   display: inline-flex;
   padding: 6px 14px;
+  width: 120px;
   border-radius: 999px;
   color: #ffffff;
   font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
   line-height: 1;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .recent-stage-cell .stage-registration {

@@ -541,12 +541,20 @@ td.sticky2.tree-empty {
   padding: var(--space-1) var(--space-4);
   font-size: 0.75rem;
   font-weight: 400;
+  text-align: center;
+  width: 120px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-badge,
 .stage-pill,
 .tenders-table .status-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid transparent;
 }
 
