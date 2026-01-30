@@ -55,8 +55,13 @@ const DetailTable = ({
             key={`${tenderId}-step-${stageName}-${stepName}`}
             className="border-b border-slate-200 bg-slate-50/40"
           >
-            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
-            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
+            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2 group-hover:bg-orange-200/20 relative">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+              />
+            </td>
+            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2 group-hover:bg-orange-200/20">
               <div className="flex items-center gap-2 pl-6 text-sm text-slate-600">
                 <span className="text-slate-400">↳</span>
                 <span>{stepName}</span>
@@ -155,9 +160,14 @@ const DetailTable = ({
           ? storedDetailStatus
           : "Not Started";
         return (
-          <DetailRow key={`${detailKey}-${index}`} className="border-b border-slate-200 bg-slate-50/40">
-            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
-            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
+        <DetailRow key={`${detailKey}-${index}`} className="border-b border-slate-200 bg-slate-50/40">
+            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2 group-hover:bg-orange-200/20 relative">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+              />
+            </td>
+            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2 group-hover:bg-orange-200/20">
               <div className="flex items-center gap-2 pl-6 text-sm text-slate-600">
                 <span className="text-slate-400">↳</span>
                 {renderEditableDetailName(

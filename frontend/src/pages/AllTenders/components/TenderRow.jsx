@@ -89,8 +89,12 @@ const TenderRow = ({
     <Fragment>
       <tr className={rowClassName} data-row-id={tender.id}>
         <td
-          className={`sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] px-3 py-3 align-top group-hover:bg-slate-50 ${stickyBgClass}`}
+          className={`sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] px-3 py-3 align-top group-hover:bg-orange-200/20 ${stickyBgClass} relative`}
         >
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+          />
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-slate-800">
               {tender.pin}
@@ -121,7 +125,7 @@ const TenderRow = ({
           </div>
         </td>
         <td
-          className={`sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] px-3 py-3 align-top group-hover:bg-slate-50 ${stickyBgClass}`}
+          className={`sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] px-3 py-3 align-top group-hover:bg-orange-200/20 ${stickyBgClass}`}
         >
           <div className="flex items-start gap-2">
             {renderEditableCell(

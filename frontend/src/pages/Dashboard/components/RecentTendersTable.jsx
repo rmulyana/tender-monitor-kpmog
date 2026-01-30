@@ -55,10 +55,10 @@ const RecentTendersTable = ({
                 className={[
                   "group",
                   useDueStatus && tender.dueStatus === "warn"
-                    ? "bg-amber-200/15 hover:bg-amber-200/25"
+                    ? "bg-amber-200/15 hover:bg-orange-200/20"
                     : "",
                   useDueStatus && tender.dueStatus === "urgent"
-                    ? "bg-rose-200/15 hover:bg-rose-200/25"
+                    ? "bg-rose-200/15 hover:bg-orange-200/20"
                     : "",
                   !useDueStatus || tender.dueStatus === "ok"
                     ? "hover:bg-orange-200/20"
@@ -67,7 +67,11 @@ const RecentTendersTable = ({
                   .filter(Boolean)
                   .join(" ")}
               >
-                <td className="border-b border-slate-100 px-4 py-3 text-left">
+                <td className="relative border-b border-slate-100 px-4 py-3 text-left">
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                  />
                   <div className="font-semibold text-slate-900">
                     {tender.projectTitle}
                   </div>
