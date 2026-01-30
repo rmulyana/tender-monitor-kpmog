@@ -43,7 +43,7 @@ const ContractValueChart = ({
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <select
-          className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 transition hover:border-orange-400"
+          className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 outline-none transition hover:border-orange-400 focus:border-slate-200 focus:hover:border-orange-400"
           aria-label="Select month for contract value"
           value={selectedMonth}
           onChange={(event) => onMonthChange(event.target.value)}
@@ -108,7 +108,16 @@ const ContractValueChart = ({
               );
             }}
           />
-          <Bar dataKey="accumulated" name="Contract Value" fill="#10b981" radius={[6, 6, 0, 0]} />
+          <Bar
+            dataKey="accumulated"
+            name="Contract Value"
+            fill="#10b981"
+            radius={[6, 6, 0, 0]}
+            isAnimationActive
+            animationDuration={1000}
+            animationBegin={0}
+            animationEasing="cubic-bezier(0.34, 1.56, 0.64, 1)"
+          />
           <Line
             type="monotone"
             dataKey="accumulated"
@@ -117,6 +126,10 @@ const ContractValueChart = ({
             strokeWidth={2}
             dot={{ r: 3 }}
             activeDot={{ r: 4 }}
+            isAnimationActive
+            animationDuration={1100}
+            animationBegin={180}
+            animationEasing="ease-out"
           >
             <LabelList
               dataKey="accumulated"
@@ -138,6 +151,10 @@ const ContractValueChart = ({
             strokeDasharray="4 4"
             dot={{ r: 3 }}
             activeDot={{ r: 4 }}
+            isAnimationActive
+            animationDuration={1100}
+            animationBegin={260}
+            animationEasing="ease-out"
           >
             <LabelList
               dataKey="target"

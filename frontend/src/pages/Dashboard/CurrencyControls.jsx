@@ -9,7 +9,7 @@ const CurrencyControls = ({
 }) => (
   <div className="flex items-center gap-2">
     <select
-      className="min-w-[70px] cursor-pointer rounded-full border border-slate-200 bg-white px-2 py-1 text-[0.7rem] font-semibold text-slate-600 transition hover:border-orange-400"
+      className="min-w-[70px] cursor-pointer rounded-full border border-slate-200 bg-white px-2 py-1 text-[0.7rem] font-semibold text-slate-600 outline-none transition hover:border-orange-400 focus:border-slate-200 focus:hover:border-orange-400"
       aria-label="Select currency"
       value={displayCurrency}
       onChange={onCurrencyChange}
