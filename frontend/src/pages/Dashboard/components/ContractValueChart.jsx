@@ -43,7 +43,7 @@ const ContractValueChart = ({
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <select
-          className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600"
+          className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 transition hover:border-orange-400"
           aria-label="Select month for contract value"
           value={selectedMonth}
           onChange={(event) => onMonthChange(event.target.value)}
@@ -56,7 +56,7 @@ const ContractValueChart = ({
         </select>
         <button
           type="button"
-          className="min-w-[130px] rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
+          className="min-w-[130px] cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 transition hover:border-orange-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
           onClick={onTargetEdit}
           disabled={isTargetLoading || isTargetSaving}
         >

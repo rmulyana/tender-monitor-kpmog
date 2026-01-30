@@ -46,7 +46,7 @@ const Shell = ({ children }) => {
           {collapsed ? (
             <button
               type="button"
-              className="grid h-10 w-10 place-items-center rounded-lg text-slate-200 transition hover:bg-white/10"
+              className="grid h-10 w-10 place-items-center rounded-lg text-slate-200 transition hover:bg-[var(--orange-400)] hover:text-white"
               onClick={() => setCollapsed(false)}
               aria-label="Expand sidebar"
               title="Expand sidebar"
@@ -62,7 +62,7 @@ const Shell = ({ children }) => {
               />
               <button
                 type="button"
-                className="ml-auto grid h-9 w-9 place-items-center rounded-lg text-slate-200 transition hover:bg-white/10"
+                className="ml-auto grid h-9 w-9 place-items-center rounded-lg text-slate-200 transition hover:bg-[var(--orange-400)] hover:text-white"
                 onClick={() => setCollapsed(true)}
                 aria-label="Collapse sidebar"
                 title="Collapse sidebar"
@@ -88,12 +88,12 @@ const Shell = ({ children }) => {
             end
             className={({ isActive }) =>
               [
-                "relative flex h-14 items-center text-slate-300 transition",
+                "group relative flex h-14 items-center text-slate-300 transition",
                 collapsed
                   ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
                   : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
                 isActive
-                  ? "bg-orange-500/20 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
+                  ? "bg-orange-500/30 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
                   : "",
               ].join(" ")
             }
@@ -109,17 +109,22 @@ const Shell = ({ children }) => {
             >
               Dashboard
             </span>
+            {collapsed ? (
+              <span className="pointer-events-none absolute left-full top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1 text-sm font-semibold text-white shadow-lg group-hover:flex">
+                Dashboard
+              </span>
+            ) : null}
           </NavLink>
           <NavLink
             to="/tenders"
             className={({ isActive }) =>
               [
-                "relative flex h-14 items-center text-slate-300 transition",
+                "group relative flex h-14 items-center text-slate-300 transition",
                 collapsed
                   ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
                   : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
                 isActive
-                  ? "bg-orange-500/20 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
+                  ? "bg-orange-500/30 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
                   : "",
               ].join(" ")
             }
@@ -135,6 +140,11 @@ const Shell = ({ children }) => {
             >
               Tender Lists
             </span>
+            {collapsed ? (
+              <span className="pointer-events-none absolute left-full top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1 text-sm font-semibold text-white shadow-lg group-hover:flex">
+                Tender Lists
+              </span>
+            ) : null}
           </NavLink>
           {/*<NavLink
             to="/pipeline"
@@ -153,7 +163,7 @@ const Shell = ({ children }) => {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="grid h-10 w-10 place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 sm:hidden"
+              className="grid h-10 w-10 place-items-center rounded-lg text-slate-500 transition hover:bg-[var(--orange-400)] hover:text-white sm:hidden"
               onClick={() => setMobileOpen(true)}
               aria-label="Open sidebar"
               title="Open sidebar"
@@ -170,7 +180,7 @@ const Shell = ({ children }) => {
 
           <div className="flex items-center gap-4">
             <select
-              className="cursor-pointer bg-transparent text-[1.05rem] font-bold text-slate-800 outline-none"
+              className="cursor-pointer rounded-lg border border-transparent bg-transparent px-2 py-1 text-[1.05rem] font-bold text-slate-800 outline-none transition hover:border-orange-400"
               aria-label="Select year"
               value={safeYear}
               onChange={(event) => setSelectedYear(event.target.value)}

@@ -22,7 +22,7 @@ const ProcessChart = ({
         Tender Process Chart
       </h2>
       <select
-        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600"
+        className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 transition hover:border-orange-400"
         aria-label="Select month"
         value={selectedMonth}
         onChange={(event) => onMonthChange(event.target.value)}

@@ -32,7 +32,7 @@ const TargetModal = ({
         <form className="grid gap-2" onSubmit={onSubmit}>
           <input
             id="annual-target"
-            className="rounded-xl border border-slate-200 px-3 py-2 text-base font-semibold text-slate-900 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20"
+            className="rounded-xl border border-slate-200 px-3 py-2 text-base font-semibold text-slate-900 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20"
             inputMode="numeric"
             placeholder="set annual target"
             value={valueRaw ? formatNumber(Number(valueRaw), "IDR") : ""}
@@ -45,7 +45,7 @@ const TargetModal = ({
           <div className="mt-1 flex justify-end gap-2">
             <button
               type="button"
-              className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[0.75rem] font-semibold text-slate-700"
+              className="cursor-pointer rounded-lg border border-slate-200 bg-white px-4 py-2 text-[0.75rem] font-semibold text-slate-700 transition hover:border-orange-400"
               onClick={() => onClose()}
               disabled={isSaving}
             >
@@ -53,7 +53,7 @@ const TargetModal = ({
             </button>
             <button
               type="submit"
-              className="rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-[0.75rem] font-semibold text-white disabled:opacity-70"
+              className="cursor-pointer rounded-lg border border-orange-500 bg-orange-500 px-4 py-2 text-[0.75rem] font-semibold text-white transition hover:border-orange-400 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)] disabled:opacity-70"
               disabled={isSaving}
             >
               {isSaving ? "Saving..." : "Save Target"}

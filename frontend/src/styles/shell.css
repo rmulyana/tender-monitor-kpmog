@@ -158,6 +158,34 @@
   padding-right: 6px;
 }
 
+/* Auto-hide scrollbars across the app */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+*:hover {
+  scrollbar-color: rgba(148, 163, 184, 0.7) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 999px;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.7);
+}
+
 .avatar-circle {
   width: 40px;
   height: 40px;
