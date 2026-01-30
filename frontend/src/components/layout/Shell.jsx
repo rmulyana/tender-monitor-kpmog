@@ -88,12 +88,12 @@ const Shell = ({ children }) => {
             end
             className={({ isActive }) =>
               [
-                "flex h-14 items-center text-slate-300 transition",
+                "relative flex h-14 items-center text-slate-300 transition",
                 collapsed
-                  ? "justify-center w-full px-0 hover:bg-orange-500/20 hover:text-white"
-                  : "gap-3 border-l-4 border-transparent px-6 hover:bg-orange-500/20 hover:text-white hover:border-orange-500",
+                  ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
+                  : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
                 isActive
-                  ? "bg-[var(--orange-400)] text-white"
+                  ? "bg-orange-500/20 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
                   : "",
               ].join(" ")
             }
@@ -114,12 +114,12 @@ const Shell = ({ children }) => {
             to="/tenders"
             className={({ isActive }) =>
               [
-                "flex h-14 items-center text-slate-300 transition",
+                "relative flex h-14 items-center text-slate-300 transition",
                 collapsed
-                  ? "justify-center w-full px-0 hover:bg-orange-500/20 hover:text-white"
-                  : "gap-3 border-l-4 border-transparent px-6 hover:bg-orange-500/20 hover:text-white hover:border-orange-500",
+                  ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
+                  : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
                 isActive
-                  ? "bg-[var(--orange-400)] text-white"
+                  ? "bg-orange-500/20 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
                   : "",
               ].join(" ")
             }
