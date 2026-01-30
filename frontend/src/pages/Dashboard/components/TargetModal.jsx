@@ -45,7 +45,7 @@ const TargetModal = ({
           <div className="mt-1 flex justify-end gap-2">
             <button
               type="button"
-              className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700"
+              className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[0.75rem] font-semibold text-slate-700"
               onClick={() => onClose()}
               disabled={isSaving}
             >
@@ -53,7 +53,7 @@ const TargetModal = ({
             </button>
             <button
               type="submit"
-              className="rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-xs font-semibold text-white disabled:opacity-70"
+              className="rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-[0.75rem] font-semibold text-white disabled:opacity-70"
               disabled={isSaving}
             >
               {isSaving ? "Saving..." : "Save Target"}

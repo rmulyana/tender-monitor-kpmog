@@ -32,9 +32,9 @@ const ContractValueChart = ({
   contractLegendItems,
 }) => (
   <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-4 border-b border-indigo-100 pb-2.5">
+    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-4 pb-2.5">
       <div className="grid gap-1">
-        <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+        <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
           Contract Value {selectedYear} (Actual vs Target)
         </h2>
         <div className="text-[0.7rem] font-semibold text-slate-500">
@@ -43,7 +43,7 @@ const ContractValueChart = ({
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <select
-          className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600"
+          className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600"
           aria-label="Select month for contract value"
           value={selectedMonth}
           onChange={(event) => onMonthChange(event.target.value)}
@@ -56,7 +56,7 @@ const ContractValueChart = ({
         </select>
         <button
           type="button"
-          className="min-w-[130px] rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
+          className="min-w-[130px] rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
           onClick={onTargetEdit}
           disabled={isTargetLoading || isTargetSaving}
         >
@@ -68,8 +68,12 @@ const ContractValueChart = ({
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data} margin={{ top: 12, right: 16, left: 0, bottom: 12 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="month" />
-          <YAxis tickFormatter={(value) => formatChartValue(value)} width={50} />
+          <XAxis dataKey="month" tick={{ fontSize: "0.75rem" }} />
+          <YAxis
+            tickFormatter={(value) => formatChartValue(value)}
+            tick={{ fontSize: "0.75rem" }}
+            width={50}
+          />
           <Tooltip
             content={({ active, payload, label }) => {
               if (!active || !payload || payload.length === 0) return null;
@@ -149,7 +153,7 @@ const ContractValueChart = ({
         </ComposedChart>
       </ResponsiveContainer>
       <div
-        className="mt-2 flex items-center justify-center gap-5 text-[0.72rem] font-medium text-slate-500"
+        className="mt-2 flex items-center justify-center gap-5 text-[0.7rem] font-medium text-slate-500"
         aria-hidden="true"
       >
         {contractLegendItems.map((item) => (

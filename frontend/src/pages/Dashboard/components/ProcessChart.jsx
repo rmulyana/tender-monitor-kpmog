@@ -17,12 +17,12 @@ const ProcessChart = ({
   CustomTooltip,
 }) => (
   <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">
-      <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 pb-2.5">
+      <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
         Tender Process Chart
       </h2>
       <select
-        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600"
+        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600"
         aria-label="Select month"
         value={selectedMonth}
         onChange={(event) => onMonthChange(event.target.value)}
@@ -78,7 +78,7 @@ const ProcessChart = ({
           </span>
         </div>
       </div>
-      <ul className="grid gap-2.5 text-[0.72rem] font-medium text-slate-500">
+      <ul className="grid gap-2.5 text-[0.7rem] font-medium text-slate-500">
         {processData.map((item) => (
           <li key={item.name} className="flex items-center gap-2">
             <span

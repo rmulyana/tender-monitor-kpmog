@@ -18,12 +18,12 @@ const StageFlowChart = ({
   CustomTooltip,
 }) => (
   <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">
-      <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 pb-2.5">
+      <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
         Monthly Stage Flow
       </h2>
       <select
-        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-600"
+        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600"
         aria-label="Select month for monthly stage flow"
         value={selectedMonth}
         onChange={(event) => onMonthChange(event.target.value)}
@@ -39,8 +39,8 @@ const StageFlowChart = ({
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data} margin={{ top: 4, right: 12, left: -10, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="month" />
-          <YAxis allowDecimals={false} />
+          <XAxis dataKey="month" tick={{ fontSize: "0.75rem" }} />
+          <YAxis allowDecimals={false} tick={{ fontSize: "0.75rem" }} />
           <Tooltip
             content={(props) => <CustomTooltip {...props} />}
             labelFormatter={(label, payload) => {
@@ -75,7 +75,7 @@ const StageFlowChart = ({
         </BarChart>
       </ResponsiveContainer>
       <div
-        className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.72rem] font-medium text-slate-500"
+        className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.7rem] font-medium text-slate-500"
         aria-hidden="true"
       >
         {stageLegend.map((item) => (

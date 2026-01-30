@@ -67,15 +67,15 @@ const Dashboard = () => {
     <div className="grid gap-6">
       {rateToast ? (
         <div
-          className="fixed right-6 top-4 z-[1400] rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-50 shadow-[0_12px_30px_rgba(15,23,42,0.35)]"
+          className="fixed right-6 top-4 z-[1400] rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-[0.75rem] font-semibold text-slate-50 shadow-[0_12px_30px_rgba(15,23,42,0.35)]"
           role="status"
         >
           {rateToast}
         </div>
       ) : null}
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-        <div className="flex items-center justify-between gap-4 border-b border-indigo-100 pb-2">
-          <h2 className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+        <div className="flex items-center justify-between gap-4 pb-2">
+          <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
             Tender Active Summary
           </h2>
           <CurrencyControls
@@ -86,13 +86,13 @@ const Dashboard = () => {
           />
         </div>
         <div className="mt-4 overflow-x-auto">
-          <div className="grid min-w-[1000px] grid-cols-6 border-t border-slate-200">
+          <div className="grid min-w-[1000px] grid-cols-6">
             {summaryColumns.map((column) => (
               <div
                 key={column.key}
                 className="flex min-h-[260px] flex-col border-r border-slate-200 px-3 last:border-r-0"
               >
-                <h3 className="mb-3 mt-3 border-b border-indigo-100 pb-1.5 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+                <h3 className="mb-3 mt-3 pb-1.5 text-[0.7rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
                   {column.title}
                 </h3>
                 <div className="grid gap-2.5">
@@ -101,7 +101,7 @@ const Dashboard = () => {
                     return (
                       <div
                         key={row.label}
-                        className="grid grid-cols-[1fr_auto] gap-1 text-[0.65rem] text-slate-500"
+                        className="grid grid-cols-[1fr_auto] gap-1 text-[0.7rem] text-slate-500"
                       >
                         <span>{row.label}</span>
                         <span
@@ -124,7 +124,7 @@ const Dashboard = () => {
                   })}
                 </div>
                 <div className="mt-auto border-t border-slate-200 pt-2 text-center">
-                  <p className="mb-1 text-[0.55rem] uppercase tracking-[0.14em] text-slate-400">
+                  <p className="mb-1 text-[0.7rem] uppercase tracking-[0.14em] text-slate-400">
                     {column.valueLabel}
                   </p>
                   <span

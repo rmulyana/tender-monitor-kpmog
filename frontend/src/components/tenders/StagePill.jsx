@@ -6,15 +6,18 @@ const stageTones = {
   Contract: "bg-emerald-500 text-white",
 };
 
-const StagePill = ({ stage }) => {
+const StagePill = ({ stage, className = "" }) => {
   const tone = stageTones[stage] || "bg-slate-200 text-slate-600";
+  const widthClass = className ? "" : "w-[140px]";
 
   return (
     <span
       className={[
-        "inline-flex h-7 w-[160px] items-center justify-center rounded-full px-4 text-center text-xs font-semibold",
+        "inline-flex h-7 items-center justify-center rounded-full px-4 text-center text-xs font-semibold",
         "truncate",
         tone,
+        widthClass,
+        className,
       ].join(" ")}
     >
       {stage}
