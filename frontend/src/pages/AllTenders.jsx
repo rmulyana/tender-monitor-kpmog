@@ -226,7 +226,6 @@ const AllTenders = () => {
       setRemovedDetailStepsByStage,
     });
 
-
   const {
     cleanupDraftTender,
     handleDeleteTender,
@@ -234,35 +233,35 @@ const AllTenders = () => {
     handleRestoreTender,
     handleDuplicateTender,
   } = useTenderRowActions({
-      allTenders,
-      editedRows,
-      mainStageById,
-      mainStatusById,
-      customStagesByTender,
-      addTender,
-      removeTender,
-      updateTender,
-      setEditedRows,
-      setMainStageById,
-      setMainStatusById,
-      setCustomStagesByTender,
-      setExpandedPin,
-      setExpandedStages,
-      setStagePickerForTender,
-      setSubitemStatusByKey,
-      setSubitemPriorityByKey,
-      setSubitemPicByKey,
-      setSubitemSubmissionByKey,
-      setSubitemAttachmentByKey,
-      setSubitemProgressByKey,
-      setDetailRowsByStage,
-      setDetailNameByKey,
-      setSubitemTimelineByKey,
-      setSubitemNotesByKey,
-      setRemovedDetailStepsByStage,
-      nextPinForTenders,
-      overdueDays,
-    });
+    allTenders,
+    editedRows,
+    mainStageById,
+    mainStatusById,
+    customStagesByTender,
+    addTender,
+    removeTender,
+    updateTender,
+    setEditedRows,
+    setMainStageById,
+    setMainStatusById,
+    setCustomStagesByTender,
+    setExpandedPin,
+    setExpandedStages,
+    setStagePickerForTender,
+    setSubitemStatusByKey,
+    setSubitemPriorityByKey,
+    setSubitemPicByKey,
+    setSubitemSubmissionByKey,
+    setSubitemAttachmentByKey,
+    setSubitemProgressByKey,
+    setDetailRowsByStage,
+    setDetailNameByKey,
+    setSubitemTimelineByKey,
+    setSubitemNotesByKey,
+    setRemovedDetailStepsByStage,
+    nextPinForTenders,
+    overdueDays,
+  });
 
   useAutoTimelineSync({
     tenders,
@@ -417,24 +416,24 @@ const AllTenders = () => {
   }, [allTenders, archivedFilter, selectedYear]);
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6 pr-8">
       <TenderFilters
         allTenders={filterSourceTenders}
         search={search}
         onSearchChange={setSearch}
         stageFilter={stageFilter}
         onStageFilterChange={setStageFilter}
-      statusFilter={statusFilter}
-      onStatusFilterChange={setStatusFilter}
-      monthFilter={monthFilter}
-      onMonthFilterChange={setMonthFilter}
-      archivedFilter={archivedFilter}
-      onArchivedFilterChange={setArchivedFilter}
-      setSortKey={setSortKey}
-      setSortDirection={setSortDirection}
-      onExportMain={handleExportMain}
-      onExportAll={handleExportAll}
-    />
+        statusFilter={statusFilter}
+        onStatusFilterChange={setStatusFilter}
+        monthFilter={monthFilter}
+        onMonthFilterChange={setMonthFilter}
+        archivedFilter={archivedFilter}
+        onArchivedFilterChange={setArchivedFilter}
+        setSortKey={setSortKey}
+        setSortDirection={setSortDirection}
+        onExportMain={handleExportMain}
+        onExportAll={handleExportAll}
+      />
 
       <TendersTable
         tenders={tenders}
@@ -498,7 +497,11 @@ const AllTenders = () => {
         onLinkDraftChange={setAttachmentLinkDraft}
         onOpenAttachment={openAttachmentInNewTab}
         onRequestRemove={(index) =>
-          handleAttachmentRemoveRequest(attachmentMenu, popoverAttachments, index)
+          handleAttachmentRemoveRequest(
+            attachmentMenu,
+            popoverAttachments,
+            index,
+          )
         }
         onChooseFile={() => attachmentFileInputRef.current?.click()}
         onFileChange={handleAttachmentFileChange}
