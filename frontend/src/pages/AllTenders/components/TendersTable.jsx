@@ -66,7 +66,7 @@ const TendersTable = ({
   });
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1300px] border-collapse text-[0.85rem] text-slate-700">
           <thead>

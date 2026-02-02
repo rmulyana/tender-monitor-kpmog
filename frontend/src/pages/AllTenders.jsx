@@ -416,7 +416,7 @@ const AllTenders = () => {
   }, [allTenders, archivedFilter, selectedYear]);
 
   return (
-    <div className="grid gap-6 pr-8">
+    <div className="grid gap-6">
       <TenderFilters
         allTenders={filterSourceTenders}
         search={search}
