@@ -62,7 +62,7 @@ const useAttachmentMenu = ({ addAttachmentForKey }) => {
       if (attachmentMenuRef.current?.contains(event.target)) {
         return;
       }
-      if (event.target.closest(".attachment-pill-button")) {
+      if (event.target.closest("[data-attachment-pill]")) {
         return;
       }
       closeAttachmentMenu();

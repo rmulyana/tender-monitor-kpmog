@@ -37,7 +37,7 @@ const useRowMenuState = () => {
       if (menuRef.current?.contains(event.target)) {
         return;
       }
-      if (event.target.closest(".menu-trigger")) {
+      if (event.target.closest("[data-row-menu-trigger]")) {
         return;
       }
       closeMenu();

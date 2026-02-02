@@ -73,7 +73,7 @@ const useTimelinePopover = ({
       if (timelineMenuRef.current?.contains(event.target)) {
         return;
       }
-      if (event.target.closest(".timeline-edit-trigger")) {
+      if (event.target.closest("[data-timeline-trigger]")) {
         return;
       }
       finalizeTimelineMenu(timelineMenu, event);
