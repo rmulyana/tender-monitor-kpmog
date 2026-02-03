@@ -18,7 +18,7 @@ const SortableHeader = ({
 
   return (
     <th
-      className={`border-b border-slate-200 px-3 py-3 text-left text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-400 ${className}`.trim()}
+      className={`border-b border-slate-200 px-3 py-3 text-left text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400 ${className}`.trim()}
       aria-sort={ariaSort}
     >
       <div className="flex items-center gap-2">

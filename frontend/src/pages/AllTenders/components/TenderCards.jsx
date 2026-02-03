@@ -15,19 +15,19 @@ const TenderCards = ({ tenders }) => (
       >
         <div className="flex items-start justify-between gap-3">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
               {tender.pin}
             </span>
-            <h3 className="mt-2 text-xs font-semibold uppercase text-slate-900">
+            <h3 className="mt-2 text-[0.75rem] font-semibold uppercase text-slate-900">
               {tender.projectTitle}
             </h3>
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-[0.7rem] text-slate-500">
               {tender.client} - {tender.location}
             </p>
           </div>
           <StatusBadge status={tender.status} />
         </div>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-700">
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-[0.7rem] text-slate-700">
           <StagePill stage={tender.stage} />
           <span className="font-medium">
             {formatCurrency(tender.estValue, tender.currency)}
@@ -42,7 +42,7 @@ const TenderCards = ({ tenders }) => (
           />
         </div>
         {tender.remarks ? (
-          <p className="mt-2 text-xs text-slate-500">{tender.remarks}</p>
+          <p className="mt-2 text-[0.7rem] text-slate-500">{tender.remarks}</p>
         ) : null}
       </article>
     ))}

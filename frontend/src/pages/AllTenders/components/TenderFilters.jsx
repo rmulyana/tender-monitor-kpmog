@@ -75,7 +75,7 @@ const TenderFilters = ({
                 placeholder="PIN / Project / Client / Etc"
                 value={search}
                 onChange={(event) => onSearchChange(event.target.value)}
-                className="h-10 w-[260px] rounded-full border border-slate-200 bg-white pl-9 pr-4 text-sm text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
+                className="h-10 w-[260px] rounded-full border border-slate-200 bg-white pl-9 pr-4 text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
               />
             </div>
           </div>
@@ -90,7 +90,7 @@ const TenderFilters = ({
               id="stageFilter"
               value={stageFilter}
               onChange={(event) => onStageFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700"
+              className="mt-2 h-10 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
             >
               {stageOptions.map((stage) => (
                 <option key={stage} value={stage}>
@@ -110,7 +110,7 @@ const TenderFilters = ({
               id="statusFilter"
               value={statusFilter}
               onChange={(event) => onStatusFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700"
+              className="mt-2 h-10 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -130,7 +130,7 @@ const TenderFilters = ({
               id="monthFilter"
               value={monthFilter}
               onChange={(event) => onMonthFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700"
+              className="mt-2 h-10 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
             >
               {monthOptions.map((month) => (
                 <option key={month.value} value={month.value}>
@@ -150,7 +150,7 @@ const TenderFilters = ({
               id="archivedFilter"
               value={archivedFilter}
               onChange={(event) => onArchivedFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700"
+              className="mt-2 h-10 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
             >
               <option value="hide">Hide</option>
               <option value="show">Show</option>
@@ -160,7 +160,7 @@ const TenderFilters = ({
 
         <div className="flex items-center gap-2">
           <button
-            className="h-10 rounded-full border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+            className="h-10 rounded-full border border-slate-200 bg-white px-5 text-[0.7rem] font-semibold text-slate-600 transition hover:bg-slate-50"
             type="button"
             onClick={resetFilters}
           >
@@ -168,14 +168,14 @@ const TenderFilters = ({
           </button>
           <div className="relative inline-flex" ref={exportMenuRef}>
             <button
-              className="h-10 rounded-l-full bg-orange-500 px-5 text-sm font-semibold text-white transition hover:bg-orange-400"
+              className="h-10 rounded-l-full bg-orange-500 px-5 text-[0.7rem] font-semibold text-white transition hover:bg-orange-400"
               type="button"
               onClick={onExportMain}
             >
               Export
             </button>
             <button
-              className="h-10 rounded-r-full bg-orange-500 px-3 text-sm font-semibold text-white transition hover:bg-orange-400"
+              className="h-10 rounded-r-full bg-orange-500 px-3 text-[0.7rem] font-semibold text-white transition hover:bg-orange-400"
               type="button"
               aria-haspopup="menu"
               aria-expanded={isExportOpen}
@@ -185,7 +185,7 @@ const TenderFilters = ({
             </button>
             {isExportOpen ? (
               <div
-                className="absolute right-0 top-full z-20 mt-2 w-36 rounded-xl border border-slate-200 bg-white p-1 text-sm shadow-lg"
+                className="absolute right-0 top-full z-20 mt-2 w-36 rounded-xl border border-slate-200 bg-white p-1 text-[0.7rem] shadow-lg"
                 role="menu"
               >
                 <button

@@ -29,7 +29,7 @@ const RowMenuDropdown = ({
   return (
     <div
       ref={menuRef}
-      className="absolute z-50 w-44 rounded-xl border border-slate-200 bg-white p-1 text-sm shadow-lg"
+      className="absolute z-50 w-44 rounded-xl border border-slate-200 bg-white p-1 text-[0.7rem] shadow-lg"
       role="menu"
       style={{
         top: `${menuPosition.top}px`,

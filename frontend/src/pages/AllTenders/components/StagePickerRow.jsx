@@ -20,7 +20,7 @@ const StagePickerRow = ({
           {isStagePickerOpen ? (
             <div className="grid gap-2">
               <select
-                className="h-8 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600"
+                className="h-8 rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-600"
                 autoFocus
                 value={stagePickerValue}
                 onChange={onStagePickerChange}
@@ -37,7 +37,7 @@ const StagePickerRow = ({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  className="rounded-full border border-slate-200 bg-white px-4 py-1 text-xs font-semibold text-slate-600"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-1 text-[0.7rem] font-semibold text-slate-600"
                   onClick={onCancelStagePicker}
                 >
                   Cancel
@@ -46,7 +46,7 @@ const StagePickerRow = ({
             </div>
           ) : (
             <button
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition hover:text-slate-600"
+              className="inline-flex items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
               type="button"
               onClick={onOpenStagePicker}
             >

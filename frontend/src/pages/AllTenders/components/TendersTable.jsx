@@ -68,7 +68,7 @@ const TendersTable = ({
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[1300px] border-collapse text-[0.85rem] text-slate-700">
+        <table className="w-full min-w-[1300px] border-collapse text-[0.7rem] text-slate-700">
           <thead>
             <TableHeaderRow renderSortableHeader={renderSortableHeader} />
           </thead>
@@ -157,8 +157,8 @@ const TendersTable = ({
           onCancelSubitemDelete={() => setConfirmSubitemDelete(null)}
         />
         {tenders.length === 0 && (
-          <div className="p-8 text-center text-sm text-slate-500">
-            <h3 className="text-base font-semibold text-slate-700">
+          <div className="p-8 text-center text-[0.7rem] text-slate-500">
+            <h3 className="text-[0.75rem] font-semibold text-slate-700">
               No tenders found
             </h3>
             <p className="mt-1">Try adjusting search or filters.</p>

@@ -13,7 +13,7 @@ const MainStageSelect = ({ value, onChange, onBlur, isLocked = false }) => {
   return (
     <select
       className={[
-        "h-7 w-full min-w-[140px] max-w-[160px] rounded-full border border-transparent px-4 text-xs font-semibold text-center",
+        "h-7 w-full min-w-[140px] max-w-[160px] rounded-full border border-transparent px-4 text-[0.7rem] font-semibold text-center",
         "appearance-none",
         toneClass,
         isLocked ? "cursor-not-allowed opacity-70" : "cursor-pointer",

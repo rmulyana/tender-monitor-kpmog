@@ -59,7 +59,7 @@ const StageRow = ({
           ) : (
             <span className="h-5 w-5" />
           )}
-          <span className="text-sm font-semibold text-slate-700">
+          <span className="text-[0.7rem] font-semibold text-slate-700">
             {stageName}
           </span>
           {onRequestStageDelete ? (

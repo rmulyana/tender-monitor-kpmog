@@ -93,7 +93,7 @@ const TenderRow = ({
             className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
           />
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-slate-800">
+            <span className="text-[0.7rem] font-semibold text-slate-800">
               {tender.pin}
             </span>
             <button
