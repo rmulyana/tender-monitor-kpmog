@@ -1,10 +1,6 @@
 const DetailRow = ({ className, children }) => (
   <tr
-    className={[
-      "group",
-      "hover:bg-orange-200/20",
-      className,
-    ]
+    className={["group", className]
       .filter(Boolean)
       .join(" ")}
   >

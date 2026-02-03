@@ -25,13 +25,13 @@ const StageRow = ({
 }) => {
   return (
     <>
-      <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-200/20 relative">
+      <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
         <span
           aria-hidden="true"
           className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
         />
       </td>
-      <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-200/20">
+      <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100">
         <div className="flex items-center gap-2 pl-3">
           {canExpand ? (
             <button
@@ -99,32 +99,32 @@ const StageRow = ({
           ) : null}
         </div>
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
         <SubitemStatusSelect
           value={stageStatus}
           options={stageStatusOptions}
           onChange={(value) => handleSubitemStatusChange(stageKey, value)}
         />
       </td>
-      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
+      <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderPicField(stageKey)}
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderSubmissionSelect(stageKey)}
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderAttachmentCell(stageKey, "")}
       </td>
-      <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2">
+      <td className="w-[100px] min-w-[100px] max-w-[100px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderProgressSlider(stageKey, 0)}
       </td>
-      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2">
+      <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
         <SubitemPrioritySelect
           value={stagePriority}
           onChange={(value) => handleSubitemPriorityChange(stageKey, value)}
         />
       </td>
-      <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2">
+      <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderEditableSubitemTimelineCell(
           stageKey,
           timelineStart,
@@ -132,7 +132,7 @@ const StageRow = ({
           true,
         )}
       </td>
-      <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2}>
+      <td className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100" colSpan={2}>
         {renderEditableSubitemNotes(stageKey, stageNotes, "Add notes", true)}
       </td>
     </>
