@@ -40,7 +40,7 @@ const EditableCell = ({
   }
 
   const placeholderClass = usePillPlaceholder
-    ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400"
+    ? "inline-flex h-7 items-center justify-center whitespace-nowrap rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400 text-center"
     : "text-slate-400";
 
   const alignClass = className.includes("text-center") ? "text-center" : "text-left";

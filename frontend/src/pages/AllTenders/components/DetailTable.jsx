@@ -121,7 +121,7 @@ const DetailTable = ({
                 onChange={(value) => handleSubitemStatusChange(stepKey, value)}
               />
             </td>
-            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 text-center group-hover:bg-orange-100">
               {renderPicField(stepKey)}
             </td>
             <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
@@ -248,7 +248,7 @@ const DetailTable = ({
                 }
               />
             </td>
-            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 text-center group-hover:bg-orange-100">
               {renderPicField(detailKey)}
             </td>
             <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">

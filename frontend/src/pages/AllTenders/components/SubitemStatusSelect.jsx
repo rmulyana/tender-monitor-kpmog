@@ -10,7 +10,7 @@ const SubitemStatusSelect = ({ value, options, onChange }) => {
   return (
     <select
       className={[
-        "h-7 w-[120px] rounded-full border border-transparent px-4 text-[0.7rem] font-semibold text-center",
+        "h-7 w-[120px] rounded-full border border-transparent px-4 text-[0.7rem] font-semibold text-center cursor-pointer",
         "appearance-none",
         toneClass,
       ].join(" ")}

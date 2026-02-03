@@ -11,7 +11,7 @@ const PicField = ({
   if (isEditing) {
     return (
       <input
-        className="h-8 w-full rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
+        className="h-8 w-full rounded-full border border-slate-200 bg-white px-4 text-center text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
         type="text"
         value={inputValue}
         placeholder="Search PIC"
@@ -35,7 +35,7 @@ const PicField = ({
   return (
     <button
       type="button"
-      className="inline-flex items-center gap-2 text-[0.7rem] font-semibold text-slate-600 hover:text-slate-800"
+      className="inline-flex w-full items-center justify-center gap-2 text-[0.7rem] font-semibold text-slate-600 hover:text-slate-800 cursor-pointer"
       onClick={onBeginEdit}
     >
       {renderDisplay(value)}

@@ -57,10 +57,13 @@ const AttachmentPopover = ({
           {attachments.map((attachment, index) => {
             const label = getAttachmentLabel(attachment) || "Attachment";
             return (
-              <div key={`${label}-${index}`} className="flex items-center gap-2">
+              <div
+                key={`${label}-${index}`}
+                className="flex min-w-0 items-center gap-2"
+              >
                 <button
                   type="button"
-                  className="flex-1 truncate text-left text-xs font-medium text-slate-600 hover:text-slate-800"
+                  className="min-w-0 max-w-full flex-1 truncate text-left text-xs font-medium text-slate-600 hover:text-slate-800"
                   title={label}
                   onClick={() => onOpenAttachment(attachment)}
                 >
