@@ -6,7 +6,7 @@ const ProgressSlider = ({ value, color, onChange }) => {
         style={{ width: `${value}%`, background: color }}
       />
       <input
-        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+        className="absolute inset-0 h-full w-full cursor-pointer appearance-none bg-transparent opacity-0 transition-opacity hover:opacity-100"
         type="range"
         min="0"
         max="100"

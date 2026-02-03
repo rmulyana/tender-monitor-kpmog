@@ -16,7 +16,7 @@ const EditableTimelineCell = ({
     <button
       type="button"
       data-timeline-trigger
-      className="w-full text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
+      className="w-full cursor-pointer text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
       onClick={onOpen}
     >
       {hasTimeline ? (

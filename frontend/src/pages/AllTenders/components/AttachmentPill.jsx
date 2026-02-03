@@ -13,7 +13,7 @@ const AttachmentPill = ({ attachments, onClick }) => {
       type="button"
       data-attachment-pill
       className={[
-        "inline-flex h-7 max-w-[200px] items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-600",
+        "inline-flex h-7 max-w-[200px] items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-600 cursor-pointer",
         isEmpty ? "text-slate-400" : "text-slate-700",
       ].join(" ")}
       onClick={(event) => onClick(event, normalized)}
