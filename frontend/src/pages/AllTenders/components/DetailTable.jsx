@@ -35,11 +35,14 @@ const DetailTable = ({
   isOpen,
   showAddItem,
   onAddDetailRow,
+  omitPinColumn = false,
 }) => {
   if (!isOpen) return null;
 
   const hiddenSteps = removedStepsByStage?.[stageKey] ?? [];
-  const visibleSteps = steps.filter((stepName) => !hiddenSteps.includes(stepName));
+  const visibleSteps = steps.filter(
+    (stepName) => !hiddenSteps.includes(stepName),
+  );
 
   return (
     <Fragment>
@@ -55,14 +58,23 @@ const DetailTable = ({
             key={`${tenderId}-step-${stageName}-${stepName}`}
             className="border-b border-slate-200"
           >
-            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
-              <span
-                aria-hidden="true"
-                className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-              />
-            </td>
-            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100">
-              <div className="flex items-center gap-2 pl-6 text-[0.7rem] text-slate-600">
+            {!omitPinColumn && (
+              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                />
+              </td>
+            )}
+            <td
+              className={[
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
+                omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+              ].join(" ")}
+            >
+              <div
+                className={`flex items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
+              >
                 <span className="text-slate-400">↳</span>
                 <span>{stepName}</span>
                 {onRequestStepDelete ? (
@@ -123,10 +135,10 @@ const DetailTable = ({
             <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
               {renderAttachmentCell(stepKey, meta.attachment)}
             </td>
-            <td className="w-[100px] min-w-[100px] max-w-[100px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
               {renderProgressSlider(stepKey, 0)}
             </td>
-            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
               <SubitemPrioritySelect
                 value={subitemPriorityByKey[stepKey] ?? ""}
                 onChange={(value) =>
@@ -142,7 +154,10 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100" colSpan={2}>
+            <td
+              className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100"
+              colSpan={2}
+            >
               {renderEditableSubitemNotes(
                 stepKey,
                 subitemNotesByKey[stepKey] ?? "",
@@ -160,15 +175,27 @@ const DetailTable = ({
           ? storedDetailStatus
           : "Not Started";
         return (
-        <DetailRow key={`${detailKey}-${index}`} className="border-b border-slate-200">
-            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
-              <span
-                aria-hidden="true"
-                className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-              />
-            </td>
-            <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100">
-              <div className="flex items-center gap-2 pl-6 text-[0.7rem] text-slate-600">
+          <DetailRow
+            key={`${detailKey}-${index}`}
+            className="border-b border-slate-200"
+          >
+            {!omitPinColumn && (
+              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                />
+              </td>
+            )}
+            <td
+              className={[
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
+                omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+              ].join(" ")}
+            >
+              <div
+                className={`flex items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
+              >
                 <span className="text-slate-400">↳</span>
                 {renderEditableDetailName(
                   detailKey,
@@ -216,7 +243,9 @@ const DetailTable = ({
               <SubitemStatusSelect
                 value={detailStatus}
                 options={DETAIL_STATUS_OPTIONS}
-                onChange={(value) => handleSubitemStatusChange(detailKey, value)}
+                onChange={(value) =>
+                  handleSubitemStatusChange(detailKey, value)
+                }
               />
             </td>
             <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
@@ -233,10 +262,10 @@ const DetailTable = ({
             <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
               {renderAttachmentCell(detailKey, "")}
             </td>
-            <td className="w-[100px] min-w-[100px] max-w-[100px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
               {renderProgressSlider(detailKey, 0)}
             </td>
-            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
               <SubitemPrioritySelect
                 value={subitemPriorityByKey[detailKey] ?? ""}
                 onChange={(value) =>
@@ -252,7 +281,10 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100" colSpan={2}>
+            <td
+              className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100"
+              colSpan={2}
+            >
               {renderEditableSubitemNotes(
                 detailKey,
                 subitemNotesByKey[detailKey] ?? "",
@@ -267,11 +299,20 @@ const DetailTable = ({
       {showAddItem && (
         <DetailRow
           key={`${tenderId}-add-${stageName}`}
-          className="border-b border-slate-200 bg-slate-50/40"
+          className="border-b border-slate-200 bg-white"
         >
-          <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
-          <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
-            <div className="flex items-center gap-2 pl-6">
+          {!omitPinColumn && (
+            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
+          )}
+          <td
+            className={[
+              "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2",
+              omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+            ].join(" ")}
+          >
+            <div
+              className={`flex items-center gap-2 ${omitPinColumn ? "pl-8" : "pl-6"}`}
+            >
               <button
                 type="button"
                 className="inline-flex items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
@@ -288,10 +329,13 @@ const DetailTable = ({
           <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
           <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
           <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-          <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2" />
-          <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
+          <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
+          <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
           <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2" />
-          <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2} />
+          <td
+            className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2"
+            colSpan={2}
+          />
         </DetailRow>
       )}
     </Fragment>

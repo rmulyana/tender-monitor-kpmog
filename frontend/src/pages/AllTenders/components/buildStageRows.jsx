@@ -41,6 +41,7 @@ const buildStageRows = ({
   onRequestDetailDelete,
   onRequestStepDelete,
   onRequestStageDelete,
+  isNested = false,
 }) => {
   const {
     renderSubmissionSelect,
@@ -101,6 +102,7 @@ const buildStageRows = ({
         <StageRow
           stageKey={key}
           stageName={stage.name}
+          omitPinColumn={isNested}
           canExpand={canExpand}
           isStageOpen={isStageOpen}
           stageStatus={stageStatus}
@@ -133,6 +135,7 @@ const buildStageRows = ({
         tenderId={tender.id}
         stageKey={key}
         stageName={stage.name}
+        omitPinColumn={isNested}
         steps={steps}
         detailKeys={detailRowsByStage[key] ?? []}
         detailNameByKey={detailNameByKey}
@@ -167,6 +170,7 @@ const buildStageRows = ({
       isStagePickerOpen={isStagePickerOpen}
       stagePickerValue={stagePickerValue}
       availableStages={availableStages}
+      omitPinColumn={isNested}
       onStagePickerChange={(event) => {
         const value = event.target.value;
         setStagePickerValue(value);

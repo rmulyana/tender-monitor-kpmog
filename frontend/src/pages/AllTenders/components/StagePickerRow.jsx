@@ -8,15 +8,23 @@ const StagePickerRow = ({
   onStagePickerChange,
   onCancelStagePicker,
   onOpenStagePicker,
+  omitPinColumn = false,
 }) => {
   return (
     <DetailRow
       key={`${tenderId}-add-subitem`}
-      className="border-b border-slate-200 bg-slate-50/40"
+      className="border-b border-slate-200 bg-white"
     >
-      <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-slate-50/40 px-3 py-2" />
-      <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-slate-50/40 px-3 py-2">
-        <div className="pl-3">
+      {!omitPinColumn && (
+        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
+      )}
+      <td
+        className={[
+          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2",
+          omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+        ].join(" ")}
+      >
+        <div className={omitPinColumn ? "pl-1" : "pl-3"}>
           {isStagePickerOpen ? (
             <div className="grid gap-2">
               <select
@@ -53,7 +61,7 @@ const StagePickerRow = ({
               <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500">
                 +
               </span>
-              <span>Add item</span>
+              <span>Add stage</span>
             </button>
           )}
         </div>
@@ -62,8 +70,8 @@ const StagePickerRow = ({
       <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
       <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
       <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-      <td className="w-[100px] min-w-[100px] max-w-[100px] px-3 py-2" />
-      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
       <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2" />
       <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2} />
     </DetailRow>

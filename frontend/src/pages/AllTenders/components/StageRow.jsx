@@ -12,6 +12,7 @@ const StageRow = ({
   timelineStart,
   timelineDue,
   stageNotes,
+  omitPinColumn = false,
   renderPicField,
   renderSubmissionSelect,
   renderAttachmentCell,
@@ -25,14 +26,21 @@ const StageRow = ({
 }) => {
   return (
     <>
-      <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
-        <span
-          aria-hidden="true"
-          className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-        />
-      </td>
-      <td className="sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100">
-        <div className="flex items-center gap-2 pl-3">
+      {!omitPinColumn && (
+        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+          />
+        </td>
+      )}
+      <td
+        className={[
+          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
+          omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+        ].join(" ")}
+      >
+        <div className={`flex items-center gap-2 ${omitPinColumn ? "pl-1" : "pl-3"}`}>
           {canExpand ? (
             <button
               className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
@@ -115,10 +123,10 @@ const StageRow = ({
       <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderAttachmentCell(stageKey, "")}
       </td>
-      <td className="w-[100px] min-w-[100px] max-w-[100px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
         {renderProgressSlider(stageKey, 0)}
       </td>
-      <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
         <SubitemPrioritySelect
           value={stagePriority}
           onChange={(value) => handleSubitemPriorityChange(stageKey, value)}
