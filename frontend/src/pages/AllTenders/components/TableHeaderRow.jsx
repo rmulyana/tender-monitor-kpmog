@@ -12,7 +12,7 @@ const TableHeaderRow = ({ renderSortableHeader }) => (
       ) : (
         <th
           key={header.key ?? header.label}
-          className={`border-b border-slate-200 px-3 py-3 text-left text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400 ${header.className}`}
+          className={`border-b border-slate-200 px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800 ${header.className}`}
         >
           {header.label}
         </th>

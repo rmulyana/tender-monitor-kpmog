@@ -180,7 +180,7 @@ const Shell = ({ children }) => {
 
           <div className="flex items-center gap-4">
             <select
-              className="cursor-pointer rounded-lg border border-transparent bg-transparent px-2 py-1 text-[1.05rem] font-bold text-slate-800 outline-none transition hover:border-orange-400"
+              className="cursor-pointer rounded-lg border border-transparent bg-transparent px-2 py-1 text-center text-[1.05rem] font-bold text-slate-800 outline-none transition hover:border-orange-400"
               aria-label="Select year"
               value={safeYear}
               onChange={(event) => setSelectedYear(event.target.value)}

@@ -55,12 +55,12 @@ const TenderFilters = ({
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex flex-wrap items-end gap-4">
+      <div className="flex items-end gap-4">
+        <div className="flex flex-1 items-end gap-4">
           <div className="min-w-[220px]">
             <label
               htmlFor="tenderSearch"
-              className="block text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+              className="block text-[0.7rem] font-semibold text-slate-400"
             >
               Search
             </label>
@@ -75,14 +75,14 @@ const TenderFilters = ({
                 placeholder="PIN / Project / Client / Etc"
                 value={search}
                 onChange={(event) => onSearchChange(event.target.value)}
-                className="h-10 w-[260px] rounded-full border border-slate-200 bg-white pl-9 pr-4 text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
+                className="h-8 w-[220px] rounded-full border border-slate-200 bg-white pl-9 pr-4 text-[0.7rem] text-slate-700 outline-none transition hover:border-orange-400 focus:border-orange-400 cursor-pointer"
               />
             </div>
           </div>
           <div>
             <label
               htmlFor="stageFilter"
-              className="block text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+              className="block text-[0.7rem] font-semibold text-slate-400"
             >
               Stage
             </label>
@@ -90,7 +90,7 @@ const TenderFilters = ({
               id="stageFilter"
               value={stageFilter}
               onChange={(event) => onStageFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
+              className="mt-2 h-8 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700 transition hover:border-orange-400 focus:border-orange-400 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 cursor-pointer"
             >
               {stageOptions.map((stage) => (
                 <option key={stage} value={stage}>
@@ -102,7 +102,7 @@ const TenderFilters = ({
           <div>
             <label
               htmlFor="statusFilter"
-              className="block text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+              className="block text-[0.7rem] font-semibold text-slate-400"
             >
               Status
             </label>
@@ -110,7 +110,7 @@ const TenderFilters = ({
               id="statusFilter"
               value={statusFilter}
               onChange={(event) => onStatusFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
+              className="mt-2 h-8 min-w-[160px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700 transition hover:border-orange-400 focus:border-orange-400 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 cursor-pointer"
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -122,7 +122,7 @@ const TenderFilters = ({
           <div>
             <label
               htmlFor="monthFilter"
-              className="block text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+              className="block text-[0.7rem] font-semibold text-slate-400"
             >
               Month
             </label>
@@ -130,7 +130,7 @@ const TenderFilters = ({
               id="monthFilter"
               value={monthFilter}
               onChange={(event) => onMonthFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
+              className="mt-2 h-8 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700 transition hover:border-orange-400 focus:border-orange-400 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 cursor-pointer"
             >
               {monthOptions.map((month) => (
                 <option key={month.value} value={month.value}>
@@ -142,7 +142,7 @@ const TenderFilters = ({
           <div>
             <label
               htmlFor="archivedFilter"
-              className="block text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+              className="block text-[0.7rem] font-semibold text-slate-400"
             >
               Archived
             </label>
@@ -150,7 +150,7 @@ const TenderFilters = ({
               id="archivedFilter"
               value={archivedFilter}
               onChange={(event) => onArchivedFilterChange(event.target.value)}
-              className="mt-2 h-10 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700"
+              className="mt-2 h-8 min-w-[120px] rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-700 transition hover:border-orange-400 focus:border-orange-400 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 cursor-pointer"
             >
               <option value="hide">Hide</option>
               <option value="show">Show</option>
@@ -158,9 +158,9 @@ const TenderFilters = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end">
           <button
-            className="h-10 rounded-full border border-slate-200 bg-white px-5 text-[0.7rem] font-semibold text-slate-600 transition hover:bg-slate-50"
+            className="h-8 rounded-full border border-slate-200 bg-white px-5 text-[0.7rem] font-semibold text-slate-600 transition hover:bg-slate-50 hover:border-orange-400 cursor-pointer"
             type="button"
             onClick={resetFilters}
           >
@@ -168,14 +168,14 @@ const TenderFilters = ({
           </button>
           <div className="relative inline-flex" ref={exportMenuRef}>
             <button
-              className="h-10 rounded-l-full bg-orange-500 px-5 text-[0.7rem] font-semibold text-white transition hover:bg-orange-400"
+              className="h-8 rounded-l-full bg-orange-500 px-5 text-[0.7rem] font-semibold text-white transition hover:bg-orange-400 hover:border-orange-400 cursor-pointer"
               type="button"
               onClick={onExportMain}
             >
               Export
             </button>
             <button
-              className="h-10 rounded-r-full bg-orange-500 px-3 text-[0.7rem] font-semibold text-white transition hover:bg-orange-400"
+              className="h-8 rounded-r-full bg-orange-500 px-3 text-[0.7rem] font-semibold text-white transition hover:bg-orange-400 hover:border-orange-400 cursor-pointer"
               type="button"
               aria-haspopup="menu"
               aria-expanded={isExportOpen}
@@ -189,7 +189,7 @@ const TenderFilters = ({
                 role="menu"
               >
                 <button
-                  className="w-full rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100"
+                  className="w-full rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100 cursor-pointer"
                   type="button"
                   onClick={() => {
                     onExportMain();
@@ -199,7 +199,7 @@ const TenderFilters = ({
                   Main Table
                 </button>
                 <button
-                  className="w-full rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100"
+                  className="w-full rounded-lg px-3 py-2 text-left text-slate-600 hover:bg-slate-100 cursor-pointer"
                   type="button"
                   onClick={() => {
                     onExportAll();

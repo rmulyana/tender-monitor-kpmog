@@ -72,32 +72,32 @@ const SubitemBlock = ({
             <table className="w-full border-collapse text-[0.7rem] text-slate-700">
               <thead className="bg-slate-50">
                 <tr>
-                  <td className="w-[260px] min-w-[260px] max-w-[260px] px-4 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[260px] min-w-[260px] max-w-[260px] px-4 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Subitem
                   </td>
-                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Status
                   </td>
-                  <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     PIC
                   </td>
-                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Submission
                   </td>
-                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Attachment
                   </td>
-                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Progress
                   </td>
-                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Priority
                   </td>
-                  <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Timeline
                   </td>
                   <td
-                    className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
+                    className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800"
                     colSpan={2}
                   >
                     Notes

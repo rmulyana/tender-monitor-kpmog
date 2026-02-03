@@ -128,6 +128,7 @@ const createTenderRenderers = ({
     editValue,
     placeholder = "Add value",
     usePillPlaceholder = false,
+    className = "",
   ) => {
     const isEditing =
       editingCell?.id === id && editingCell?.field === "estValue";
@@ -160,6 +161,7 @@ const createTenderRenderers = ({
         }}
         placeholder={placeholder}
         usePillPlaceholder={usePillPlaceholder}
+        className={className}
       />
     );
   };
@@ -320,7 +322,7 @@ const createTenderRenderers = ({
     if (isEditing) {
       return (
         <input
-          className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
+          className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-center text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
           type="text"
           value={editDraft}
           autoFocus
@@ -399,7 +401,7 @@ const createTenderRenderers = ({
     return (
       <button
         type="button"
-        className="w-full text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
+        className="w-full text-center text-[0.7rem] text-slate-700 transition hover:text-slate-900"
         onClick={() => beginEditDetailSubmission(key, value)}
       >
         {isEmpty ? <span className={placeholderClass}>{placeholder}</span> : value}

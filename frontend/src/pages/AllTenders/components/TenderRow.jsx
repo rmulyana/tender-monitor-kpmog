@@ -165,19 +165,19 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-top ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "location",
             displayTender.location,
-            "",
+            "text-center",
             displayTender.location,
             displayTender.location,
             "Add location",
             true,
           )}
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top whitespace-nowrap ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-top whitespace-nowrap ${rowBgClass}`}>
           {renderEditableEstValueCell(
             tender.id,
             displayEstValue,
@@ -186,6 +186,7 @@ const TenderRow = ({
             editEstValue,
             "Add value",
             true,
+            "text-center",
           )}
         </td>
         <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top ${rowBgClass}`}>

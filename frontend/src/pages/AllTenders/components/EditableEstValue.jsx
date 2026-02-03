@@ -38,6 +38,7 @@ const EditableEstValue = ({
   onBeginEdit,
   onCommit,
   onCancel,
+  className = "",
   placeholder = "Add value",
   usePillPlaceholder = false,
 }) => {
@@ -66,11 +67,13 @@ const EditableEstValue = ({
       ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400"
       : "text-slate-400";
 
+    const alignClass = className.includes("text-center") ? "text-center" : "text-left";
+
     return (
       <div>
         <button
           type="button"
-          className="w-full text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
+          className={`w-full ${alignClass} text-[0.7rem] text-slate-700 transition hover:text-slate-900 ${className}`.trim()}
           onClick={onBeginEdit}
         >
           {isEmptyValue ? (

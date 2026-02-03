@@ -9,7 +9,7 @@ const SubmissionSelect = ({ value, onChange, placeholder = "Set Submission" }) =
   return (
     <select
       className={[
-        "h-7 w-[120px] rounded-full border border-transparent px-4 text-[0.7rem] font-semibold text-center",
+        "mx-auto block h-7 w-[120px] rounded-full border border-transparent px-4 text-[0.7rem] font-semibold text-center",
         "appearance-none",
         toneClass,
       ].join(" ")}
