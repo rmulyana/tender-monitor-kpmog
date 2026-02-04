@@ -73,11 +73,16 @@ const StageRow = ({
           {onRequestStageDelete ? (
             <button
               type="button"
-              className="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-slate-600"
+              className="ml-auto inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
               aria-label={`Delete ${stageName}`}
               onClick={onRequestStageDelete}
             >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+                className="h-4 w-4"
+              >
                 <path
                   d="M4 7h16"
                   stroke="currentColor"

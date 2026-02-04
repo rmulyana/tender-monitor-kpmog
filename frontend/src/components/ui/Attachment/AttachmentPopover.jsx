@@ -33,7 +33,7 @@ const AttachmentPopover = ({
           type="button"
           className={`flex-1 rounded-full border px-3 py-2 text-xs font-semibold ${
             tab === "upload"
-              ? "border-blue-500 bg-blue-50 text-blue-600"
+              ? "border-orange-500 bg-orange-50 text-orange-600"
               : "border-slate-200 text-slate-500"
           }`}
           onClick={() => onTabChange("upload")}
@@ -44,7 +44,7 @@ const AttachmentPopover = ({
           type="button"
           className={`flex-1 rounded-full border px-3 py-2 text-xs font-semibold ${
             tab === "embed"
-              ? "border-blue-500 bg-blue-50 text-blue-600"
+              ? "border-orange-500 bg-orange-50 text-orange-600"
               : "border-slate-200 text-slate-500"
           }`}
           onClick={() => onTabChange("embed")}
@@ -142,7 +142,7 @@ const AttachmentPopover = ({
           />
           <button
             type="button"
-            className="w-full rounded-full bg-blue-500 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-400"
+            className="w-full rounded-full bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-400"
             onClick={onLinkSave}
           >
             Add link
