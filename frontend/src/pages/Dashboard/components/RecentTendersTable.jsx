@@ -1,4 +1,4 @@
-import StagePill from "../../../components/tenders/StagePill.jsx";
+import StagePillStatic from "../../../components/tenders/StagePillStatic.jsx";
 import { formatDate } from "../../../utils/formatters.js";
 
 const RecentTendersTable = ({
@@ -116,7 +116,10 @@ const RecentTendersTable = ({
                   </div>
                 </td>
                 <td className="border-b border-slate-100 px-4 py-3 text-left">
-                  <StagePill stage={tender.stage} className="w-full min-w-0" />
+                  <StagePillStatic
+                    stage={tender.stage}
+                    className="w-full min-w-0"
+                  />
                 </td>
               </tr>
             ))

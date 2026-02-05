@@ -1,4 +1,4 @@
-import StagePill from "../../../components/tenders/StagePill.jsx";
+import StagePillStatic from "../../../components/tenders/StagePillStatic.jsx";
 import StatusBadge from "../../../components/tenders/StatusBadge.jsx";
 import TenderTimeline from "../../../components/ui/Timeline/TenderTimeline.jsx";
 import {
@@ -28,7 +28,7 @@ const TenderCards = ({ tenders }) => (
           <StatusBadge status={tender.status} />
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2 text-[0.7rem] text-slate-700">
-          <StagePill stage={tender.stage} />
+          <StagePillStatic stage={tender.stage} />
           <span className="font-medium">
             {formatCurrency(tender.estValue, tender.currency)}
           </span>

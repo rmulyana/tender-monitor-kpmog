@@ -6,9 +6,9 @@ const stageTones = {
   Contract: "bg-emerald-500 text-white",
 };
 
-const StagePill = ({ stage, className = "" }) => {
+const StagePillStatic = ({ stage, className = "" }) => {
   const tone = stageTones[stage] || "bg-slate-200 text-slate-600";
-  const widthClass = className ? "" : "w-[140px]";
+  const widthClass = className ? "" : "w-[120px]";
 
   return (
     <span
@@ -25,4 +25,4 @@ const StagePill = ({ stage, className = "" }) => {
   );
 };
 
-export default StagePill;
+export default StagePillStatic;
