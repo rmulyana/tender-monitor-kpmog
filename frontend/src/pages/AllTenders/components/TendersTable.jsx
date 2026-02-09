@@ -73,12 +73,17 @@ const TendersTable = ({
             <TableHeaderRow renderSortableHeader={renderSortableHeader} />
           </thead>
           <tbody>
-            {tenders.map((tender) => (
+            {tenders.map((tender, index) => {
+              const prevTender = tenders[index - 1];
+              const showTopBorder =
+                Boolean(prevTender) && expandedPin === prevTender.id;
+              return (
               <TenderRow
                 key={tender.id}
                 tender={tender}
                 editedRows={editedRows}
                 expandedPin={expandedPin}
+                showTopBorder={showTopBorder}
                 expandedStages={expandedStages}
                 customStagesByTender={customStagesByTender}
                 stagePickerForTender={stagePickerForTender}
@@ -132,7 +137,8 @@ const TendersTable = ({
                 setStagePickerValue={setStagePickerValue}
                 onToggleMenu={toggleMenu}
               />
-            ))}
+              );
+            })}
             <AddItemRow onAdd={handleAddTender} />
           </tbody>
         </table>

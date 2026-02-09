@@ -44,6 +44,7 @@ const TenderRow = ({
   setStagePickerForTender,
   setStagePickerValue,
   onToggleMenu,
+  showTopBorder = false,
 }) => {
   const {
     renderEditableCell,
@@ -80,7 +81,12 @@ const TenderRow = ({
   const isArchived = Boolean(tender.archived);
   const rowBgClass = "bg-white group-hover:bg-orange-100";
 
-  const rowClassName = tenderRowClass({ isArchived });
+  const rowClassName = [
+    tenderRowClass({ isArchived }),
+    showTopBorder ? "border-t border-slate-200" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <Fragment>
