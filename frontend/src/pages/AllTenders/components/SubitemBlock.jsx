@@ -73,7 +73,7 @@ const SubitemBlock = ({
               <thead className="bg-slate-50">
                 <tr>
                   <td className="w-[260px] min-w-[260px] max-w-[260px] px-4 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
-                    Subitem
+                    Activity
                   </td>
                   <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-slate-800">
                     Status
