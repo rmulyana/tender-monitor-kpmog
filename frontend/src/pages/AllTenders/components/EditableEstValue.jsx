@@ -89,7 +89,7 @@ const EditableEstValue = ({
   return (
     <div>
       <div
-        className="flex items-center gap-2"
+        className="flex flex-col items-center gap-2"
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) {
             onCommit(event);

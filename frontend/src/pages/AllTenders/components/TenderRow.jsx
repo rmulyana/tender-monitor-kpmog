@@ -92,7 +92,7 @@ const TenderRow = ({
     <Fragment>
       <tr className={rowClassName} data-row-id={tender.id}>
         <td
-          className={`sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] px-3 py-3 align-top ${rowBgClass} relative`}
+          className={`sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] px-3 py-3 align-middle ${rowBgClass} relative`}
         >
           <span
             aria-hidden="true"
@@ -128,9 +128,9 @@ const TenderRow = ({
           </div>
         </td>
         <td
-          className={`sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] px-3 py-3 align-top ${rowBgClass}`}
+          className={`sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] px-3 py-3 align-middle ${rowBgClass}`}
         >
-          <div className="flex items-start gap-2">
+          <div className="flex items-center gap-2">
             {renderEditableCell(
               tender.id,
               "projectTitle",
@@ -147,7 +147,7 @@ const TenderRow = ({
             />
           </div>
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "client",
@@ -159,7 +159,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className={`w-[120px] min-w-[120px] max-w-[120px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[120px] min-w-[120px] max-w-[120px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "consortium",
@@ -171,7 +171,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-top ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-middle ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "location",
@@ -183,7 +183,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-top whitespace-nowrap ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-middle whitespace-nowrap ${rowBgClass}`}>
           {renderEditableEstValueCell(
             tender.id,
             displayEstValue,
@@ -195,7 +195,7 @@ const TenderRow = ({
             "text-center",
           )}
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-middle ${rowBgClass}`}>
           <MainStageSelect
             value={mainStage}
             onChange={(event) =>
@@ -205,7 +205,7 @@ const TenderRow = ({
             isLocked={isFailedOverride}
           />
         </td>
-        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-middle ${rowBgClass}`}>
           <MainStatusSelect
             value={mainStatus}
             statusOptions={statusOptions}
@@ -216,7 +216,7 @@ const TenderRow = ({
             isLocked={isFailedOverride}
           />
         </td>
-        <td className={`w-[200px] min-w-[200px] max-w-[200px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[200px] min-w-[200px] max-w-[200px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableTimelineCell(
             tender.id,
             displayTender.startDate,
@@ -225,7 +225,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className={`w-[170px] min-w-[170px] max-w-[170px] px-3 py-3 align-top ${rowBgClass}`}>
+        <td className={`w-[170px] min-w-[170px] max-w-[170px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableTextArea(
             tender.id,
             "remarks",

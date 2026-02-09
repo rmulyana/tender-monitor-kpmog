@@ -27,7 +27,7 @@ const StageRow = ({
   return (
     <>
       {!omitPinColumn && (
-        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
+        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
           <span
             aria-hidden="true"
             className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
@@ -36,7 +36,7 @@ const StageRow = ({
       )}
       <td
         className={[
-          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
+          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
           omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
         ].join(" ")}
       >
@@ -46,40 +46,44 @@ const StageRow = ({
             className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
           />
         )}
-        <div className={`flex items-center gap-2 ${omitPinColumn ? "pl-1" : "pl-3"}`}>
-          {canExpand ? (
-            <button
-              className={`inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-orange-400 hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
-              type="button"
-              aria-label={`Toggle ${stageName}`}
-              aria-expanded={isStageOpen}
-              onClick={onToggleStage}
-            >
-              <svg
-                className="h-2.5 w-2.5"
-                viewBox="0 0 20 20"
-                fill="none"
-                aria-hidden="true"
+        <div className="flex w-full items-center gap-2">
+          <div
+            className={`flex min-w-0 flex-1 items-center gap-2 ${omitPinColumn ? "pl-1" : "pl-3"}`}
+          >
+            {canExpand ? (
+              <button
+                className={`inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-orange-400 hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
+                type="button"
+                aria-label={`Toggle ${stageName}`}
+                aria-expanded={isStageOpen}
+                onClick={onToggleStage}
               >
-                <path
-                  d="M5 8l5 5 5-5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          ) : (
-            <span className="h-5 w-5" />
-          )}
-          <span className="text-[0.7rem] font-semibold text-slate-700">
-            {stageName}
-          </span>
+                <svg
+                  className="h-2.5 w-2.5"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 8l5 5 5-5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <span className="h-5 w-5" />
+            )}
+            <span className="text-[0.7rem] font-semibold text-slate-700">
+              {stageName}
+            </span>
+          </div>
           {onRequestStageDelete ? (
             <button
               type="button"
-              className="ml-auto inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
+              className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
               aria-label={`Delete ${stageName}`}
               onClick={onRequestStageDelete}
             >
@@ -118,32 +122,32 @@ const StageRow = ({
           ) : null}
         </div>
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         <SubitemStatusSelect
           value={stageStatus}
           options={stageStatusOptions}
           onChange={(value) => handleSubitemStatusChange(stageKey, value)}
         />
       </td>
-      <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 text-center group-hover:bg-orange-100">
+      <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 align-middle text-center group-hover:bg-orange-100">
         {renderPicField(stageKey)}
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 text-center group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle text-center group-hover:bg-orange-100">
         {renderSubmissionSelect(stageKey)}
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         {renderAttachmentCell(stageKey, "")}
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         {renderProgressSlider(stageKey, 0)}
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         <SubitemPrioritySelect
           value={stagePriority}
           onChange={(value) => handleSubitemPriorityChange(stageKey, value)}
         />
       </td>
-      <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 group-hover:bg-orange-100">
+      <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         {renderEditableSubitemTimelineCell(
           stageKey,
           timelineStart,
@@ -151,7 +155,7 @@ const StageRow = ({
           true,
         )}
       </td>
-      <td className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100" colSpan={2}>
+      <td className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100" colSpan={2}>
         {renderEditableSubitemNotes(stageKey, stageNotes, "Add notes", true)}
       </td>
     </>

@@ -59,7 +59,7 @@ const DetailTable = ({
             className="border-b border-slate-200"
           >
             {!omitPinColumn && (
-              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
+              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
                 <span
                   aria-hidden="true"
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
@@ -68,7 +68,7 @@ const DetailTable = ({
             )}
             <td
               className={[
-                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
                 omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
               ].join(" ")}
             >
@@ -78,15 +78,17 @@ const DetailTable = ({
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
                 />
               )}
-              <div
-                className={`flex items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
-              >
-                <span className="text-slate-400">↳</span>
-                <span>{stepName}</span>
+              <div className="flex w-full items-center gap-2">
+                <div
+                  className={`flex min-w-0 flex-1 items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
+                >
+                  <span className="text-slate-400">↳</span>
+                  <span>{stepName}</span>
+                </div>
                 {onRequestStepDelete ? (
                   <button
                     type="button"
-                    className="ml-auto inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
+                    className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
                     aria-label={`Delete ${stepName}`}
                     onClick={() => onRequestStepDelete(stageKey, stepName)}
                   >
@@ -125,17 +127,17 @@ const DetailTable = ({
                 ) : null}
               </div>
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               <SubitemStatusSelect
                 value={stepStatus}
                 options={DETAIL_STATUS_OPTIONS}
                 onChange={(value) => handleSubitemStatusChange(stepKey, value)}
               />
             </td>
-            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 text-center group-hover:bg-orange-100">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 align-middle text-center group-hover:bg-orange-100">
               {renderPicField(stepKey)}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderEditableDetailSubmission(
                 stepKey,
                 subitemSubmissionByKey[stepKey] ?? meta.submission ?? "",
@@ -143,13 +145,13 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderAttachmentCell(stepKey, meta.attachment)}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderProgressSlider(stepKey, 0)}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               <SubitemPrioritySelect
                 value={subitemPriorityByKey[stepKey] ?? ""}
                 onChange={(value) =>
@@ -157,7 +159,7 @@ const DetailTable = ({
                 }
               />
             </td>
-            <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderEditableSubitemTimelineCell(
                 stepKey,
                 subitemTimelineByKey[stepKey]?.startDate,
@@ -166,7 +168,7 @@ const DetailTable = ({
               )}
             </td>
             <td
-              className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100"
+              className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100"
               colSpan={2}
             >
               {renderEditableSubitemNotes(
@@ -191,7 +193,7 @@ const DetailTable = ({
             className="border-b border-slate-200"
           >
             {!omitPinColumn && (
-              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 group-hover:bg-orange-100 relative">
+              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
                 <span
                   aria-hidden="true"
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
@@ -200,7 +202,7 @@ const DetailTable = ({
             )}
             <td
               className={[
-                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
                 omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
               ].join(" ")}
             >
@@ -210,19 +212,21 @@ const DetailTable = ({
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
                 />
               )}
-              <div
-                className={`flex items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
-              >
-                <span className="text-slate-400">↳</span>
-                {renderEditableDetailName(
-                  detailKey,
-                  detailNameByKey[detailKey] ?? "",
-                  "Add item",
-                )}
+              <div className="flex w-full items-center gap-2">
+                <div
+                  className={`flex min-w-0 flex-1 items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
+                >
+                  <span className="text-slate-400">↳</span>
+                  {renderEditableDetailName(
+                    detailKey,
+                    detailNameByKey[detailKey] ?? "",
+                    "Add item",
+                  )}
+                </div>
                 {onRequestDetailDelete ? (
                   <button
                     type="button"
-                    className="ml-auto inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
+                    className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
                     aria-label="Delete detail item"
                     onClick={() => onRequestDetailDelete(stageKey, detailKey)}
                   >
@@ -261,7 +265,7 @@ const DetailTable = ({
                 ) : null}
               </div>
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               <SubitemStatusSelect
                 value={detailStatus}
                 options={DETAIL_STATUS_OPTIONS}
@@ -270,10 +274,10 @@ const DetailTable = ({
                 }
               />
             </td>
-            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 text-center group-hover:bg-orange-100">
+            <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 align-middle text-center group-hover:bg-orange-100">
               {renderPicField(detailKey)}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderEditableDetailSubmission(
                 detailKey,
                 subitemSubmissionByKey[detailKey] ?? "",
@@ -281,13 +285,13 @@ const DetailTable = ({
                 true,
               )}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderAttachmentCell(detailKey, "")}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderProgressSlider(detailKey, 0)}
             </td>
-            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               <SubitemPrioritySelect
                 value={subitemPriorityByKey[detailKey] ?? ""}
                 onChange={(value) =>
@@ -295,7 +299,7 @@ const DetailTable = ({
                 }
               />
             </td>
-            <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 group-hover:bg-orange-100">
+            <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
               {renderEditableSubitemTimelineCell(
                 detailKey,
                 subitemTimelineByKey[detailKey]?.startDate,
@@ -304,7 +308,7 @@ const DetailTable = ({
               )}
             </td>
             <td
-              className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 group-hover:bg-orange-100"
+              className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100"
               colSpan={2}
             >
               {renderEditableSubitemNotes(

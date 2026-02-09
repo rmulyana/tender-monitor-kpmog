@@ -16,11 +16,11 @@ const StagePickerRow = ({
       className="border-b border-slate-200 bg-white"
     >
       {!omitPinColumn && (
-        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
+        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle" />
       )}
       <td
         className={[
-          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2",
+          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle",
           omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
         ].join(" ")}
       >
@@ -66,14 +66,14 @@ const StagePickerRow = ({
           )}
         </div>
       </td>
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2" />
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2" />
-      <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2" />
-      <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2" colSpan={2} />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2 align-middle" />
+      <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2 align-middle" colSpan={2} />
     </DetailRow>
   );
 };
