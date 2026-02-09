@@ -54,11 +54,11 @@ const StagePickerRow = ({
             </div>
           ) : (
             <button
-              className="inline-flex items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
+              className="group inline-flex cursor-pointer items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
               type="button"
               onClick={onOpenStagePicker}
             >
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition group-hover:border-orange-400">
                 +
               </span>
               <span>Add stage</span>

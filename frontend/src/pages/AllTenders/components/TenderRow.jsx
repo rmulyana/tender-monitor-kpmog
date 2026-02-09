@@ -97,7 +97,7 @@ const TenderRow = ({
               {tender.pin}
             </span>
             <button
-              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition hover:bg-slate-50 hover:text-slate-600 ${isExpanded ? "rotate-180" : ""}`}
+              className={`inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition hover:border-orange-400 hover:bg-slate-50 hover:text-slate-600 ${isExpanded ? "rotate-180" : ""}`}
               type="button"
               aria-label="Toggle details"
               aria-expanded={isExpanded}

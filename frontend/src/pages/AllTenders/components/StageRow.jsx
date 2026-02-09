@@ -37,13 +37,19 @@ const StageRow = ({
       <td
         className={[
           "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
-          omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+          omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
         ].join(" ")}
       >
+        {omitPinColumn && (
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+          />
+        )}
         <div className={`flex items-center gap-2 ${omitPinColumn ? "pl-1" : "pl-3"}`}>
           {canExpand ? (
             <button
-              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
+              className={`inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-orange-400 hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
               type="button"
               aria-label={`Toggle ${stageName}`}
               aria-expanded={isStageOpen}

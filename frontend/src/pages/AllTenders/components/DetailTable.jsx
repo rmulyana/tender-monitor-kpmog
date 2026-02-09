@@ -69,9 +69,15 @@ const DetailTable = ({
             <td
               className={[
                 "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
-                omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+                omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
               ].join(" ")}
             >
+              {omitPinColumn && (
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                />
+              )}
               <div
                 className={`flex items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
               >
@@ -195,9 +201,15 @@ const DetailTable = ({
             <td
               className={[
                 "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 group-hover:bg-orange-100",
-                omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+                omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
               ].join(" ")}
             >
+              {omitPinColumn && (
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                />
+              )}
               <div
                 className={`flex items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
               >
@@ -317,7 +329,7 @@ const DetailTable = ({
           <td
             className={[
               "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2",
-              omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+              omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
             ].join(" ")}
           >
             <div
@@ -325,10 +337,10 @@ const DetailTable = ({
             >
               <button
                 type="button"
-                className="inline-flex items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
+                className="group inline-flex cursor-pointer items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
                 onClick={onAddDetailRow}
               >
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition group-hover:border-orange-400">
                   +
                 </span>
                 <span>Add item</span>
