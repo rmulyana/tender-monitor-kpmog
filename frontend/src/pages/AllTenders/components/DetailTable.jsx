@@ -69,7 +69,9 @@ const DetailTable = ({
             <td
               className={[
                 "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 sticky left-[72px] z-20",
-                omitPinColumn ? "px-4" : "",
+                omitPinColumn
+                  ? "relative px-4 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-orange-500 before:opacity-0 before:transition-opacity group-hover:before:opacity-100"
+                  : "",
               ].join(" ")}
             >
               <div className="flex w-full items-center gap-2">
@@ -197,7 +199,9 @@ const DetailTable = ({
             <td
               className={[
                 "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 sticky left-[72px] z-20",
-                omitPinColumn ? "px-4" : "",
+                omitPinColumn
+                  ? "relative px-4 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-orange-500 before:opacity-0 before:transition-opacity group-hover:before:opacity-100"
+                  : "",
               ].join(" ")}
             >
               <div className="flex w-full items-center gap-2">
@@ -321,7 +325,7 @@ const DetailTable = ({
           <td
             className={[
               "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 sticky left-[72px] z-20",
-              omitPinColumn ? "px-4" : "",
+              omitPinColumn ? "relative px-4" : "",
             ].join(" ")}
           >
             <div
