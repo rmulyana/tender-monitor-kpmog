@@ -13,15 +13,15 @@ const StagePickerRow = ({
   return (
     <DetailRow
       key={`${tenderId}-add-subitem`}
-      className="border-b border-slate-200 bg-white"
+      className="border-b border-slate-200 bg-white last:border-b-0"
     >
-      {!omitPinColumn && (
+      {!omitPinColumn ? (
         <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle" />
-      )}
+      ) : null}
       <td
         className={[
-          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle",
-          omitPinColumn ? "px-4" : "sticky left-[72px] z-20",
+          "w-[260px] min-w-[260px] max-w-[260px] rounded-bl-2xl bg-white px-3 py-2 align-middle sticky left-[72px] z-20",
+          omitPinColumn ? "px-4" : "",
         ].join(" ")}
       >
         <div className={omitPinColumn ? "pl-1" : "pl-3"}>
@@ -73,7 +73,10 @@ const StagePickerRow = ({
       <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
       <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
       <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2 align-middle" />
-      <td className="w-[170px] min-w-[170px] max-w-[170px] px-3 py-2 align-middle" colSpan={2} />
+      <td
+        className="w-[170px] min-w-[170px] max-w-[170px] rounded-br-2xl px-3 py-2 align-middle"
+        colSpan={2}
+      />
     </DetailRow>
   );
 };

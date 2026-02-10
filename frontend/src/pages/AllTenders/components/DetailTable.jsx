@@ -58,26 +58,20 @@ const DetailTable = ({
             key={`${tenderId}-step-${stageName}-${stepName}`}
             className="border-b border-slate-200"
           >
-            {!omitPinColumn && (
+            {!omitPinColumn ? (
               <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
                 <span
                   aria-hidden="true"
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
                 />
               </td>
-            )}
+            ) : null}
             <td
               className={[
-                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
-                omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 sticky left-[72px] z-20",
+                omitPinColumn ? "px-4" : "",
               ].join(" ")}
             >
-              {omitPinColumn && (
-                <span
-                  aria-hidden="true"
-                  className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-                />
-              )}
               <div className="flex w-full items-center gap-2">
                 <div
                   className={`flex min-w-0 flex-1 items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
@@ -192,26 +186,20 @@ const DetailTable = ({
             key={`${detailKey}-${index}`}
             className="border-b border-slate-200"
           >
-            {!omitPinColumn && (
+            {!omitPinColumn ? (
               <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
                 <span
                   aria-hidden="true"
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
                 />
               </td>
-            )}
+            ) : null}
             <td
               className={[
-                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
-                omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 sticky left-[72px] z-20",
+                omitPinColumn ? "px-4" : "",
               ].join(" ")}
             >
-              {omitPinColumn && (
-                <span
-                  aria-hidden="true"
-                  className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-                />
-              )}
               <div className="flex w-full items-center gap-2">
                 <div
                   className={`flex min-w-0 flex-1 items-center gap-2 text-[0.7rem] text-slate-600 ${omitPinColumn ? "pl-8" : "pl-6"}`}
@@ -327,13 +315,13 @@ const DetailTable = ({
           key={`${tenderId}-add-${stageName}`}
           className="border-b border-slate-200 bg-white"
         >
-          {!omitPinColumn && (
+          {!omitPinColumn ? (
             <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
-          )}
+          ) : null}
           <td
             className={[
-              "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2",
-              omitPinColumn ? "relative px-4" : "sticky left-[72px] z-20",
+              "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 sticky left-[72px] z-20",
+              omitPinColumn ? "px-4" : "",
             ].join(" ")}
           >
             <div
