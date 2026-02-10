@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { tenderRowClass } from "../../../utils/rowClassNames.js";
 import MainStageSelect from "./MainStageSelect.jsx";
@@ -110,20 +111,7 @@ const TenderRow = ({
               aria-controls={`subitems-${tender.id}`}
               onClick={() => togglePin(tender.id)}
             >
-              <svg
-                className="h-2.5 w-2.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M7 10l5 5 5-5"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ChevronDown className="h-3 w-3" aria-hidden="true" />
             </button>
           </div>
         </td>

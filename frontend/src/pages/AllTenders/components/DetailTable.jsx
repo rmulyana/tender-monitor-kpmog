@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Trash2 } from "lucide-react";
 
 import {
   DETAIL_STATUS_OPTIONS,
@@ -88,37 +89,7 @@ const DetailTable = ({
                     aria-label={`Delete ${stepName}`}
                     onClick={() => onRequestStepDelete(stageKey, stepName)}
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
-                      className="h-4 w-4"
-                    >
-                      <path
-                        d="M4 7h16"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M10 11v6M14 11v6"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
                 ) : null}
               </div>
@@ -222,37 +193,7 @@ const DetailTable = ({
                     aria-label="Delete detail item"
                     onClick={() => onRequestDetailDelete(stageKey, detailKey)}
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
-                      className="h-4 w-4"
-                    >
-                      <path
-                        d="M4 7h16"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M10 11v6M14 11v6"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
                 ) : null}
               </div>

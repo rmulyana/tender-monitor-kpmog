@@ -1,3 +1,4 @@
+import { Paperclip } from "lucide-react";
 import {
   formatAttachmentLabel,
   normalizeAttachmentList,
@@ -19,20 +20,7 @@ const AttachmentPill = ({ attachments, onClick }) => {
       onClick={(event) => onClick(event, normalized)}
     >
       {isEmpty ? null : (
-        <svg
-          className="h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M7 11l6-6a3 3 0 114 4l-7 7a5 5 0 11-7-7l7-7"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Paperclip className="h-4 w-4" aria-hidden="true" />
       )}
       <span className="truncate">{label}</span>
     </button>

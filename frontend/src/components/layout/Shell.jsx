@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { LayoutDashboard, ListTree, Menu, User, X } from "lucide-react";
 
 import brandLogo from "../../assets/KPMOG.png";
 import { useTenders } from "../../context/TenderContext.jsx";
@@ -51,7 +52,7 @@ const Shell = ({ children }) => {
               aria-label="Expand sidebar"
               title="Expand sidebar"
             >
-              <i className="fa-solid fa-bars" aria-hidden="true" />
+              <Menu className="h-5 w-5" aria-hidden="true" />
             </button>
           ) : (
             <>
@@ -67,7 +68,7 @@ const Shell = ({ children }) => {
                 aria-label="Collapse sidebar"
                 title="Collapse sidebar"
               >
-                <i className="fa-solid fa-bars" aria-hidden="true" />
+                <Menu className="h-5 w-5" aria-hidden="true" />
               </button>
             </>
           )}
@@ -78,7 +79,7 @@ const Shell = ({ children }) => {
             aria-label="Close sidebar"
             title="Close sidebar"
           >
-            <i className="fa-solid fa-xmark" aria-hidden="true" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
@@ -99,7 +100,7 @@ const Shell = ({ children }) => {
             }
           >
             <span className="flex h-6 w-6 items-center justify-center">
-              <i className="fa-solid fa-gauge-high" aria-hidden="true" />
+              <LayoutDashboard className="h-5 w-5" aria-hidden="true" />
             </span>
             <span
               className={[
@@ -130,7 +131,7 @@ const Shell = ({ children }) => {
             }
           >
             <span className="flex h-6 w-6 items-center justify-center">
-              <i className="fa-solid fa-list-check" aria-hidden="true" />
+              <ListTree className="h-5 w-5" aria-hidden="true" />
             </span>
             <span
               className={[
@@ -168,7 +169,7 @@ const Shell = ({ children }) => {
               aria-label="Open sidebar"
               title="Open sidebar"
             >
-              <i className="fa-solid fa-bars" aria-hidden="true" />
+              <Menu className="h-5 w-5" aria-hidden="true" />
             </button>
             <div>
               <h1 className="text-[1.15rem] font-bold text-slate-800">
@@ -192,7 +193,7 @@ const Shell = ({ children }) => {
               ))}
             </select>
             <div className="grid h-10 w-10 place-items-center rounded-full bg-slate-200 text-slate-500">
-              <i className="fa-regular fa-user" />
+              <User className="h-5 w-5" aria-hidden="true" />
             </div>
           </div>
         </header>

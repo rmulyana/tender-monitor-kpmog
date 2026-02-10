@@ -1,3 +1,5 @@
+import { Archive, Copy, RotateCcw, Trash2 } from "lucide-react";
+
 const RowMenuDropdown = ({
   openMenuId,
   menuPosition,
@@ -43,28 +45,7 @@ const RowMenuDropdown = ({
           role="menuitem"
           onClick={handleDuplicate}
         >
-          <span className="h-4 w-4 text-slate-400" aria-hidden="true">
-            <svg viewBox="0 0 20 20" fill="none">
-              <rect
-                x="6"
-                y="6"
-                width="10"
-                height="10"
-                rx="2"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-              <rect
-                x="3"
-                y="3"
-                width="10"
-                height="10"
-                rx="2"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </span>
+          <Copy className="h-4 w-4 text-slate-400" aria-hidden="true" />
           <span>Duplicate</span>
         </button>
       ) : null}
@@ -78,28 +59,7 @@ const RowMenuDropdown = ({
             onClose();
           }}
         >
-          <span className="h-4 w-4 text-slate-400" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M4 7h16"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M7 7v10a2 2 0 002 2h6a2 2 0 002-2V7"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M9 11h6"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
+          <Archive className="h-4 w-4 text-slate-400" aria-hidden="true" />
           <span>Archive</span>
         </button>
       ) : (
@@ -112,31 +72,7 @@ const RowMenuDropdown = ({
             onClose();
           }}
         >
-          <span className="h-4 w-4 text-slate-400" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M7 8H4V5"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4 8a8 8 0 111.6 4.7"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M12 7v5l3 2"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
+          <RotateCcw className="h-4 w-4 text-slate-400" aria-hidden="true" />
           <span>Restore</span>
         </button>
       )}
@@ -149,34 +85,7 @@ const RowMenuDropdown = ({
           onClose();
         }}
       >
-        <span className="h-4 w-4 text-rose-400" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path
-              d="M4 7h16"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            />
-            <path
-              d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            />
-            <path
-              d="M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            />
-            <path
-              d="M10 11v6M14 11v6"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>
+        <Trash2 className="h-4 w-4 text-rose-400" aria-hidden="true" />
         <span>Delete</span>
       </button>
     </div>

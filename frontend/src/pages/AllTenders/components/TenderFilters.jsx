@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Search } from "lucide-react";
 
 import useTenderFilters from "../hooks/useTenderFilters.js";
 
@@ -65,8 +66,8 @@ const TenderFilters = ({
               Search
             </label>
             <div className="relative mt-2">
-              <i
-                className="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
                 aria-hidden="true"
               />
               <input
@@ -181,7 +182,7 @@ const TenderFilters = ({
               aria-expanded={isExportOpen}
               onClick={() => setIsExportOpen((prev) => !prev)}
             >
-              <i className="fa-solid fa-chevron-down" aria-hidden="true" />
+              <ChevronDown className="h-4 w-4" aria-hidden="true" />
             </button>
             {isExportOpen ? (
               <div
