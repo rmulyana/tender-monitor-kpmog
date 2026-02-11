@@ -30,12 +30,13 @@ const Shell = ({ children }) => {
       ) : null}
       <aside
         className={[
-          "fixed left-0 top-0 bottom-4 z-50 flex flex-col bg-[var(--sidebar-bg)] text-white",
+          "fixed left-4 top-0 bottom-4 z-50 flex flex-col bg-[var(--sidebar-bg)] text-white",
           "transition-[width,transform] duration-200 ease-in-out",
           "overflow-hidden rounded-b-2xl",
-          "w-64 -translate-x-full sm:static sm:translate-x-0",
+          "w-56 -translate-x-full sm:static sm:translate-x-0",
+          "sm:ml-4",
           mobileOpen ? "translate-x-0" : "",
-          collapsed ? "sm:w-20" : "sm:w-64",
+          collapsed ? "sm:w-20" : "sm:w-56",
           "sm:h-[calc(100%-1rem)]",
           "sm:border-r sm:border-white/10",
         ].join(" ")}

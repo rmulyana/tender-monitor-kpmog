@@ -16,11 +16,11 @@ const StagePickerRow = ({
       className="border-b border-slate-200 bg-white last:border-b-0"
     >
       {!omitPinColumn ? (
-        <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle" />
+        <td className="w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle" />
       ) : null}
       <td
         className={[
-          "w-[260px] min-w-[260px] max-w-[260px] rounded-bl-2xl bg-white px-3 py-2 align-middle sticky left-[72px] z-20",
+          "w-[260px] min-w-[260px] max-w-[260px] rounded-bl-2xl bg-white px-3 py-2 align-middle",
           omitPinColumn ? "px-4" : "",
         ].join(" ")}
       >

@@ -13,7 +13,7 @@ const RecentTendersTable = ({
 }) => (
   <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
     <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">
-      <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
+      <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-slate-800">
         {title}
       </h2>
     </header>
@@ -21,19 +21,19 @@ const RecentTendersTable = ({
       <table className="w-full table-fixed border-collapse text-[0.7rem]">
         <thead>
           <tr>
-            <th className="w-[30%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-400">
+            <th className="w-[30%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
               Project Title
             </th>
-            <th className="w-[20%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-400">
+            <th className="w-[20%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
               Client
             </th>
-            <th className="w-[20%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-400">
+            <th className="w-[20%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
               Estimated Value
             </th>
-            <th className="w-[15%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-400">
+            <th className="w-[15%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
               Due Date
             </th>
-            <th className="w-[15%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-400">
+            <th className="w-[15%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
               Stage
             </th>
           </tr>

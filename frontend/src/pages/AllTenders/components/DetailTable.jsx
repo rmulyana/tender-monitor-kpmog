@@ -60,7 +60,7 @@ const DetailTable = ({
             className="border-b border-slate-200"
           >
             {!omitPinColumn ? (
-              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
+              <td className="w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
                 <span
                   aria-hidden="true"
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
@@ -69,7 +69,7 @@ const DetailTable = ({
             ) : null}
             <td
               className={[
-                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 sticky left-[72px] z-20",
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
                 omitPinColumn
                   ? "relative px-4 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-orange-500 before:opacity-0 before:transition-opacity group-hover:before:opacity-100"
                   : "",
@@ -160,7 +160,7 @@ const DetailTable = ({
             className="border-b border-slate-200"
           >
             {!omitPinColumn ? (
-              <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
+              <td className="w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
                 <span
                   aria-hidden="true"
                   className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
@@ -169,7 +169,7 @@ const DetailTable = ({
             ) : null}
             <td
               className={[
-                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 sticky left-[72px] z-20",
+                "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
                 omitPinColumn
                   ? "relative px-4 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-orange-500 before:opacity-0 before:transition-opacity group-hover:before:opacity-100"
                   : "",
@@ -261,11 +261,11 @@ const DetailTable = ({
           className="border-b border-slate-200 bg-white"
         >
           {!omitPinColumn ? (
-            <td className="sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
+            <td className="w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2" />
           ) : null}
           <td
             className={[
-              "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 sticky left-[72px] z-20",
+              "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2",
               omitPinColumn ? "relative px-4" : "",
             ].join(" ")}
           >
