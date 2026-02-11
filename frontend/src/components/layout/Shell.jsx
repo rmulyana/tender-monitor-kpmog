@@ -30,11 +30,13 @@ const Shell = ({ children }) => {
       ) : null}
       <aside
         className={[
-          "fixed inset-y-0 left-0 z-50 flex h-full flex-col bg-[var(--sidebar-bg)] text-white",
+          "fixed left-0 top-0 bottom-4 z-50 flex flex-col bg-[var(--sidebar-bg)] text-white",
           "transition-[width,transform] duration-200 ease-in-out",
+          "overflow-hidden rounded-b-2xl",
           "w-64 -translate-x-full sm:static sm:translate-x-0",
           mobileOpen ? "translate-x-0" : "",
           collapsed ? "sm:w-20" : "sm:w-64",
+          "sm:h-[calc(100%-1rem)]",
           "sm:border-r sm:border-white/10",
         ].join(" ")}
       >
@@ -89,7 +91,7 @@ const Shell = ({ children }) => {
             end
             className={({ isActive }) =>
               [
-                "group relative flex h-14 items-center text-slate-300 transition",
+                "group relative flex h-14 items-center text-slate-300 transition rounded-r-2xl",
                 collapsed
                   ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
                   : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
@@ -120,7 +122,7 @@ const Shell = ({ children }) => {
             to="/tenders"
             className={({ isActive }) =>
               [
-                "group relative flex h-14 items-center text-slate-300 transition",
+                "group relative flex h-14 items-center text-slate-300 transition rounded-r-2xl",
                 collapsed
                   ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
                   : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
