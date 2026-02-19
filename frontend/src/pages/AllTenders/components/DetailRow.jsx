@@ -1,5 +1,11 @@
 const DetailRow = ({ className, children }) => (
-  <tr className={className}>{children}</tr>
+  <tr
+    className={["group", className]
+      .filter(Boolean)
+      .join(" ")}
+  >
+    {children}
+  </tr>
 );
 
 export default DetailRow;

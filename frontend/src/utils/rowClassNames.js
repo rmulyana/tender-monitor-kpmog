@@ -1,6 +1,5 @@
-export const tenderRowClass = ({ isOverdue = false, isArchived = false } = {}) => {
-  const classes = ["tender-row"];
-  if (isOverdue) classes.push("overdue");
-  if (isArchived) classes.push("is-archived");
+export const tenderRowClass = ({ isArchived = false } = {}) => {
+  const classes = ["group", "border-b", "border-slate-200"];
+  if (isArchived) classes.push("opacity-70");
   return classes.join(" ");
 };

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { LayoutDashboard, ListTree, Menu, User, X } from "lucide-react";
 
-import icon from "../../assets/icon.png";
-import logo from "../../assets/logo.png";
+import brandLogo from "../../assets/KPMOG.png";
 import { useTenders } from "../../context/TenderContext.jsx";
-import "../../styles/shell.css";
 
 const Shell = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const { selectedYear, setSelectedYear, yearOptions } = useTenders();
   const safeYear = yearOptions.includes(selectedYear)
     ? selectedYear
@@ -20,42 +20,135 @@ const Shell = ({ children }) => {
   }, [safeYear, selectedYear, setSelectedYear]);
 
   return (
-    <div className={`app-shell${collapsed ? " sidebar-collapsed" : ""}`}>
-      <aside className="sidebar">
-        <div className="sidebar-top">
-          <div className="sidebar-brand">
-            <img src={icon} alt="KPMOG icon" className="sidebar-icon" />
-            <img src={logo} alt="KPMOG logo" className="sidebar-logo" />
-          </div>
+    <div className="flex h-full overflow-hidden bg-[var(--bg)]">
+      {mobileOpen ? (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 sm:hidden"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      ) : null}
+      <aside
+        className={[
+          "fixed left-4 top-0 bottom-4 z-50 flex flex-col bg-[var(--sidebar-bg)] text-white",
+          "transition-[width,transform] duration-200 ease-in-out",
+          "overflow-hidden rounded-b-2xl",
+          "w-56 -translate-x-full sm:static sm:translate-x-0",
+          "sm:ml-4",
+          mobileOpen ? "translate-x-0" : "",
+          collapsed ? "sm:w-20" : "sm:w-56",
+          "sm:h-[calc(100%-1rem)]",
+          "sm:border-r sm:border-white/10",
+        ].join(" ")}
+      >
+        <div
+          className={[
+            "relative flex h-16 items-center bg-[var(--sidebar-top)] px-3 transition-all duration-200 ease-in-out",
+            collapsed ? "justify-center" : "justify-between gap-3",
+          ].join(" ")}
+        >
+          {collapsed ? (
+            <button
+              type="button"
+              className="grid h-10 w-10 place-items-center rounded-lg text-slate-200 transition hover:bg-[var(--orange-400)] hover:text-white"
+              onClick={() => setCollapsed(false)}
+              aria-label="Expand sidebar"
+              title="Expand sidebar"
+            >
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            </button>
+          ) : (
+            <>
+              <img
+                src={brandLogo}
+                alt="KPMOG logo"
+                className="h-[44px] w-auto max-w-[190px] object-contain"
+              />
+              <button
+                type="button"
+                className="ml-auto grid h-9 w-9 place-items-center rounded-lg text-slate-200 transition hover:bg-[var(--orange-400)] hover:text-white"
+                onClick={() => setCollapsed(true)}
+                aria-label="Collapse sidebar"
+                title="Collapse sidebar"
+              >
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </>
+          )}
           <button
             type="button"
-            className="icon-button sidebar-toggle"
-            onClick={() => setCollapsed((value) => !value)}
-            aria-label="Toggle sidebar"
-            title="Toggle sidebar"
+            className="absolute right-2 top-1/2 -translate-y-1/2 grid h-9 w-9 place-items-center rounded-lg text-slate-200 transition hover:bg-white/10 sm:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close sidebar"
+            title="Close sidebar"
           >
-            <i
-              className={`fa-solid ${collapsed ? "fa-chevron-right" : "fa-chevron-left"}`}
-              aria-hidden="true"
-            />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
-        <nav className="sidebar-nav">
+        <nav className="flex flex-1 flex-col gap-1 py-6">
           <NavLink
             to="/"
             end
-            className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}
+            className={({ isActive }) =>
+              [
+                "group relative flex h-14 items-center text-slate-300 transition rounded-r-2xl",
+                collapsed
+                  ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
+                  : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
+                isActive
+                  ? "bg-orange-500/30 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
+                  : "",
+              ].join(" ")
+            }
           >
-            <i className="fa-solid fa-gauge-high" aria-hidden="true" />
-            <span className="sidebar-label">Dashboard</span>
+            <span className="flex h-6 w-6 items-center justify-center">
+              <LayoutDashboard className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span
+              className={[
+                "font-medium transition-all duration-200 ease-in-out",
+                collapsed ? "max-w-0 overflow-hidden opacity-0" : "opacity-100",
+              ].join(" ")}
+            >
+              Dashboard
+            </span>
+            {collapsed ? (
+              <span className="pointer-events-none absolute left-full top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1 text-sm font-semibold text-white shadow-lg group-hover:flex">
+                Dashboard
+              </span>
+            ) : null}
           </NavLink>
           <NavLink
             to="/tenders"
-            className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}
+            className={({ isActive }) =>
+              [
+                "group relative flex h-14 items-center text-slate-300 transition rounded-r-2xl",
+                collapsed
+                  ? "justify-center w-full px-0 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500"
+                  : "gap-3 px-6 hover:bg-[var(--orange-400)] hover:text-white hover:after:absolute hover:after:left-0 hover:after:top-0 hover:after:h-full hover:after:w-1 hover:after:bg-orange-500",
+                isActive
+                  ? "bg-orange-500/30 text-white relative after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-orange-500"
+                  : "",
+              ].join(" ")
+            }
           >
-            <i className="fa-solid fa-list-check" aria-hidden="true" />
-            <span className="sidebar-label">Tender Lists</span>
+            <span className="flex h-6 w-6 items-center justify-center">
+              <ListTree className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span
+              className={[
+                "font-medium transition-all duration-200 ease-in-out",
+                collapsed ? "max-w-0 overflow-hidden opacity-0" : "opacity-100",
+              ].join(" ")}
+            >
+              Tender Lists
+            </span>
+            {collapsed ? (
+              <span className="pointer-events-none absolute left-full top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1 text-sm font-semibold text-white shadow-lg group-hover:flex">
+                Tender Lists
+              </span>
+            ) : null}
           </NavLink>
           {/*<NavLink
             to="/pipeline"
@@ -69,18 +162,29 @@ const Shell = ({ children }) => {
         </nav>
       </aside>
 
-      <main className="main">
-        <header className="topbar">
-          <div className="topbar-left">
-            <div className="title-block">
-              <h1>BUSINESS DEVELOPMENT DEPARTMENT</h1>
-              <p>Tender Monitoring</p>
+      <main className="flex min-w-0 flex-1 flex-col">
+        <header className="flex h-16 items-center justify-between border-b border-[var(--border)] bg-white px-8">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="grid h-10 w-10 place-items-center rounded-lg text-slate-500 transition hover:bg-[var(--orange-400)] hover:text-white sm:hidden"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open sidebar"
+              title="Open sidebar"
+            >
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <div>
+              <h1 className="text-[1.15rem] font-bold text-slate-800">
+                BUSINESS DEVELOPMENT DEPARTMENT
+              </h1>
+              <p className="text-sm text-slate-500">Tender Monitoring</p>
             </div>
           </div>
 
-          <div className="topbar-right">
+          <div className="flex items-center gap-4">
             <select
-              className="year-select"
+              className="cursor-pointer rounded-lg border border-transparent bg-transparent px-2 py-1 text-center text-[1.05rem] font-bold text-slate-800 outline-none transition hover:border-orange-400"
               aria-label="Select year"
               value={safeYear}
               onChange={(event) => setSelectedYear(event.target.value)}
@@ -91,13 +195,15 @@ const Shell = ({ children }) => {
                 </option>
               ))}
             </select>
-            <div className="avatar-circle" aria-hidden="true">
-              <i className="fa-regular fa-user" />
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-slate-200 text-slate-500">
+              <User className="h-5 w-5" aria-hidden="true" />
             </div>
           </div>
         </header>
 
-        <section className="main-content">{children}</section>
+        <section className="flex-1 overflow-y-auto bg-[var(--bg)] px-8 py-5">
+          <div className="grid gap-6">{children}</div>
+        </section>
       </main>
     </div>
   );

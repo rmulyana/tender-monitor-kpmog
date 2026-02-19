@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { tenderRowClass } from "../../../utils/rowClassNames.js";
 import MainStageSelect from "./MainStageSelect.jsx";
@@ -44,6 +45,7 @@ const TenderRow = ({
   setStagePickerForTender,
   setStagePickerValue,
   onToggleMenu,
+  showTopBorder = false,
 }) => {
   const {
     renderEditableCell,
@@ -78,45 +80,45 @@ const TenderRow = ({
   });
   const isExpanded = expandedPin === tender.id;
   const isArchived = Boolean(tender.archived);
+  const rowBgClass = "bg-white group-hover:bg-orange-100";
 
-  const rowClassName = tenderRowClass({
-    isOverdue: timelineOverdueDays > 0,
-    isArchived,
-  });
+  const rowClassName = [
+    tenderRowClass({ isArchived }),
+    showTopBorder ? "border-t border-slate-200" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <Fragment>
       <tr className={rowClassName} data-row-id={tender.id}>
-        <td className="w-pin sticky">
-          <div className="pin-cell">
-            <span className="pin-text">{tender.pin}</span>
+        <td
+          className={`sticky left-0 z-30 w-[72px] min-w-[72px] max-w-[72px] px-3 py-3 align-middle ${rowBgClass} relative`}
+        >
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+          />
+          <div className="flex items-center gap-2">
+            <span className="text-[0.7rem] font-semibold text-slate-800">
+              {tender.pin}
+            </span>
             <button
-              className={`exp-btn exp-btn-main${isExpanded ? " is-open" : ""}`}
+              className={`inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition hover:border-orange-400 hover:bg-slate-50 hover:text-slate-600 ${isExpanded ? "rotate-180" : ""}`}
               type="button"
               aria-label="Toggle details"
               aria-expanded={isExpanded}
               aria-controls={`subitems-${tender.id}`}
               onClick={() => togglePin(tender.id)}
             >
-              <svg
-                className="chev chev-main"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M7 10l5 5 5-5"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ChevronDown className="h-3 w-3" aria-hidden="true" />
             </button>
           </div>
         </td>
-        <td className="w-title sticky2 divider-shadow wraptext">
-          <div className="title-cell">
+        <td
+          className={`sticky left-[72px] z-20 w-[260px] min-w-[260px] max-w-[260px] px-3 py-3 align-middle ${rowBgClass}`}
+        >
+          <div className="flex items-center gap-2">
             {renderEditableCell(
               tender.id,
               "projectTitle",
@@ -133,7 +135,7 @@ const TenderRow = ({
             />
           </div>
         </td>
-        <td className="w-client wraptext">
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "client",
@@ -145,7 +147,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-cons wraptext">
+        <td className={`w-[120px] min-w-[120px] max-w-[120px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "consortium",
@@ -157,19 +159,19 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-loc wraptext">
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-middle ${rowBgClass}`}>
           {renderEditableCell(
             tender.id,
             "location",
             displayTender.location,
-            "",
+            "text-center",
             displayTender.location,
             displayTender.location,
             "Add location",
             true,
           )}
         </td>
-        <td className="nowrap">
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 text-center align-middle whitespace-nowrap ${rowBgClass}`}>
           {renderEditableEstValueCell(
             tender.id,
             displayEstValue,
@@ -178,9 +180,10 @@ const TenderRow = ({
             editEstValue,
             "Add value",
             true,
+            "text-center",
           )}
         </td>
-        <td className="w-stage">
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-middle ${rowBgClass}`}>
           <MainStageSelect
             value={mainStage}
             onChange={(event) =>
@@ -190,7 +193,7 @@ const TenderRow = ({
             isLocked={isFailedOverride}
           />
         </td>
-        <td className="w-status">
+        <td className={`w-[150px] min-w-[150px] max-w-[150px] px-3 py-3 align-middle ${rowBgClass}`}>
           <MainStatusSelect
             value={mainStatus}
             statusOptions={statusOptions}
@@ -201,7 +204,7 @@ const TenderRow = ({
             isLocked={isFailedOverride}
           />
         </td>
-        <td className="w-timeline">
+        <td className={`w-[200px] min-w-[200px] max-w-[200px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableTimelineCell(
             tender.id,
             displayTender.startDate,
@@ -210,7 +213,7 @@ const TenderRow = ({
             true,
           )}
         </td>
-        <td className="w-remarks wraptext">
+        <td className={`w-[170px] min-w-[170px] max-w-[170px] px-3 py-3 align-middle ${rowBgClass}`}>
           {renderEditableTextArea(
             tender.id,
             "remarks",

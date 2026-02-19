@@ -1,4 +1,4 @@
-import StagePill from "../../../components/tenders/StagePill.jsx";
+import StagePillStatic from "../../../components/tenders/StagePillStatic.jsx";
 import { formatDate } from "../../../utils/formatters.js";
 
 const RecentTendersTable = ({
@@ -11,41 +11,84 @@ const RecentTendersTable = ({
   convertValue,
   formatCurrencyCode,
 }) => (
-  <section className="panel">
-    <header className="panel-header">
-      <h2 className="panel-title">{title}</h2>
+  <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+    <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">
+      <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-slate-800">
+        {title}
+      </h2>
     </header>
-    <div className="table-wrap">
-      <table className="recent-table">
+    <div className="mt-4 overflow-x-auto">
+      <table className="w-full table-fixed border-collapse text-[0.7rem]">
         <thead>
           <tr>
-            <th>Project Title</th>
-            <th>Client</th>
-            <th>Estimated Value</th>
-            <th>Due Date</th>
-            <th>Stage</th>
+            <th className="w-[30%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
+              Project Title
+            </th>
+            <th className="w-[20%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
+              Client
+            </th>
+            <th className="w-[20%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
+              Estimated Value
+            </th>
+            <th className="w-[15%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
+              Due Date
+            </th>
+            <th className="w-[15%] border-b border-slate-100 px-4 py-3 text-left text-[0.7rem] uppercase tracking-[0.12em] text-slate-800">
+              Stage
+            </th>
           </tr>
         </thead>
         <tbody>
           {items.length === 0 ? (
-            <tr className="recent-row-empty">
-              <td colSpan={5}>{emptyLabel}</td>
+            <tr>
+              <td
+                colSpan={5}
+                className="border-b border-slate-100 px-4 py-4 text-center text-[0.75rem] font-semibold text-slate-500"
+              >
+                {emptyLabel}
+              </td>
             </tr>
           ) : (
             items.map((tender) => (
               <tr
                 key={tender.id}
-                className={`recent-row${useDueStatus ? ` recent-row-${tender.dueStatus}` : ""}`}
+                className={[
+                  "group",
+                  useDueStatus && tender.dueStatus === "warn"
+                    ? "bg-amber-200/15 hover:bg-orange-200/20"
+                    : "",
+                  useDueStatus && tender.dueStatus === "urgent"
+                    ? "bg-rose-200/15 hover:bg-orange-200/20"
+                    : "",
+                  !useDueStatus || tender.dueStatus === "ok"
+                    ? "hover:bg-orange-200/20"
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
-                <td>
-                  <div className="title-cell">{tender.projectTitle}</div>
-                  <span className="pin-cell">{tender.pin}</span>
+                <td className="relative border-b border-slate-100 px-4 py-3 text-left">
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                  />
+                  <div className="font-semibold text-slate-900">
+                    {tender.projectTitle}
+                  </div>
+                  <span className="text-[0.75rem] text-slate-400">
+                    {tender.pin}
+                  </span>
                 </td>
-                <td>{tender.client}</td>
-                <td>
+                <td className="border-b border-slate-100 px-4 py-3 text-left">
+                  {tender.client}
+                </td>
+                <td className="border-b border-slate-100 px-4 py-3 text-left">
                   {(() => {
                     const normalizedValue = Number(tender.estValue || 0);
-                    if (!Number.isFinite(normalizedValue) || normalizedValue <= 0) {
+                    if (
+                      !Number.isFinite(normalizedValue) ||
+                      normalizedValue <= 0
+                    ) {
                       return "N/A";
                     }
                     return formatCurrencyCode(
@@ -59,12 +102,24 @@ const RecentTendersTable = ({
                     );
                   })()}
                 </td>
-                <td>
+                <td className="border-b border-slate-100 px-4 py-3 text-left">
                   <div>{formatDate(tender.dueDate)}</div>
-                  <div className="recent-duein">{tender.dueInLabel}</div>
+                  <div
+                    className={[
+                      "mt-1 text-[0.7rem]",
+                      useDueStatus && tender.dueInDays <= 7
+                        ? "font-bold text-red-600"
+                        : "text-slate-400",
+                    ].join(" ")}
+                  >
+                    {tender.dueInLabel}
+                  </div>
                 </td>
-                <td className="recent-stage-cell">
-                  <StagePill stage={tender.stage} />
+                <td className="border-b border-slate-100 px-4 py-3 text-left">
+                  <StagePillStatic
+                    stage={tender.stage}
+                    className="w-full min-w-0"
+                  />
                 </td>
               </tr>
             ))

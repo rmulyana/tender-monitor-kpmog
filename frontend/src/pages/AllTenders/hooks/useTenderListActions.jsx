@@ -47,13 +47,6 @@ const useTenderListActions = ({
     setSortDirection("asc");
   };
 
-  const sortIcon = (key) => {
-    if (sortKey !== key) {
-      return "fa-sort";
-    }
-    return sortDirection === "asc" ? "fa-caret-up" : "fa-caret-down";
-  };
-
   const renderSortableHeader = (label, key, className = "") => {
     return (
       <SortableHeader
@@ -63,7 +56,6 @@ const useTenderListActions = ({
         direction={sortDirection}
         onSort={handleSort}
         className={className}
-        iconClassFor={sortIcon}
       />
     );
   };

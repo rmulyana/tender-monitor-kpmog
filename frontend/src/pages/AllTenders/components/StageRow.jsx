@@ -1,3 +1,4 @@
+import { ChevronDown, Trash2 } from "lucide-react";
 import SubitemPrioritySelect from "./SubitemPrioritySelect.jsx";
 import SubitemStatusSelect from "./SubitemStatusSelect.jsx";
 
@@ -12,6 +13,7 @@ const StageRow = ({
   timelineStart,
   timelineDue,
   stageNotes,
+  omitPinColumn = false,
   renderPicField,
   renderSubmissionSelect,
   renderAttachmentCell,
@@ -25,93 +27,81 @@ const StageRow = ({
 }) => {
   return (
     <>
-      <td className="w-pin sticky tree-empty" />
-      <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
-        <div className="indent-1 stage-cell">
-          {canExpand ? (
-            <button
-              className={`exp-btn${isStageOpen ? " is-open" : ""}`}
-              type="button"
-              aria-label={`Toggle ${stageName}`}
-              aria-expanded={isStageOpen}
-              onClick={onToggleStage}
-            >
-              <svg
-                className="chev"
-                viewBox="0 0 20 20"
-                fill="none"
-                aria-hidden="true"
+      {!omitPinColumn ? (
+        <td className="w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100 relative">
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 h-full w-1 bg-orange-500 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+          />
+        </td>
+      ) : null}
+      <td
+        className={[
+          "w-[260px] min-w-[260px] max-w-[260px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100",
+          omitPinColumn
+            ? "relative px-4 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-orange-500 before:opacity-0 before:transition-opacity group-hover:before:opacity-100"
+            : "",
+        ].join(" ")}
+      >
+        <div className="flex w-full items-center gap-2">
+          <div
+            className={`flex min-w-0 flex-1 items-center gap-2 ${omitPinColumn ? "pl-1" : "pl-3"}`}
+          >
+            {canExpand ? (
+              <button
+                className={`inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-orange-400 hover:bg-slate-50 hover:text-slate-600 ${isStageOpen ? "rotate-180" : ""}`}
+                type="button"
+                aria-label={`Toggle ${stageName}`}
+                aria-expanded={isStageOpen}
+                onClick={onToggleStage}
               >
-                <path
-                  d="M5 8l5 5 5-5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          ) : (
-            <span className="exp-spacer" />
-          )}
-          <span>{stageName}</span>
+                <ChevronDown className="h-3 w-3" aria-hidden="true" />
+              </button>
+            ) : (
+              <span className="h-5 w-5" />
+            )}
+            <span className="text-[0.7rem] font-semibold text-slate-700">
+              {stageName}
+            </span>
+          </div>
           {onRequestStageDelete ? (
             <button
               type="button"
-              className="row-delete"
+              className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-red-500"
               aria-label={`Delete ${stageName}`}
               onClick={onRequestStageDelete}
             >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M4 7h16"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M10 11v6M14 11v6"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <Trash2 className="h-4 w-4" aria-hidden="true" />
             </button>
           ) : null}
         </div>
       </td>
-      <td className="w-client tree-box">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         <SubitemStatusSelect
           value={stageStatus}
           options={stageStatusOptions}
           onChange={(value) => handleSubitemStatusChange(stageKey, value)}
         />
       </td>
-      <td className="w-cons tree-box">{renderPicField(stageKey)}</td>
-      <td className="w-stage tree-box">{renderSubmissionSelect(stageKey)}</td>
-      <td className="w-status tree-box">
+      <td className="w-[120px] min-w-[120px] max-w-[120px] bg-white px-3 py-2 align-middle text-center group-hover:bg-orange-100">
+        {renderPicField(stageKey)}
+      </td>
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle text-center group-hover:bg-orange-100">
+        {renderSubmissionSelect(stageKey)}
+      </td>
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         {renderAttachmentCell(stageKey, "")}
       </td>
-      <td className="w-date tree-box">{renderProgressSlider(stageKey, 0)}</td>
-      <td className="w-priority tree-box">
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
+        {renderProgressSlider(stageKey, 0)}
+      </td>
+      <td className="w-[150px] min-w-[150px] max-w-[150px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         <SubitemPrioritySelect
           value={stagePriority}
           onChange={(value) => handleSubitemPriorityChange(stageKey, value)}
         />
       </td>
-      <td className="w-timeline tree-box">
+      <td className="w-[200px] min-w-[200px] max-w-[200px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100">
         {renderEditableSubitemTimelineCell(
           stageKey,
           timelineStart,
@@ -119,7 +109,7 @@ const StageRow = ({
           true,
         )}
       </td>
-      <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2}>
+      <td className="w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-2 align-middle group-hover:bg-orange-100" colSpan={2}>
         {renderEditableSubitemNotes(stageKey, stageNotes, "Add notes", true)}
       </td>
     </>

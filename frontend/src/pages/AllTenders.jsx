@@ -33,7 +33,6 @@ import {
 import { matchesYearFilter } from "../utils/tenderUtils.js";
 import { getMaxDetailIndexFromRows } from "../utils/subitemsMapper.js";
 import exportTendersCsv from "../utils/exportTendersCsv.js";
-import "../styles/tenders.css";
 
 const AllTenders = () => {
   const {
@@ -227,7 +226,6 @@ const AllTenders = () => {
       setRemovedDetailStepsByStage,
     });
 
-
   const {
     cleanupDraftTender,
     handleDeleteTender,
@@ -235,35 +233,35 @@ const AllTenders = () => {
     handleRestoreTender,
     handleDuplicateTender,
   } = useTenderRowActions({
-      allTenders,
-      editedRows,
-      mainStageById,
-      mainStatusById,
-      customStagesByTender,
-      addTender,
-      removeTender,
-      updateTender,
-      setEditedRows,
-      setMainStageById,
-      setMainStatusById,
-      setCustomStagesByTender,
-      setExpandedPin,
-      setExpandedStages,
-      setStagePickerForTender,
-      setSubitemStatusByKey,
-      setSubitemPriorityByKey,
-      setSubitemPicByKey,
-      setSubitemSubmissionByKey,
-      setSubitemAttachmentByKey,
-      setSubitemProgressByKey,
-      setDetailRowsByStage,
-      setDetailNameByKey,
-      setSubitemTimelineByKey,
-      setSubitemNotesByKey,
-      setRemovedDetailStepsByStage,
-      nextPinForTenders,
-      overdueDays,
-    });
+    allTenders,
+    editedRows,
+    mainStageById,
+    mainStatusById,
+    customStagesByTender,
+    addTender,
+    removeTender,
+    updateTender,
+    setEditedRows,
+    setMainStageById,
+    setMainStatusById,
+    setCustomStagesByTender,
+    setExpandedPin,
+    setExpandedStages,
+    setStagePickerForTender,
+    setSubitemStatusByKey,
+    setSubitemPriorityByKey,
+    setSubitemPicByKey,
+    setSubitemSubmissionByKey,
+    setSubitemAttachmentByKey,
+    setSubitemProgressByKey,
+    setDetailRowsByStage,
+    setDetailNameByKey,
+    setSubitemTimelineByKey,
+    setSubitemNotesByKey,
+    setRemovedDetailStepsByStage,
+    nextPinForTenders,
+    overdueDays,
+  });
 
   useAutoTimelineSync({
     tenders,
@@ -418,24 +416,24 @@ const AllTenders = () => {
   }, [allTenders, archivedFilter, selectedYear]);
 
   return (
-    <div className="tenders-page">
+    <div className="grid gap-6">
       <TenderFilters
         allTenders={filterSourceTenders}
         search={search}
         onSearchChange={setSearch}
         stageFilter={stageFilter}
         onStageFilterChange={setStageFilter}
-      statusFilter={statusFilter}
-      onStatusFilterChange={setStatusFilter}
-      monthFilter={monthFilter}
-      onMonthFilterChange={setMonthFilter}
-      archivedFilter={archivedFilter}
-      onArchivedFilterChange={setArchivedFilter}
-      setSortKey={setSortKey}
-      setSortDirection={setSortDirection}
-      onExportMain={handleExportMain}
-      onExportAll={handleExportAll}
-    />
+        statusFilter={statusFilter}
+        onStatusFilterChange={setStatusFilter}
+        monthFilter={monthFilter}
+        onMonthFilterChange={setMonthFilter}
+        archivedFilter={archivedFilter}
+        onArchivedFilterChange={setArchivedFilter}
+        setSortKey={setSortKey}
+        setSortDirection={setSortDirection}
+        onExportMain={handleExportMain}
+        onExportAll={handleExportAll}
+      />
 
       <TendersTable
         tenders={tenders}
@@ -499,7 +497,11 @@ const AllTenders = () => {
         onLinkDraftChange={setAttachmentLinkDraft}
         onOpenAttachment={openAttachmentInNewTab}
         onRequestRemove={(index) =>
-          handleAttachmentRemoveRequest(attachmentMenu, popoverAttachments, index)
+          handleAttachmentRemoveRequest(
+            attachmentMenu,
+            popoverAttachments,
+            index,
+          )
         }
         onChooseFile={() => attachmentFileInputRef.current?.click()}
         onFileChange={handleAttachmentFileChange}
@@ -514,7 +516,9 @@ const AllTenders = () => {
         onCancelAttachment={() => setConfirmAttachment(null)}
       />
 
-      <TenderCards tenders={tenders} />
+      <div className="mt-6 block lg:hidden">
+        <TenderCards tenders={tenders} />
+      </div>
     </div>
   );
 };

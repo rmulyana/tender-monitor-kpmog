@@ -128,6 +128,7 @@ const createTenderRenderers = ({
     editValue,
     placeholder = "Add value",
     usePillPlaceholder = false,
+    className = "",
   ) => {
     const isEditing =
       editingCell?.id === id && editingCell?.field === "estValue";
@@ -160,6 +161,7 @@ const createTenderRenderers = ({
         }}
         placeholder={placeholder}
         usePillPlaceholder={usePillPlaceholder}
+        className={className}
       />
     );
   };
@@ -174,7 +176,10 @@ const createTenderRenderers = ({
     if (mainTimelineReadOnly) {
       const hasTimeline = Boolean(startDate) && Boolean(dueDate);
       return (
-        <div className="timeline-edit-trigger is-readonly" aria-readonly="true">
+        <div
+          className="w-full text-left text-[0.7rem] text-slate-700"
+          aria-readonly="true"
+        >
           {hasTimeline ? (
             <TenderTimeline
               startDate={startDate}
@@ -183,9 +188,11 @@ const createTenderRenderers = ({
             />
           ) : (
             <span
-              className={`timeline-placeholder${
-                usePillPlaceholder ? " pill-placeholder" : ""
-              }`}
+              className={
+                usePillPlaceholder
+                  ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400"
+                  : "text-slate-400"
+              }
             >
               Add timeline
             </span>
@@ -239,7 +246,7 @@ const createTenderRenderers = ({
     if (isEditing) {
       return (
         <textarea
-          className="editable-textarea"
+          className="min-h-[38px] w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
           value={editDraft}
           autoFocus
           rows={2}
@@ -263,23 +270,17 @@ const createTenderRenderers = ({
       );
     }
 
+    const placeholderClass = usePillPlaceholder
+      ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400"
+      : "text-slate-400";
+
     return (
       <button
         type="button"
-        className="editable-trigger"
+        className="w-full text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
         onClick={() => beginEditSubitemNotes(key, value)}
       >
-        {isEmpty ? (
-          <span
-            className={`editable-placeholder${
-              usePillPlaceholder ? " pill-placeholder" : ""
-            }`}
-          >
-            {placeholder}
-          </span>
-        ) : (
-          value
-        )}
+        {isEmpty ? <span className={placeholderClass}>{placeholder}</span> : value}
       </button>
     );
   };
@@ -321,7 +322,7 @@ const createTenderRenderers = ({
     if (isEditing) {
       return (
         <input
-          className="editable-input"
+          className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-center text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
           type="text"
           value={editDraft}
           autoFocus
@@ -348,14 +349,10 @@ const createTenderRenderers = ({
     return (
       <button
         type="button"
-        className="editable-trigger editable-inline"
+        className="w-full text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
         onClick={() => beginEditDetailName(key, value)}
       >
-        {isEmpty ? (
-          <span className="editable-placeholder">{placeholder}</span>
-        ) : (
-          value
-        )}
+        {isEmpty ? <span className="text-slate-400">{placeholder}</span> : value}
       </button>
     );
   };
@@ -373,7 +370,7 @@ const createTenderRenderers = ({
     if (isEditing) {
       return (
         <input
-          className="editable-input"
+          className="h-8 w-full rounded-lg border border-slate-200 bg-white px-3 text-[0.7rem] text-slate-700 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-200/60"
           type="text"
           value={editDraft}
           autoFocus
@@ -397,25 +394,17 @@ const createTenderRenderers = ({
       );
     }
 
+    const placeholderClass = usePillPlaceholder
+      ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400"
+      : "text-slate-400";
+
     return (
       <button
         type="button"
-        className="editable-trigger"
+        className="w-full text-center text-[0.7rem] text-slate-700 transition hover:text-slate-900"
         onClick={() => beginEditDetailSubmission(key, value)}
       >
-        {isEmpty ? (
-          <span
-            className={`editable-placeholder${
-              usePillPlaceholder
-                ? " pill-placeholder pill-placeholder-submission"
-                : ""
-            }`}
-          >
-            {placeholder}
-          </span>
-        ) : (
-          value
-        )}
+        {isEmpty ? <span className={placeholderClass}>{placeholder}</span> : value}
       </button>
     );
   };

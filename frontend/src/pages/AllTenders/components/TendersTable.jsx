@@ -66,19 +66,24 @@ const TendersTable = ({
   });
 
   return (
-    <section className="table-card">
-      <div className="table-scroll">
-        <table className="tenders-table">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[1300px] border-collapse text-[0.7rem] text-slate-700">
           <thead>
             <TableHeaderRow renderSortableHeader={renderSortableHeader} />
           </thead>
           <tbody>
-            {tenders.map((tender) => (
+            {tenders.map((tender, index) => {
+              const prevTender = tenders[index - 1];
+              const showTopBorder =
+                Boolean(prevTender) && expandedPin === prevTender.id;
+              return (
               <TenderRow
                 key={tender.id}
                 tender={tender}
                 editedRows={editedRows}
                 expandedPin={expandedPin}
+                showTopBorder={showTopBorder}
                 expandedStages={expandedStages}
                 customStagesByTender={customStagesByTender}
                 stagePickerForTender={stagePickerForTender}
@@ -132,7 +137,8 @@ const TendersTable = ({
                 setStagePickerValue={setStagePickerValue}
                 onToggleMenu={toggleMenu}
               />
-            ))}
+              );
+            })}
             <AddItemRow onAdd={handleAddTender} />
           </tbody>
         </table>
@@ -157,9 +163,11 @@ const TendersTable = ({
           onCancelSubitemDelete={() => setConfirmSubitemDelete(null)}
         />
         {tenders.length === 0 && (
-          <div className="empty-state">
-            <h3>No tenders found</h3>
-            <p>Try adjusting search or filters.</p>
+          <div className="p-8 text-center text-[0.7rem] text-slate-500">
+            <h3 className="text-[0.75rem] font-semibold text-slate-700">
+              No tenders found
+            </h3>
+            <p className="mt-1">Try adjusting search or filters.</p>
           </div>
         )}
       </div>

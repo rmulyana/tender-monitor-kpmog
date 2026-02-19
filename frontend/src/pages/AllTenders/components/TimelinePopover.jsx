@@ -24,7 +24,7 @@ const TimelinePopover = ({
   return (
     <div
       ref={menuRef}
-      className="timeline-popover"
+      className="absolute z-50 rounded-2xl border border-slate-200 bg-white p-4 shadow-lg"
       role="dialog"
       aria-label="Timeline picker"
       style={{

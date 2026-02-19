@@ -1,3 +1,5 @@
+import { User } from "lucide-react";
+
 const parseNumericSuffix = (value) => {
   const match = String(value || "").match(/(\d+)/);
   return match ? Number(match[1]) : NaN;
@@ -16,8 +18,10 @@ const picCell = (name) => {
   const trimmed = String(name || "").trim();
   if (!trimmed) return null;
   return (
-    <span className="pic">
-      <span className="pic-avatar">{trimmed.slice(0, 1).toUpperCase()}</span>
+    <span className="inline-flex items-center gap-2">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 text-slate-500">
+        <User className="h-3 w-3" aria-hidden="true" />
+      </span>
       <span>{trimmed}</span>
     </span>
   );

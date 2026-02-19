@@ -8,19 +8,27 @@ const StagePickerRow = ({
   onStagePickerChange,
   onCancelStagePicker,
   onOpenStagePicker,
+  omitPinColumn = false,
 }) => {
   return (
     <DetailRow
       key={`${tenderId}-add-subitem`}
-      className="row-step block block-end"
+      className="border-b border-slate-200 bg-white last:border-b-0"
     >
-      <td className="w-pin sticky tree-empty" />
-      <td className="w-title sticky2 divider-shadow wraptext tree-box tree-box-first">
-        <div className="indent-1">
+      {!omitPinColumn ? (
+        <td className="w-[72px] min-w-[72px] max-w-[72px] bg-white px-3 py-2 align-middle" />
+      ) : null}
+      <td
+        className={[
+          "w-[260px] min-w-[260px] max-w-[260px] rounded-bl-2xl bg-white px-3 py-2 align-middle",
+          omitPinColumn ? "px-4" : "",
+        ].join(" ")}
+      >
+        <div className={omitPinColumn ? "pl-1" : "pl-3"}>
           {isStagePickerOpen ? (
-            <div className="add-stage-field">
+            <div className="grid gap-2">
               <select
-                className="add-stage-select"
+                className="h-8 rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] font-semibold text-slate-600"
                 autoFocus
                 value={stagePickerValue}
                 onChange={onStagePickerChange}
@@ -34,10 +42,10 @@ const StagePickerRow = ({
                   </option>
                 ))}
               </select>
-              <div className="add-stage-actions">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  className="add-stage-cancel"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-1 text-[0.7rem] font-semibold text-slate-600"
                   onClick={onCancelStagePicker}
                 >
                   Cancel
@@ -46,24 +54,29 @@ const StagePickerRow = ({
             </div>
           ) : (
             <button
-              className="add-item"
+              className="group inline-flex cursor-pointer items-center gap-2 text-[0.7rem] font-semibold text-slate-400 transition hover:text-slate-600"
               type="button"
               onClick={onOpenStagePicker}
             >
-              <span className="add-circle">+</span>
-              <span>Add item</span>
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition group-hover:border-orange-400">
+                +
+              </span>
+              <span>Add stage</span>
             </button>
           )}
         </div>
       </td>
-      <td className="w-client tree-box" />
-      <td className="w-cons tree-box" />
-      <td className="w-stage tree-box" />
-      <td className="w-status tree-box" />
-      <td className="w-date tree-box" />
-      <td className="w-priority tree-box" />
-      <td className="w-timeline tree-box" />
-      <td className="w-remarks tree-box tree-box-last notes-cell" colSpan={2} />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[120px] min-w-[120px] max-w-[120px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[150px] min-w-[150px] max-w-[150px] px-3 py-2 align-middle" />
+      <td className="w-[200px] min-w-[200px] max-w-[200px] px-3 py-2 align-middle" />
+      <td
+        className="w-[170px] min-w-[170px] max-w-[170px] rounded-br-2xl px-3 py-2 align-middle"
+        colSpan={2}
+      />
     </DetailRow>
   );
 };

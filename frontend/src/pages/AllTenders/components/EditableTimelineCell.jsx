@@ -8,9 +8,17 @@ const EditableTimelineCell = ({
   usePillPlaceholder = false,
 }) => {
   const hasTimeline = Boolean(startDate) && Boolean(dueDate);
+  const placeholderClass = usePillPlaceholder
+    ? "inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-4 text-[0.7rem] text-slate-400"
+    : "text-slate-400";
 
   return (
-    <button type="button" className="timeline-edit-trigger" onClick={onOpen}>
+    <button
+      type="button"
+      data-timeline-trigger
+      className="w-full cursor-pointer text-left text-[0.7rem] text-slate-700 transition hover:text-slate-900"
+      onClick={onOpen}
+    >
       {hasTimeline ? (
         <TenderTimeline
           startDate={startDate}
@@ -18,13 +26,7 @@ const EditableTimelineCell = ({
           overdueDays={overdueDays}
         />
       ) : (
-        <span
-          className={`timeline-placeholder${
-            usePillPlaceholder ? " pill-placeholder" : ""
-          }`}
-        >
-          Add timeline
-        </span>
+        <span className={placeholderClass}>Add timeline</span>
       )}
     </button>
   );
