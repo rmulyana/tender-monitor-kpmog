@@ -7,7 +7,11 @@ import {
   fetchUsdToIdrRate,
   setTargetByYear,
 } from "../../../utils/tendersApi.js";
-import { isTenderClosed, matchesYearFilter } from "../../../utils/tenderUtils.js";
+import {
+  isTenderClosed,
+  matchesYearFilter,
+  normalizeDate,
+} from "../../../utils/tenderUtils.js";
 import {
   MONTH_LABELS,
   USD_TO_IDR_RATE,
@@ -369,6 +373,25 @@ const useDashboardData = () => {
       }));
   }, [yearTenders]);
 
+  const contractSignedTenders = useMemo(() => {
+    return [...yearTenders]
+      .filter((tender) => {
+        const status = String(tender.status || "").trim().toLowerCase();
+        return status === "signed" || status === "contract";
+      })
+      .sort((a, b) => {
+        const aDate =
+          normalizeDate(a.statusChangedAt) ||
+          normalizeDate(a.dueDate) ||
+          new Date(0);
+        const bDate =
+          normalizeDate(b.statusChangedAt) ||
+          normalizeDate(b.dueDate) ||
+          new Date(0);
+        return bDate.getTime() - aDate.getTime();
+      });
+  }, [yearTenders]);
+
   const handleTargetEdit = () => {
     const currentValue = Number(targetConfig?.contractTarget) || 0;
     setTargetInputRaw(currentValue ? String(Math.trunc(currentValue)) : "");
@@ -409,6 +432,7 @@ const useDashboardData = () => {
     activeTargetLabel,
     recentTenders,
     outstandingTenders,
+    contractSignedTenders,
     timelineYear,
     selectedMonth,
     setSelectedMonth,
