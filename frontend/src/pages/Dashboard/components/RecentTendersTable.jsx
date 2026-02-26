@@ -1,3 +1,4 @@
+import { ChevronDown, ChevronRight } from "lucide-react";
 import StagePillStatic from "../../../components/tenders/StagePillStatic.jsx";
 import { formatDate } from "../../../utils/formatters.js";
 
@@ -5,6 +6,8 @@ const RecentTendersTable = ({
   items,
   title = "Recent Active Tenders",
   emptyLabel = "No recent active tender",
+  isOpen = false,
+  onToggle,
   useDueStatus = true,
   displayCurrency,
   usdToIdrRate,
@@ -13,11 +16,24 @@ const RecentTendersTable = ({
 }) => (
   <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
     <header className="mb-3 flex min-h-[40px] items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">
-      <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-slate-800">
-        {title}
-      </h2>
+      <button
+        type="button"
+        className="group inline-flex cursor-pointer items-center gap-2 text-left text-[0.75rem] font-bold uppercase tracking-[0.12em] text-slate-800"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-label={`${isOpen ? "Collapse" : "Expand"} ${title}`}
+      >
+        {isOpen ? (
+          <ChevronDown className="h-4 w-4 text-slate-500" aria-hidden="true" />
+        ) : (
+          <ChevronRight className="h-4 w-4 text-slate-500" aria-hidden="true" />
+        )}
+        <span className="group-hover:underline group-hover:decoration-2 group-hover:underline-offset-4">
+          {title}
+        </span>
+      </button>
     </header>
-    <div className="mt-4 overflow-x-auto">
+    <div className={`mt-4 overflow-x-auto ${isOpen ? "block" : "hidden"}`}>
       <table className="w-full table-fixed border-collapse text-[0.7rem]">
         <thead>
           <tr>
