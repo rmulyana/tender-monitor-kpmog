@@ -31,6 +31,8 @@ import {
 
 const Dashboard = () => {
   const [isAwardedOpen, setIsAwardedOpen] = useState(false);
+  const [isRecentOpen, setIsRecentOpen] = useState(false);
+  const [isOutstandingOpen, setIsOutstandingOpen] = useState(false);
 
   const {
     labels,
@@ -224,6 +226,8 @@ const Dashboard = () => {
         items={recentTenders}
         title="Recent Active Tenders"
         emptyLabel="No recent active tender"
+        isOpen={isRecentOpen}
+        onToggle={() => setIsRecentOpen((open) => !open)}
         useDueStatus
         displayCurrency={displayCurrency}
         usdToIdrRate={usdToIdrRate}
@@ -235,6 +239,8 @@ const Dashboard = () => {
         items={outstandingTenders}
         title="Outstanding Tenders"
         emptyLabel="No outstanding tender"
+        isOpen={isOutstandingOpen}
+        onToggle={() => setIsOutstandingOpen((open) => !open)}
         useDueStatus={false}
         displayCurrency={displayCurrency}
         usdToIdrRate={usdToIdrRate}
