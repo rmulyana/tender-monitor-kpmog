@@ -132,7 +132,7 @@ const ProcessChart = ({
                     style={{ background: item.color }}
                   />
                   <span className={isDisabled ? "line-through" : ""}>
-                    {item.name}
+                    {item.name} : {Number(item.value) || 0}
                   </span>
                 </button>
               </li>
