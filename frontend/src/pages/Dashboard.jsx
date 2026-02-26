@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 import CurrencyControls from "./Dashboard/CurrencyControls.jsx";
 import TargetModal from "./Dashboard/components/TargetModal.jsx";
 import RecentTendersTable from "./Dashboard/components/RecentTendersTable.jsx";
+import ContractSignedTable from "./Dashboard/components/ContractSignedTable.jsx";
 import ProcessChart from "./Dashboard/components/ProcessChart.jsx";
 import StageFlowChart from "./Dashboard/components/StageFlowChart.jsx";
 import ContractValueChart from "./Dashboard/components/ContractValueChart.jsx";
@@ -27,6 +30,8 @@ import {
 } from "./Dashboard/utils/dashboardHelpers.jsx";
 
 const Dashboard = () => {
+  const [isAwardedOpen, setIsAwardedOpen] = useState(false);
+
   const {
     labels,
     selectedYear,
@@ -46,6 +51,7 @@ const Dashboard = () => {
     activeTargetLabel,
     recentTenders,
     outstandingTenders,
+    contractSignedTenders,
     timelineYear,
     selectedMonth,
     setSelectedMonth,
@@ -169,6 +175,18 @@ const Dashboard = () => {
           CustomTooltip={CustomTooltip}
         />
       </section>
+
+      <ContractSignedTable
+        items={contractSignedTenders}
+        title="Awarded Project"
+        emptyLabel="No contract signed project"
+        isOpen={isAwardedOpen}
+        onToggle={() => setIsAwardedOpen((open) => !open)}
+        displayCurrency={displayCurrency}
+        usdToIdrRate={usdToIdrRate}
+        convertValue={convertValue}
+        formatCurrencyCode={formatCurrencyCode}
+      />
 
       <ContractValueChart
         selectedYear={selectedYear}
