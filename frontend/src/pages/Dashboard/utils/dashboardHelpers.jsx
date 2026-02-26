@@ -556,6 +556,8 @@ export {
   getStatusMatches,
   resolveTimelineYear,
   buildMonthlySnapshot,
+  buildStageTimelineForTender,
+  resolveStageAtDate,
   buildContractSeries,
   sumEstValue,
 };

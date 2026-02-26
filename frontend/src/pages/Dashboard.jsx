@@ -86,12 +86,26 @@ const Dashboard = () => {
           <h2 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-indigo-900">
             Tender Active Summary
           </h2>
-          <CurrencyControls
-            displayCurrency={displayCurrency}
-            onCurrencyChange={handleCurrencyChange}
-            onUpdateRate={handleUpdateRate}
-            isRateLoading={isRateLoading}
-          />
+          <div className="flex items-center gap-2">
+            <select
+              className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[0.75rem] font-semibold text-slate-600 outline-none transition hover:border-orange-400 focus:border-slate-200 focus:hover:border-orange-400"
+              aria-label="Select summary month"
+              value={selectedMonth}
+              onChange={(event) => setSelectedMonth(event.target.value)}
+            >
+              {labels.map((label) => (
+                <option key={label} value={label}>
+                  {label}
+                </option>
+              ))}
+            </select>
+            <CurrencyControls
+              displayCurrency={displayCurrency}
+              onCurrencyChange={handleCurrencyChange}
+              onUpdateRate={handleUpdateRate}
+              isRateLoading={isRateLoading}
+            />
+          </div>
         </div>
         <div className="mt-4 overflow-x-auto">
           <div className="grid min-w-[1000px] grid-cols-6">

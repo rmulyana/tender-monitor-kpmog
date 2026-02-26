@@ -106,35 +106,53 @@ const useDashboardData = () => {
   );
 
   const summaryColumns = useMemo(() => {
+    const summaryCutoffDate = new Date(timelineYear, monthIndex + 1, 0);
+    summaryCutoffDate.setHours(23, 59, 59, 999);
+    const summaryTenders = yearTenders.filter((tender) => {
+      const referenceDate =
+        normalizeDate(tender.dueDate) ||
+        normalizeDate(tender.statusChangedAt) ||
+        normalizeDate(tender.updatedAt) ||
+        normalizeDate(tender.createdAt) ||
+        normalizeDate(tender.startDate);
+      if (!referenceDate) return true;
+      return referenceDate <= summaryCutoffDate;
+    });
+
     return summaryConfig.map((config) => {
       let rows = [];
       let totalValue = 0;
 
       if (config.key === "Failed") {
-        const failedTenders = yearTenders.filter(
+        const failedTenders = summaryTenders.filter(
           (tender) => tender.isFailed || tender.status === "Failed",
         );
         rows = config.rows.map((label) => ({
           label: `Lost at ${label}`,
           value: failedTenders.filter((tender) => tender.stage === label).length,
         }));
-        totalValue = sumEstValue(failedTenders, displayCurrency, usdToIdrRate);
+        totalValue = sumEstValue(
+          failedTenders,
+          displayCurrency,
+          usdToIdrRate,
+        );
       } else {
-        const stageTenders = yearTenders.filter((tender) => tender.stage === config.key);
-        const activeStageTenders = stageTenders.filter(
-          (tender) => !(tender.isFailed || tender.status === "Failed"),
+        const stageTenders = summaryTenders.filter(
+          (tender) =>
+            tender.stage === config.key &&
+            !(tender.isFailed || tender.status === "Failed"),
         );
         rows = config.rows.map((label) => {
           const matches = getStatusMatches(label);
           return {
             label,
-            value: activeStageTenders.filter((tender) =>
-              matches.includes(tender.status),
+            value: stageTenders.filter((tender) =>
+              matches.includes(String(tender.status || "").trim()),
             ).length,
           };
         });
         totalValue = sumEstValue(
-          activeStageTenders,
+          stageTenders,
           displayCurrency,
           usdToIdrRate,
         );
@@ -151,7 +169,7 @@ const useDashboardData = () => {
         totalValue,
       };
     });
-  }, [yearTenders, displayCurrency, usdToIdrRate]);
+  }, [yearTenders, timelineYear, monthIndex, displayCurrency, usdToIdrRate]);
 
   useEffect(() => {
     if (!rateToast) return undefined;
