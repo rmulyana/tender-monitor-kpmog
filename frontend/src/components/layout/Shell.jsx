@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { LayoutDashboard, ListTree, Menu, User, X } from "lucide-react";
 
-import brandLogo from "../../assets/KPMOG.png";
+import brandLogo from "../../assets/apca-logo.png";
 import { useTenders } from "../../context/TenderContext.jsx";
 
 const Shell = ({ children }) => {
@@ -61,7 +61,7 @@ const Shell = ({ children }) => {
             <>
               <img
                 src={brandLogo}
-                alt="KPMOG logo"
+                alt="APCA logo"
                 className="h-[44px] w-auto max-w-[190px] object-contain"
               />
               <button
